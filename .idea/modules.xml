@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Escape From Castle.iml" filepath="$PROJECT_DIR$/Escape From Castle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Text Engine.iml" filepath="$PROJECT_DIR$/.idea/Text Engine.iml" />
     </modules>
   </component>
 </project>

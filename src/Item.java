@@ -21,6 +21,10 @@ public class Item {
      * @param combos The possible combinations with other items
      */
     Item(String name, String description, HashMap<String, Item> combos) {
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(description);
+        Objects.requireNonNull(combos);
+
         this.name = name;
         this.description = description;
         this.combos = combos;

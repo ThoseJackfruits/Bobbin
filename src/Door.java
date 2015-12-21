@@ -19,6 +19,10 @@ public class Door {
      * @param locked Whether this door is locked
      */
     Door(Room room1, Room room2, boolean locked) {
+        Objects.requireNonNull(room1);
+        Objects.requireNonNull(room2);
+        Objects.requireNonNull(locked);
+
         this.room1 = room1;
         this.room2 = room2;
         this.locked = locked;

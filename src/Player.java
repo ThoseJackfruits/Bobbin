@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by Jack on 7/6/2015.
@@ -17,6 +18,9 @@ public class Player {
      * @param location The room the player is in
      */
     Player(ArrayList<Item> inventory, Room location) {
+        Objects.requireNonNull(inventory);
+        Objects.requireNonNull(location);
+
         this.inventory = inventory;
         this.location = location;
     }
@@ -27,6 +31,8 @@ public class Player {
      * @param location The room the player is in
      */
     Player(Room location) {
+        Objects.requireNonNull(location);
+
         this.inventory = new ArrayList<Item>();
         this.location = location;
     }

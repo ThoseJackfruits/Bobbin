@@ -18,6 +18,10 @@ public class Key extends Item {
      * @param description The description of the object
      */
     Key(String name, String description, ArrayList<Door> doors) {
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(description);
+        Objects.requireNonNull(doors);
+
         super(name, description, new HashMap<String, Item>());
         this.doors = doors;
     }
