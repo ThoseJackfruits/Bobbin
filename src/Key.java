@@ -1,39 +1,53 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * Created by Jack on 7/21/2015.
  *
- * Reperesents a key to one or more doors
+ * Represents a key to one or more doors
  */
 public class Key extends Item {
 
-    private final ArrayList<Door> doors;
+    private final int id;
 
     /**
-     * Constructs a Key object
+     * Constructs a {@link Key} object with a random {@link #id}.
      *
      * @param name        The name of the object
      * @param description The description of the object
      */
-    Key(String name, String description, ArrayList<Door> doors) {
-        Objects.requireNonNull(name);
-        Objects.requireNonNull(description);
-        Objects.requireNonNull(doors);
-
+    Key(String name, String description) {
+        // Super call performs null checks
         super(name, description, new HashMap<String, Item>());
-        this.doors = doors;
+
+        id = new Random().nextInt();
     }
 
     /**
-     * Can this key open the given door?
+     * Constructs a {@link Key} object with a set {@link #id}.
      *
-     * @param toOpen The door in question
-     * @return Whether this key can open the given door
+     * @param name        The name of the object
+     * @param description The description of the object
+     * @param id          identifier for the key (decides what it fits)
      */
-    public boolean canOpen(Door toOpen) {
-        return this.doors.contains(toOpen);
+    Key(String name, String description, int id) {
+        // super call performs null checks
+        super(name, description, new HashMap<String, Item>());
+
+        this.id = id;
+    }
+
+
+    /**
+     * Can this {@link Key} open the given {@link Door}?
+     *
+     * @param toOpen The {@link Door} in question
+     * @return Whether this {@link Key} can open the given {@link Door}
+     */
+    public boolean fits(Door toOpen) {
+        Objects.requireNonNull(toOpen);
+        return toOpen.fits(this);
     }
 
     @Override
@@ -44,15 +58,31 @@ public class Key extends Item {
 
 
     /**
-     * Unlock the given door. Won't work if it's an incorrect key. (duh)
+     * Unlock the given {@link Door}. Won't work if it's an incorrect {@link Key}. (duh)
      *
-     * @param toOpen the door to be opened
+     * @param toOpen the {@link Door} to be opened
+     * @return {@code true} if successfully unlocked, {@code false} otherwise
      */
-    public void unlock(Door toOpen) {
+    public boolean unlock(Door toOpen) {
         Objects.requireNonNull(toOpen);
-        if (!doors.contains(toOpen)) {
-            throw new IllegalArgumentException("This key does not unlock the given door.");
+        return toOpen.unlock(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-        toOpen.unlock();
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Key other = (Key) o;
+        return id == other.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 }
+
