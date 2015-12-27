@@ -1,3 +1,5 @@
+package text_engine.items;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -14,7 +16,7 @@ public class Item {
     private HashMap<String, Item> combos;
 
     /**
-     * Constructs an Item object
+     * Constructs an text_engine.items.Item object
      *
      * @param name The name of the object
      * @param description The description of the object

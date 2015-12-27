@@ -1,3 +1,5 @@
+package text_engine.main;
+
 /**
  * Houses the main method and basically just runs stuff. Will be used for testing.
  *
@@ -12,15 +14,15 @@ public class Driver {
      */
     public static void main(String[] args) {
 
-        /* Key testing */
+        /* text_engine.items.Key testing */
 
-        /* Door testing */
+        /* text_engine.boundaries.Door testing */
 
-        /* Item testing */
+        /* text_engine.items.Item testing */
 
-        /* Player testing */
+        /* text_engine.characters.Player testing */
 
-        /* Room testing */
+        /* text_engine.boundaries.Room testing */
 
     }
 

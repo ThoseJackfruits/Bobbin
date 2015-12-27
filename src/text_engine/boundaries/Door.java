@@ -1,10 +1,14 @@
+package text_engine.boundaries;
+
 import java.util.Objects;
 import java.util.Random;
+
+import text_engine.items.Key;
 
 /**
  * Created by Jack on 7/6/2015.
  *
- * Represents a door from one Room to another
+ * Represents a door from one text_engine.boundaries.Room to another
  */
 public class Door {
 
@@ -14,7 +18,7 @@ public class Door {
     private final long lock;
 
     /**
-     * Constructs a Door object
+     * Constructs a text_engine.boundaries.Door object
      *
      * @param room1 The room on one side of the {@link Door}
      * @param room2 The room on the other side of the {@link Door}
@@ -48,7 +52,7 @@ public class Door {
                 throw new IllegalArgumentException("Given room is not connected to this door");
             }
         } else {
-            throw new IllegalStateException("Door is locked.");
+            throw new IllegalStateException("text_engine.boundaries.Door is locked.");
         }
     }
 
@@ -59,7 +63,7 @@ public class Door {
      */
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("Door between ")
+        StringBuilder result = new StringBuilder("text_engine.boundaries.Door between ")
           .append(room1.getName())
           .append(" and ")
           .append(room2.getName())

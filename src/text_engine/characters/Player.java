@@ -1,5 +1,10 @@
+package text_engine.characters;
+
 import java.util.ArrayList;
 import java.util.Objects;
+
+import text_engine.boundaries.Room;
+import text_engine.items.Item;
 
 /**
  * Created by Jack on 7/6/2015.
@@ -12,9 +17,9 @@ public class Player {
     private Room location;
 
     /**
-     * Constructs a Player object
+     * Constructs a text_engine.characters.Player object
      *
-     * @param inventory The list of items in the Player's possession
+     * @param inventory The list of items in the text_engine.characters.Player's possession
      * @param location The room the player is in
      */
     Player(ArrayList<Item> inventory, Room location) {
@@ -26,7 +31,7 @@ public class Player {
     }
 
     /**
-     * Constructs a Player object with an empty inventory
+     * Constructs a text_engine.characters.Player object with an empty inventory
      *
      * @param location The room the player is in
      */
@@ -38,14 +43,14 @@ public class Player {
     }
 
     /**
-     * @return This Player's inventory
+     * @return This text_engine.characters.Player's inventory
      */
     public ArrayList<Item> getInventory() {
         return this.inventory;
     }
 
     /**
-     * @return This Player's location
+     * @return This text_engine.characters.Player's location
      */
     public Room getLocation() {
         return this.location;

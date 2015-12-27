@@ -1,5 +1,9 @@
+package text_engine.boundaries;
+
 import java.util.ArrayList;
 import java.util.Objects;
+
+import text_engine.items.Item;
 
 /**
  * Created by Jack on 7/6/2015.
@@ -13,11 +17,11 @@ public class Room {
     private final Door[] exits;
 
     /**
-     * Constructs a Room object
+     * Constructs a text_engine.boundaries.Room object
      *
      * @param name The name of the room
      * @param contents The items in the room
-     * @throws IllegalArgumentException If the Item[] is too large
+     * @throws IllegalArgumentException If the text_engine.items.Item[] is too large
      */
     Room(String name, ArrayList<Item> contents, Door[] exits) {
         Objects.requireNonNull(name);

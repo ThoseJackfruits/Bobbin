@@ -1,6 +1,10 @@
+package text_engine.items;
+
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
+
+import text_engine.boundaries.Door;
 
 /**
  * Created by Jack on 7/21/2015.
@@ -17,7 +21,7 @@ public class Key extends Item {
      * @param name        The name of the object
      * @param description The description of the object
      */
-    Key(String name, String description) {
+    public Key(String name, String description) {
         // Super call performs null checks
         super(name, description, new HashMap<String, Item>());
 
@@ -31,7 +35,7 @@ public class Key extends Item {
      * @param description The description of the object
      * @param id          identifier for the key (decides what it fits)
      */
-    Key(String name, String description, int id) {
+    public Key(String name, String description, int id) {
         // super call performs null checks
         super(name, description, new HashMap<String, Item>());
 
