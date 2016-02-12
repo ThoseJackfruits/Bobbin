@@ -54,7 +54,8 @@ public class Door {
    */
   public void setRoom1(@NotNull Room room1) {
     Objects.requireNonNull(room1);
-
+    this.room1.removeDoor(this);
+    room1.addExits(this);
     this.room1 = room1;
   }
 
@@ -66,7 +67,8 @@ public class Door {
    */
   public void setRoom2(@NotNull Room room2) {
     Objects.requireNonNull(room2);
-
+    this.room2.removeDoor(this);
+    room2.addExits(this);
     this.room2 = room2;
   }
 
