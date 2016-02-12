@@ -125,4 +125,16 @@ public class Room {
     return this.name;
   }
 
+  /**
+   * Remove a door from this room. Must be called when a {@link Door} changes its
+   * {@link Room}s.
+   *
+   * @param toRemove The {@link Door} to remove.
+   */
+  public void removeDoor(Door toRemove) {
+
+    exits.remove(exits.indexOf(toRemove));
+
+  }
+
 }
