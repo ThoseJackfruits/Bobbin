@@ -1,5 +1,8 @@
 package text_engine.main;
 
+import text_engine.characters.Player;
+import text_engine.manager.GameManager;
+
 /**
  * Houses the main method and basically just runs stuff. Will be used for testing.
  *
@@ -14,15 +17,7 @@ public class Driver {
      */
     public static void main(String[] args) {
 
-        /* text_engine.items.Key testing */
 
-        /* text_engine.boundaries.Door testing */
-
-        /* text_engine.items.Item testing */
-
-        /* text_engine.characters.Player testing */
-
-        /* text_engine.boundaries.Room testing */
 
     }
 

@@ -23,7 +23,7 @@ public class Player {
      * @param inventory The list of items in the text_engine.characters.Player's possession
      * @param location The room the player is in
      */
-    Player(ArrayList<Item> inventory, Room location) {
+    public Player(ArrayList<Item> inventory, Room location) {
         Objects.requireNonNull(inventory);
         Objects.requireNonNull(location);
 
@@ -36,7 +36,7 @@ public class Player {
      *
      * @param location The room the player is in
      */
-    Player(Room location) {
+    public Player(Room location) {
         Objects.requireNonNull(location);
 
         this.inventory = new ArrayList<Item>();
