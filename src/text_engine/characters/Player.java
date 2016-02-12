@@ -3,6 +3,7 @@ package text_engine.characters;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import text_engine.boundaries.Door;
 import text_engine.boundaries.Room;
 import text_engine.items.Item;
 
@@ -54,6 +55,18 @@ public class Player {
      */
     public Room getLocation() {
         return this.location;
+    }
+
+    /**
+     * Change the player's location. Will only work if there is a {@link Door} to the next {@link Room}
+     * and if that {@link Door} is not locked.
+     *
+     * @param destination The {@link Room} to move to
+     */
+    public void move(Room destination) {
+
+        if (this.location.isConnectedTo(destination)) this.location = destination;
+
     }
 
 }

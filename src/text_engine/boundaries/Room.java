@@ -84,7 +84,7 @@ public class Room {
    * Adds a newly generated door to {@link this} {@link Room}.
    *
    * @param locked whether the door to be added is locked
-   * @return generated door, which is now attached to {@link this} {@link room}.
+   * @return generated door, which is now attached to {@link this} {@link Room}.
    */
   public Door addExit(boolean locked) {
     Door toAdd = new Door(locked);
@@ -147,6 +147,26 @@ public class Room {
   public void removeDoor(Door toRemove) {
 
     exits.remove(exits.indexOf(toRemove));
+
+  }
+
+  /**
+   * Is this {@link Room} connected to the given one?
+   *
+   * @param other The {@link Room} to check
+   * @return Whether the two {@link Room}s are connected
+   */
+  public boolean isConnectedTo(Room other) {
+
+    for (Door d : exits) {
+
+      if (d.getOtherRoom(this).equals(other) && !d.isLocked()) {
+        return true;
+      }
+
+    }
+
+    return false;
 
   }
 
