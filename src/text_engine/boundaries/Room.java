@@ -70,7 +70,7 @@ public class Room {
   }
 
   /**
-   * Adds new {@link Door}s as exits to {@link this} room.
+   * Adds new {@link Door}s as exits to {@link this} {@link Room}.
    *
    * @param exits {@link Door}s to be added
    */
@@ -78,6 +78,19 @@ public class Room {
     Arrays.stream(exits)
           .filter((door) -> !this.exits.contains(door))
           .map(this.exits::add);
+  }
+
+  /**
+   * Adds a newly generated door to {@link this} {@link Room}.
+   *
+   * @param locked whether the door to be added is locked
+   * @return generated door, which is now attached to {@link this} {@link room}.
+   */
+  public Door addExit(boolean locked) {
+    Door toAdd = new Door(locked);
+    toAdd.setRoom1(this);
+    addExits(toAdd);
+    return toAdd;
   }
 
   /**
