@@ -156,7 +156,7 @@ public class Room {
    * @param other The {@link Room} to check
    * @return Whether the two {@link Room}s are connected
    */
-  public boolean isConnectedTo(Room other) {
+  public boolean canMoveTo(Room other) {
 
     for (Door d : exits) {
 

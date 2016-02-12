@@ -65,7 +65,7 @@ public class Player {
      */
     public void move(Room destination) {
 
-        if (this.location.isConnectedTo(destination)) this.location = destination;
+        if (this.location.canMoveTo(destination)) this.location = destination;
 
     }
 
