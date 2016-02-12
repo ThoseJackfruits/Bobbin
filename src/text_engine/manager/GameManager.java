@@ -1,5 +1,8 @@
 package text_engine.manager;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import text_engine.characters.Player;
 
 /**
@@ -11,6 +14,11 @@ import text_engine.characters.Player;
 public class GameManager {
 
   private Player thePlayer;
+  private Scanner myScan;
+  private Input input;
+
+  private static ArrayList<String> actionList;
+  private static ArrayList<String> articleList;
 
   /**
    * Constructs a {@link GameManager} object
@@ -18,18 +26,32 @@ public class GameManager {
    * @param thePlayer The Player
    */
   public GameManager(Player thePlayer) {
+
     this.thePlayer = thePlayer;
+    this.input = new Input();
+
   }
 
+  /**
+   * Get input from the player.
+   */
   public void prompt() {
 
-    System.out.println(">> " + this.nextPrompt());
+    System.out.printf(">> ");
+
+    this.input.parse(myScan.nextLine());
 
   }
 
-  private String nextPrompt() {
+  /**
+   * Perform the specified action if the input is valid
+   *
+   */
+  public void parseInput() {
 
-    return "";
+    if (actionList.contains(input.getAction()) && articleList.contains(input.getArticle())) {
+      // Do something
+    }
 
   }
 
