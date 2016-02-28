@@ -14,9 +14,8 @@ public class Input {
   /**
    * Constructs an {@link Input} object. Parses the string into separate words.
    *
-   * Assumes the format: Action Article Subject.
-   *    Example: "Take the rock" where "Take" is the action, "the" is the article, and
-   *    "rock" is the subject.
+   * Assumes the format: Action Article Subject. Example: "Take the rock" where "Take" is the action,
+   * "the" is the article, and "rock" is the subject.
    *
    * @param input The input string
    */
@@ -28,7 +27,6 @@ public class Input {
 
   /**
    * Default constructor for Input.
-   *
    */
   public Input() {
     action = article = subject = "";

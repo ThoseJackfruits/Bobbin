@@ -2,6 +2,7 @@ package text_engine.boundaries;
 
 import com.sun.istack.internal.NotNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,7 +15,7 @@ import text_engine.items.Item;
  *
  * Represents a room.
  */
-public class Room {
+public class Room implements Serializable {
 
   public static final int CONTENT_LIMIT = 10;
   /*
@@ -139,8 +140,7 @@ public class Room {
   }
 
   /**
-   * Remove a door from this room. Must be called when a {@link Door} changes its
-   * {@link Room}s.
+   * Remove a door from this room. Must be called when a {@link Door} changes its {@link Room}s.
    *
    * @param toRemove The {@link Door} to remove.
    */

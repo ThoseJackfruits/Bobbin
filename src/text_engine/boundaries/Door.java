@@ -2,6 +2,7 @@ package text_engine.boundaries;
 
 import com.sun.istack.internal.NotNull;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
 
@@ -12,12 +13,12 @@ import text_engine.items.Key;
  *
  * Represents a door from one text_engine.boundaries.Room to another
  */
-public class Door {
+public class Door implements Serializable {
 
+  private final long lock;
   private Room room1;
   private Room room2;
   private boolean locked;
-  private final long lock;
 
   /**
    * Constructs a text_engine.boundaries.Door object

@@ -8,17 +8,16 @@ import text_engine.characters.Player;
 /**
  * Created by JackDavis on 2/12/16.
  *
- * Manages the game. Oversees prompting the user for input, and communicating that to
- * instances of all necessary classes.
+ * Manages the game. Oversees prompting the user for input, and communicating that to instances of all
+ * necessary classes.
  */
 public class GameManager {
 
+  private static ArrayList<String> actionList;
+  private static ArrayList<String> articleList;
   private Player thePlayer;
   private Scanner myScan;
   private Input input;
-
-  private static ArrayList<String> actionList;
-  private static ArrayList<String> articleList;
 
   /**
    * Constructs a {@link GameManager} object
@@ -45,7 +44,6 @@ public class GameManager {
 
   /**
    * Perform the specified action if the input is valid
-   *
    */
   public void parseInput() {
 

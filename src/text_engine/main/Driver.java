@@ -1,8 +1,5 @@
 package text_engine.main;
 
-import text_engine.characters.Player;
-import text_engine.manager.GameManager;
-
 /**
  * Houses the main method and basically just runs stuff. Will be used for testing.
  *
@@ -10,15 +7,13 @@ import text_engine.manager.GameManager;
  */
 public class Driver {
 
-    /**
-     * Main method. 'Nuff said.
-     *
-     * @param args The arguments...
-     */
-    public static void main(String[] args) {
+  /**
+   * Main method. 'Nuff said.
+   *
+   * @param args The arguments...
+   */
+  public static void main(String[] args) {
 
-
-
-    }
+  }
 
 }

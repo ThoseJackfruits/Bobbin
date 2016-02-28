@@ -16,12 +16,11 @@ public class NonPlayerCharacter extends Player {
    * Constructs a text_engine.characters.NonPlayerCharacter object
    *
    * @param inventory The list of items in the text_engine.characters.NonPlayerCharacter's possession
-   * @param location The room the NPC is in
+   * @param location  The room the NPC is in
    */
   NonPlayerCharacter(ArrayList<Item> inventory, Room location) {
     super(inventory, location);
   }
 
-  
 
 }
