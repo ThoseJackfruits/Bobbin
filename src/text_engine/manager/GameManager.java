@@ -6,8 +6,6 @@ import java.util.Scanner;
 import text_engine.characters.Player;
 
 /**
- * Created by JackDavis on 2/12/16.
- *
  * Manages the game. Oversees prompting the user for input, and communicating that to instances of all
  * necessary classes.
  */
@@ -25,10 +23,8 @@ public class GameManager {
    * @param thePlayer The Player
    */
   public GameManager(Player thePlayer) {
-
     this.thePlayer = thePlayer;
     this.input = new Input();
-
   }
 
   /**

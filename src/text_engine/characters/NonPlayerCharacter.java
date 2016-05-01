@@ -1,7 +1,5 @@
 package text_engine.characters;
 
-import java.util.ArrayList;
-
 import text_engine.boundaries.Room;
 import text_engine.items.Item;
 
@@ -18,8 +16,8 @@ public class NonPlayerCharacter extends Player {
    * @param inventory The list of items in the text_engine.characters.NonPlayerCharacter's possession
    * @param location  The room the NPC is in
    */
-  NonPlayerCharacter(ArrayList<Item> inventory, Room location) {
-    super(inventory, location);
+  NonPlayerCharacter(Room location, Item... inventory) {
+    super(location, inventory);
   }
 
 

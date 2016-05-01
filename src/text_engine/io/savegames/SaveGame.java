@@ -1,13 +1,28 @@
 package text_engine.io.savegames;
 
-import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Interface to be used by any class writing/reading savegames from a file or database.
  */
-public interface SaveGame<T> {
+abstract class SaveGame<T> {
 
-  T loadGameState() throws IOException;
+  public SaveGame(String name) {
+    Objects.requireNonNull(name);
+    this.name = name;
+  }
 
-  void saveGameState(T toSave) throws IOException;
+  public String getName() {
+    return name;
+  }
+
+  private String name;
+
+  /**
+   * Loads the saved game state of type {@link T}
+   * @return loaded game state
+   */
+  abstract T loadGameState();
+
+  abstract void saveGameState(T toSave);
 }
