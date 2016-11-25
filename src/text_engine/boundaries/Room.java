@@ -11,8 +11,6 @@ import java.util.Objects;
 import text_engine.items.Item;
 
 /**
- * Created by Jack on 7/6/2015.
- *
  * Represents a room.
  */
 public class Room implements Serializable {
@@ -71,31 +69,38 @@ public class Room implements Serializable {
   }
 
   /**
-   * Adds new {@link Door}s as exits to {@link this} {@link Room}.
+   * Adds new {@link Door}s as exits to this {@link Room}.
    *
    * @param exits {@link Door}s to be added
+   * @return doors which have been successfully added to the room.
    */
-  public void addExits(Door... exits) {
-    Arrays.stream(exits)
-          .filter((door) -> !this.exits.contains(door))
-          .map(this.exits::add);
+  public Door[] addExits(Door... exits) {
+    Door[] newDoors = Arrays.stream(exits)
+                         .filter((door) -> !this.exits.contains(door)).toArray(Door[]::new);
+    Collections.addAll(this.exits, newDoors);
+    return newDoors;
   }
 
   /**
-   * Adds a newly generated door to {@link this} {@link Room}.
+   * Adds a newly generated door to this {@link Room}.
    *
    * @param locked whether the door to be added is locked
-   * @return generated door, which is now attached to {@link this} {@link Room}.
+   * @return generated door, which is now attached to this {@link Room}.
    */
-  public Door addExit(boolean locked) {
-    Door toAdd = new Door(locked);
-    toAdd.setRoom1(this);
-    addExits(toAdd);
-    return toAdd;
+  public Door addExit(boolean locked, Room otherRoom) {
+    Objects.requireNonNull(otherRoom);
+
+    Door exit = new Door(locked, this, otherRoom);
+    addExits(exit);
+    return exit;
+  }
+
+  public Door[] getExits() {
+    return exits.toArray(new Door[exits.size()]);
   }
 
   /**
-   * Adds new {@link Item}s as contents to {@link this} room.
+   * Adds new {@link Item}s as contents to this room.
    *
    * @param contents {@link Item}s to be added
    * @throws IllegalArgumentException if the number of new, unique contents + current contents are
@@ -131,9 +136,9 @@ public class Room implements Serializable {
   }
 
   /**
-   * Get the name of {@link this} {@link Room}.
+   * Get the name of this {@link Room}.
    *
-   * @return The name of {@link this} {@link Room}
+   * @return The name of this {@link Room}
    */
   public String getName() {
     return this.name;
@@ -144,10 +149,8 @@ public class Room implements Serializable {
    *
    * @param toRemove The {@link Door} to remove.
    */
-  public void removeDoor(Door toRemove) {
-
-    exits.remove(exits.indexOf(toRemove));
-
+  public void removeExit(Door toRemove) {
+    exits.remove(toRemove);
   }
 
   /**
@@ -157,17 +160,29 @@ public class Room implements Serializable {
    * @return Whether the two {@link Room}s are connected
    */
   public boolean canMoveTo(Room other) {
-
     for (Door d : exits) {
-
       if (d.getOtherRoom(this).equals(other) && !d.isLocked()) {
         return true;
       }
-
     }
 
     return false;
-
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    Room room = (Room) obj;
+    return getName().equals(room.getName());
+  }
+
+  @Override
+  public int hashCode() {
+    return getName().hashCode();
+  }
 }
