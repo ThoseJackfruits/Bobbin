@@ -30,8 +30,6 @@ public class Room implements Serializable {
    *
    * @param name  The name of the room
    * @param exits The initial exits for the room
-   * @throws IllegalArgumentException If the text_engine.items.Item[] is too large ({@code #size() >
-   *                                  10})
    */
   public Room(@NotNull String name, Door... exits) {
     this(name);
