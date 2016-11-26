@@ -8,15 +8,15 @@ import text_engine.items.Item;
  */
 public class NonPlayerCharacter extends Player {
 
-  /**
-   * Constructs a text_engine.characterster object
-   *
-   * @param inventory The list of items in the text_engine.characterster's possession
-   * @param location  The room the NPC is in
-   */
-  NonPlayerCharacter(Room location, Item... inventory) {
-    super(location, inventory);
-  }
+    /**
+     * Constructs a text_engine.characterster object
+     *
+     * @param inventory The list of items in the text_engine.characterster's possession
+     * @param location  The room the NPC is in
+     */
+    NonPlayerCharacter(Room location, Item... inventory) {
+        super(location, inventory);
+    }
 
 
 }

@@ -10,17 +10,18 @@ import static org.junit.Assert.assertEquals;
 
 public class SaveGameSerialTest {
 
-  @Test
-  public void saveGameTest() throws Exception {
-    Player p = new Player(new Room("Test Room"));
-    Room nextRoom = new Room("Test Room 2");
-    p.getLocation().addExit(false, nextRoom);
+    @Test
+    public void saveGameTest() throws Exception {
+        Player player1 = new Player(new Room("Test Room"));
+        Room nextRoom = new Room("Test Room 2");
+        player1.getLocation().addExit(false, nextRoom);
 
-    SaveGameSerial saveGame = new SaveGameSerial("TestSave1", "TestSaveDir");
-    saveGame.saveGameState(p);
-    Player loadedPlayer = saveGame.loadGameState();
-    assertEquals(p.getLocation().getName(), loadedPlayer.getLocation().getName());
-    assertEquals(p.getLocation().getExits()[0].getOtherRoom(p.getLocation()).getName(),
-                 loadedPlayer.getLocation().getExits()[0].getOtherRoom(p.getLocation()).getName());
-  }
+        SaveGameSerial saveGame = new SaveGameSerial("TestSave1", "TestSaveDir");
+        saveGame.saveGameState(player1);
+        Player player2 = saveGame.loadGameState();
+        assertEquals(player1.getLocation().getName(), player2.getLocation().getName());
+        assertEquals(
+                player1.getLocation().getExits()[0].getOtherRoom(player1.getLocation()).getName(),
+                player2.getLocation().getExits()[0].getOtherRoom(player2.getLocation()).getName());
+    }
 }

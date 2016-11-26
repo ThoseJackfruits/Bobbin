@@ -7,22 +7,23 @@ import java.util.Objects;
  */
 abstract class SaveGame<T> {
 
-  public SaveGame(String name) {
-    Objects.requireNonNull(name);
-    this.name = name;
-  }
+    private String name;
 
-  public String getName() {
-    return name;
-  }
+    public SaveGame(String name) {
+        Objects.requireNonNull(name);
+        this.name = name;
+    }
 
-  private String name;
+    public String getName() {
+        return name;
+    }
 
-  /**
-   * Loads the saved game state of type {@link T}
-   * @return loaded game state
-   */
-  abstract T loadGameState();
+    /**
+     * Loads the saved game state of type {@link T}
+     *
+     * @return loaded game state
+     */
+    abstract T loadGameState();
 
-  abstract void saveGameState(T toSave);
+    abstract void saveGameState(T toSave);
 }
