@@ -11,8 +11,6 @@ import text_engine.boundaries.Room;
 import text_engine.items.Item;
 
 /**
- * Created by Jack on 7/6/2015.
- *
  * Represents the player
  */
 public class Player implements Serializable {
@@ -21,9 +19,9 @@ public class Player implements Serializable {
   private Room location;
 
   /**
-   * Constructs a text_engine.characters.Player object
+   * Constructs a text_engine.Playerct
    *
-   * @param inventory The list of items in the text_engine.characters.Player's possession
+   * @param inventory The list of items in the text_engine.Playerssession
    * @param location  The room the player is in
    */
   public Player(Room location, Item... inventory) {
@@ -35,7 +33,7 @@ public class Player implements Serializable {
   }
 
   /**
-   * Constructs a text_engine.characters.Player object with an empty inventory
+   * Constructs a text_engine.Playerct with an empty inventory
    *
    * @param location The room the player is in
    */
@@ -47,14 +45,14 @@ public class Player implements Serializable {
   }
 
   /**
-   * @return This text_engine.characters.Player's inventory
+   * @return This text_engine.charactersory
    */
   public List<Item> getInventory() {
     return this.inventory;
   }
 
   /**
-   * @return This text_engine.characters.Player's location
+   * @return This text_engine.characterson
    */
   public Room getLocation() {
     return this.location;

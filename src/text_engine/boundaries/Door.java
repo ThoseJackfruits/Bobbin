@@ -9,9 +9,7 @@ import java.util.Random;
 import text_engine.items.Key;
 
 /**
- * Created by Jack on 7/6/2015.
- *
- * Represents a door from one text_engine.boundaries.Room to another
+ * Represents a door from one {@link Door} to another
  */
 public class Door implements Serializable {
 
@@ -21,23 +19,26 @@ public class Door implements Serializable {
   private boolean locked;
 
   /**
-   * Constructs a text_engine.boundaries.Door object
+   * Constructs a {@link Door} between the 2 provided rooms.
    *
+   * @param locked whether this {@link Door} is locked
    * @param room1  the room on one side of the {@link Door}
    * @param room2  the room on the other side of the {@link Door}
-   * @param locked whether this {@link Door} is locked
    */
-  Door(Room room1, Room room2, boolean locked) {
+  public Door(boolean locked, Room room1, Room room2) {
     this(locked);
     Objects.requireNonNull(room1);
     Objects.requireNonNull(room2);
 
+    room1.addExits(this);
     this.room1 = room1;
+
+    room2.addExits(this);
     this.room2 = room2;
   }
 
   /**
-   * Construct a new {@link Door} without any room associations;
+   * Construct a new {@link Door} without any room associations.
    *
    * @param locked whether this {@link Door} is locked
    */
@@ -55,7 +56,7 @@ public class Door implements Serializable {
    */
   public void setRoom1(@NotNull Room room1) {
     Objects.requireNonNull(room1);
-    this.room1.removeDoor(this);
+    this.room1.removeExit(this);
     room1.addExits(this);
     this.room1 = room1;
   }
@@ -68,7 +69,7 @@ public class Door implements Serializable {
    */
   public void setRoom2(@NotNull Room room2) {
     Objects.requireNonNull(room2);
-    this.room2.removeDoor(this);
+    this.room2.removeExit(this);
     room2.addExits(this);
     this.room2 = room2;
   }
@@ -101,7 +102,7 @@ public class Door implements Serializable {
         throw new IllegalArgumentException("Given room is not connected to this door");
       }
     } else {
-      throw new IllegalStateException("text_engine.boundaries.Door is locked.");
+      throw new IllegalStateException("Door is locked.");
     }
   }
 
@@ -126,7 +127,7 @@ public class Door implements Serializable {
 
 
   /**
-   * Tries to unlock {@link this} {@link Door} with the given {@link Key}.
+   * Tries to unlock this {@link Door} with the given {@link Key}.
    *
    * @param key the key used to unlock the {@link Door}
    * @return {@code true} if successfully unlocked, {@code false} otherwise
@@ -136,7 +137,7 @@ public class Door implements Serializable {
   }
 
   /**
-   * Tries to lock {@link this} {@link Door} with the given {@link Key}.
+   * Tries to lock this {@link Door} with the given {@link Key}.
    *
    * @param key the key used to lock the {@link Door}
    * @return {@code true} if successfully lock, {@code false} otherwise
@@ -146,7 +147,7 @@ public class Door implements Serializable {
   }
 
   /**
-   * Tries to change the lock of {@link this} {@link Door} with the given {@link Key}.
+   * Tries to change the lock of this {@link Door} with the given {@link Key}.
    *
    * @param key        the key used to lock the {@link Door}
    * @param toBeLocked whether the door is to be locked or unlocked
@@ -177,5 +178,22 @@ public class Door implements Serializable {
 
   public boolean isLocked() {
     return locked;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    Door door = (Door) obj;
+    return toString().equals(door.toString());
+  }
+
+  @Override
+  public int hashCode() {
+    return toString().hashCode();
   }
 }

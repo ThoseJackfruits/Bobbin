@@ -2,34 +2,48 @@ package text_engine.items;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
- * Created by Jack on 7/6/2015.
- *
- * Represents an item that the player can examine and pick up
+ * Represents an item that the player can examine and pick up.
  */
 public class Item {
 
   private final String name;
   private final String description;
-  private HashMap<String, Item> combos;
+  private Map<String, Item> combinations;
 
   /**
-   * Constructs an text_engine.items.Item object
+   * Constructs a new item {@link Item}.
    *
-   * @param name        The name of the object
-   * @param description The description of the object
-   * @param combos      The possible combinations with other items
+   * @param name         The name of the object
+   * @param description  The description of the object
    */
-  Item(String name, String description, HashMap<String, Item> combos) {
+  public Item(String name, String description) {
     Objects.requireNonNull(name);
     Objects.requireNonNull(description);
-    Objects.requireNonNull(combos);
 
     this.name = name;
     this.description = description;
-    this.combos = combos;
+    this.combinations = new HashMap<>();
+  }
+
+  /**
+   * Constructs a new item {@link Item}.
+   *
+   * @param name         The name of the object
+   * @param description  The description of the object
+   * @param combinations The possible combinations with other items
+   */
+  public Item(String name, String description, Map<String, Item> combinations) {
+    Objects.requireNonNull(name);
+    Objects.requireNonNull(description);
+    Objects.requireNonNull(combinations);
+
+    this.name = name;
+    this.description = description;
+    this.combinations = combinations;
   }
 
   @Override
@@ -44,7 +58,24 @@ public class Item {
    * @return Whether this item can be combined with the given item
    */
   public boolean compatible(Item other) {
-    return combos.containsKey(other.name);
+    return combinations.containsKey(other.name);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Item item = (Item) o;
+    return name.equals(item.name);
+  }
+
+  @Override
+  public int hashCode() {
+    return name.hashCode();
   }
 
   /**
@@ -69,8 +100,8 @@ public class Item {
     if (compatible(other)) {
       inventory.remove(other);
       inventory.remove(this);
-      inventory.add(combos.get(other.name));
-      return combos.get(other.name);
+      inventory.add(combinations.get(other.name));
+      return combinations.get(other.name);
     } else {
       return null;
     }

@@ -7,8 +7,6 @@ import java.util.Random;
 import text_engine.boundaries.Door;
 
 /**
- * Created by Jack on 7/21/2015.
- *
  * Represents a key to one or more doors
  */
 public class Key extends Item {
@@ -22,8 +20,7 @@ public class Key extends Item {
    * @param description The description of the object
    */
   public Key(String name, String description) {
-    // Super call performs null checks
-    super(name, description, new HashMap<String, Item>());
+    super(name, description);
 
     id = new Random().nextInt();
   }
@@ -62,7 +59,7 @@ public class Key extends Item {
 
 
   /**
-   * Unlock the given {@link Door}. Won't work if it's an incorrect {@link Key}. (duh)
+   * Unlock the given {@link Door}. Won't work if it's an incorrect {@link Key}.
    *
    * @param toOpen the {@link Door} to be opened
    * @return {@code true} if successfully unlocked, {@code false} otherwise

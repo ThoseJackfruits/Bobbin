@@ -1,8 +1,6 @@
 package text_engine.manager;
 
 /**
- * Created by JackDavis on 2/12/16.
- *
  * Represents the user's input through text. Divides input into sections to be used.
  */
 public class Input {
