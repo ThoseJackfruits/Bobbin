@@ -6,7 +6,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import text_engine.items.Item;
 
@@ -23,10 +25,10 @@ public class Room implements Serializable {
 
     private final String name;
     private final ArrayList<Item> contents = new ArrayList<>();
-    private final ArrayList<Door> exits = new ArrayList<>();
+    private final Set<Door> exits = new HashSet<>();
 
     /**
-     * Constructs a {@link Room}, with an initial set of {@param exits}.
+     * Constructs a {@link Room}, with an initial set of exits.
      *
      * @param name  The name of the room
      * @param exits The initial exits for the room
@@ -38,22 +40,21 @@ public class Room implements Serializable {
     }
 
     /**
-     * Constructs a {@link Room}, with an initial set of {@param contents}.
+     * Constructs a {@link Room}, with an initial set of items.
      *
      * @param name     The name of the room
-     * @param contents The initial contents of the room
-     * @throws IllegalArgumentException If the text_engine.items.Item[] is too large ({@code #size() >
-     *                                  10})
+     * @param items The initial items in the room
+     * @throws IllegalArgumentException {@code items} is larger than {@value CONTENT_LIMIT}.
      */
-    public Room(@NotNull String name, Item... contents) {
+    public Room(@NotNull String name, Item... items) {
         this(name);
 
-        if (contents.length > CONTENT_LIMIT) {
+        if (items.length > CONTENT_LIMIT) {
             throw new IllegalArgumentException(String.format("Rooms can have a maximum of %d items.",
                                                              CONTENT_LIMIT));
         }
 
-        Collections.addAll(this.contents, contents);
+        Collections.addAll(this.contents, items);
     }
 
     /**
@@ -72,29 +73,29 @@ public class Room implements Serializable {
      * @param exits {@link Door}s to be added
      * @return doors which have been successfully added to the room.
      */
-    public Door[] addExits(Door... exits) {
+    Door[] addExits(Door... exits) {
         Door[] newDoors = Arrays.stream(exits)
                                 .filter((door) -> !this.exits.contains(door)).toArray(Door[]::new);
         Collections.addAll(this.exits, newDoors);
         return newDoors;
     }
 
-    /**
-     * Adds a newly generated door to this {@link Room}.
-     *
-     * @param locked whether the door to be added is locked
-     * @return generated door, which is now attached to this {@link Room}.
-     */
-    public Door addExit(boolean locked, Room otherRoom) {
-        Objects.requireNonNull(otherRoom);
-
-        Door exit = new Door(locked, this, otherRoom);
-        addExits(exit);
-        return exit;
-    }
-
     public Door[] getExits() {
         return exits.toArray(new Door[exits.size()]);
+    }
+
+    /**
+     * @param door the {@link Door} through which to get the next {@link Room}.
+     * @return {@link Room} on the other side of the given {@link Door}.
+     */
+    public Room getRoomThroughDoor(Door door) {
+        if (exits.contains(door)) {
+            return door.getOtherRoom(this);
+        }
+
+        throw new IllegalArgumentException(
+                String.format("This room (%s) is not connected to the given door, (%s).",
+                              toString(), door.toString()));
     }
 
     /**
@@ -109,7 +110,7 @@ public class Room implements Serializable {
                                        .filter((item) -> !this.contents.contains(item))
                                        .toArray(Item[]::new);
 
-        if (cleanedContents.length + this.contents.size() > 10) {
+        if (cleanedContents.length + this.contents.size() > CONTENT_LIMIT) {
             throw new IllegalArgumentException(String.format("Rooms can have a maximum of %d items.",
                                                              CONTENT_LIMIT));
         }
@@ -124,11 +125,11 @@ public class Room implements Serializable {
      */
     public String examine() {
         String result = "";
-        for (Item i : this.contents) {
-            result += i.toString() + "\n";
+        for (Item item : this.contents) {
+            result += item.toString() + "\n";
         }
-        for (Door d : this.exits) {
-            result += d.toString() + "\n";
+        for (Door door : this.exits) {
+            result += door.toString() + "\n";
         }
         return result;
     }
@@ -147,19 +148,19 @@ public class Room implements Serializable {
      *
      * @param toRemove The {@link Door} to remove.
      */
-    public void removeExit(Door toRemove) {
+    void removeExit(Door toRemove) {
         exits.remove(toRemove);
     }
 
     /**
-     * Is this {@link Room} connected to the given one?
+     * Check if free travel is permitted between this {@link Room} and the given {@link Room}.
      *
      * @param other The {@link Room} to check
      * @return Whether the two {@link Room}s are connected
      */
     public boolean canMoveTo(Room other) {
-        for (Door d : exits) {
-            if (d.getOtherRoom(this).equals(other) && !d.isLocked()) {
+        for (Door door : exits) {
+            if (door.getOtherRoom(this).equals(other) && !door.isLocked()) {
                 return true;
             }
         }
@@ -181,6 +182,6 @@ public class Room implements Serializable {
 
     @Override
     public int hashCode() {
-        return getName().hashCode();
+        return Objects.hashCode(getName());
     }
 }

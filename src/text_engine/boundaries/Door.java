@@ -1,7 +1,5 @@
 package text_engine.boundaries;
 
-import com.sun.istack.internal.NotNull;
-
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
@@ -14,8 +12,8 @@ import text_engine.items.Key;
 public class Door implements Serializable {
 
     private final long lock;
-    private Room room1;
-    private Room room2;
+    private final Room room1;
+    private final Room room2;
     private boolean locked;
 
     /**
@@ -26,63 +24,24 @@ public class Door implements Serializable {
      * @param room2  the room on the other side of the {@link Door}
      */
     public Door(boolean locked, Room room1, Room room2) {
-        this(locked);
-        Objects.requireNonNull(room1);
-        Objects.requireNonNull(room2);
-
-        room1.addExits(this);
-        this.room1 = room1;
-
-        room2.addExits(this);
-        this.room2 = room2;
-    }
-
-    /**
-     * Construct a new {@link Door} without any room associations.
-     *
-     * @param locked whether this {@link Door} is locked
-     */
-    public Door(boolean locked) {
         this.locked = locked;
-
         lock = new Random().nextLong();
-    }
-
-
-    /**
-     * Set the first {@link Room} that this door is connected to.
-     *
-     * @param room1 the room on one side of the {@link Door}
-     */
-    public void setRoom1(@NotNull Room room1) {
         Objects.requireNonNull(room1);
-        this.room1.removeExit(this);
-        room1.addExits(this);
-        this.room1 = room1;
-    }
-
-
-    /**
-     * Set the first {@link Room} that this door is connected to.
-     *
-     * @param room2 the room on the other side of the {@link Door}
-     */
-    public void setRoom2(@NotNull Room room2) {
         Objects.requireNonNull(room2);
-        this.room2.removeExit(this);
-        room2.addExits(this);
+
+        this.room1 = room1;
         this.room2 = room2;
+
+        room1.addExits(this);
+        room2.addExits(this);
     }
 
-    /**
-     * Set both {@link Room}s that this door is connected to.
-     *
-     * @param room1 the room on one side of the {@link Door}
-     * @param room2 the room on the other side of the {@link Door}
-     */
-    public void setRooms(@NotNull Room room1, @NotNull Room room2) {
-        setRoom1(room1);
-        setRoom2(room2);
+    public Room getRoom1() {
+        return room1;
+    }
+
+    public Room getRoom2() {
+        return room2;
     }
 
     /**
@@ -113,11 +72,22 @@ public class Door implements Serializable {
      */
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("Door between ")
-                .append(room1.getName())
-                .append(" and ")
-                .append(room2.getName())
-                .append(".");
+        StringBuilder result = new StringBuilder();
+        if (room1 != null && room2 != null) {
+            result.append("Door between ")
+                  .append(room1.getName())
+                  .append(" and ")
+                  .append(room2.getName());
+        }
+        else if (room1 != null ^ room2 != null) {
+            result.append("Dead-end door connected to ");
+            result.append(room1 != null ? room1 : room2);
+        }
+        else {
+            result.append("Roomless door");
+        }
+        result.append(".");
+
         if (locked) {
             result.append(" (locked)");
         }
@@ -166,6 +136,7 @@ public class Door implements Serializable {
      * Makes a key that fits this {@link Door};
      *
      * @param name name of the {@link Key}
+     * @param description description of the {@link Key}
      * @return key that fits this {@link Door}
      */
     public Key makeKey(String name, String description) {
@@ -182,18 +153,14 @@ public class Door implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        Door door = (Door) obj;
-        return toString().equals(door.toString());
+        // Basing equality on hashCode(), which is a little dirty, but it's the
+        // comparison to make in this situation.
+        return this == obj || (obj != null && getClass() == obj.getClass() && hashCode() == obj.hashCode());
     }
 
     @Override
     public int hashCode() {
-        return toString().hashCode();
+        return (room1 != null ? room1.hashCode() : 0)
+               + (room2 != null ? room2.hashCode() : 0);
     }
 }
