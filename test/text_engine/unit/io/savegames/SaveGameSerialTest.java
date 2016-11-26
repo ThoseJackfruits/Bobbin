@@ -2,6 +2,7 @@ package text_engine.unit.io.savegames;
 
 import org.junit.Test;
 
+import text_engine.boundaries.Door;
 import text_engine.boundaries.Room;
 import text_engine.characters.Player;
 import text_engine.io.savegames.SaveGameSerial;
@@ -14,7 +15,7 @@ public class SaveGameSerialTest {
     public void saveGameTest() throws Exception {
         Player player1 = new Player(new Room("Test Room"));
         Room nextRoom = new Room("Test Room 2");
-        player1.getLocation().addExit(false, nextRoom);
+        Door door = new Door(false, player1.getLocation(), nextRoom);
 
         SaveGameSerial saveGame = new SaveGameSerial("TestSave1", "TestSaveDir");
         saveGame.saveGameState(player1);

@@ -1,7 +1,5 @@
 package text_engine.items;
 
-import sun.plugin.dom.exception.InvalidStateException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +43,7 @@ public class ItemBuilder {
         }
 
         if (missingAttributes.size() != 0) {
-            throw new InvalidStateException(
+            throw new IllegalStateException(
                     String.format("The following attributes were missing from the Item: %s",
                                   missingAttributes.toString()));
         }

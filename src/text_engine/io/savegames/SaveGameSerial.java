@@ -20,7 +20,10 @@ public class SaveGameSerial extends SaveGame<Player> {
     /**
      * Construct a new savegame in the given subdirectory of the main directory.
      *
-     * @param dirName subdirectory of main directory in which to save gamestates.
+     * @param name name of the savegame
+     * @param dirName subdirectory of main directory in which to save gamestates
+     * @throws IOException if the file cannot be written to, for a variety of reasons
+     * @throws InterruptedException if the base folder could not be fetched from the OS
      */
     public SaveGameSerial(@NotNull String name, @NotNull String dirName)
             throws IOException, InterruptedException {
