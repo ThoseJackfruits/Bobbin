@@ -55,12 +55,15 @@ public class Door implements Serializable {
         if (!locked) {
             if (from.equals(this.room1)) {
                 return this.room2;
-            } else if (from.equals(this.room2)) {
+            }
+            else if (from.equals(this.room2)) {
                 return this.room1;
-            } else {
+            }
+            else {
                 throw new IllegalArgumentException("Given room is not connected to this door");
             }
-        } else {
+        }
+        else {
             throw new IllegalStateException("Door is locked.");
         }
     }
@@ -86,11 +89,11 @@ public class Door implements Serializable {
         else {
             result.append("Roomless door");
         }
-        result.append(".");
 
         if (locked) {
             result.append(" (locked)");
         }
+        result.append(".");
 
         return result.toString();
     }
@@ -135,7 +138,7 @@ public class Door implements Serializable {
     /**
      * Makes a key that fits this {@link Door};
      *
-     * @param name name of the {@link Key}
+     * @param name        name of the {@link Key}
      * @param description description of the {@link Key}
      * @return key that fits this {@link Door}
      */
@@ -144,7 +147,7 @@ public class Door implements Serializable {
     }
 
     public boolean fits(Key key) {
-        return key.hashCode() == Long.hashCode(lock);
+        return Objects.requireNonNull(key).hashCode() == Long.hashCode(lock);
     }
 
     public boolean isLocked() {
@@ -155,7 +158,8 @@ public class Door implements Serializable {
     public boolean equals(Object obj) {
         // Basing equality on hashCode(), which is a little dirty, but it's the
         // comparison to make in this situation.
-        return this == obj || (obj != null && getClass() == obj.getClass() && hashCode() == obj.hashCode());
+        return (this == obj) || (obj != null && getClass() == obj.getClass()
+                                 && hashCode() == obj.hashCode());
     }
 
     @Override
