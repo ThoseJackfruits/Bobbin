@@ -20,9 +20,9 @@ public class SaveGameSerial extends SaveGame<Player> {
     /**
      * Construct a new savegame in the given subdirectory of the main directory.
      *
-     * @param name name of the savegame
+     * @param name    name of the savegame
      * @param dirName subdirectory of main directory in which to save gamestates
-     * @throws IOException if the file cannot be written to, for a variety of reasons
+     * @throws IOException          if the file cannot be written to, for a variety of reasons
      * @throws InterruptedException if the base folder could not be fetched from the OS
      */
     public SaveGameSerial(@NotNull String name, @NotNull String dirName)
@@ -46,10 +46,12 @@ public class SaveGameSerial extends SaveGame<Player> {
                 if (!toCheck.canWrite() || !toCheck.canRead()) { // permissions issue
                     throw new IOException("Could not either read from or write to directory");
                 }
-            } else { // non-directory file exists at that location
+            }
+            else { // non-directory file exists at that location
                 throw new IOException("File exists at directory location");
             }
-        } else if (!toCheck.mkdir()) { // create save directory
+        }
+        else if (!toCheck.mkdir()) { // create save directory
             throw new IOException(String.format("Could not create directory %s\n(mkdir failed)\n",
                                                 toCheck.toString()));
         }
@@ -71,7 +73,8 @@ public class SaveGameSerial extends SaveGame<Player> {
             myDocuments = new String(b);
             myDocuments = myDocuments.split("\\s\\s+")[4];
             return new File(myDocuments);
-        } else {
+        }
+        else {
             myDocuments = System.getProperty("user.home");
             return new File(myDocuments, "Documents");
         }

@@ -1,6 +1,5 @@
 package text_engine.items;
 
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.Random;
 
@@ -34,29 +33,21 @@ public class Key extends Item {
      */
     public Key(String name, String description, int id) {
         // super call performs null checks
-        super(name, description, new HashMap<String, Item>());
+        super(name, description);
 
         this.id = id;
     }
 
 
     /**
-     * Can this {@link Key} open the given {@link Door}?
+     * Can this {@link Key} unlock the given {@link Door}?
      *
-     * @param toOpen The {@link Door} in question
+     * @param toOpen The {@link Door} to unlock.
      * @return Whether this {@link Key} can open the given {@link Door}
      */
     public boolean fits(Door toOpen) {
-        Objects.requireNonNull(toOpen);
         return toOpen.fits(this);
     }
-
-    @Override
-    public boolean compatible(Item other) {
-        // Keys cannot combine
-        return false;
-    }
-
 
     /**
      * Unlock the given {@link Door}. Won't work if it's an incorrect {@link Key}.

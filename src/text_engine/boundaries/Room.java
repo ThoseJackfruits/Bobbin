@@ -42,7 +42,7 @@ public class Room implements Serializable {
     /**
      * Constructs a {@link Room}, with an initial set of items.
      *
-     * @param name     The name of the room
+     * @param name  The name of the room
      * @param items The initial items in the room
      * @throws IllegalArgumentException {@code items} is larger than {@value CONTENT_LIMIT}.
      */
