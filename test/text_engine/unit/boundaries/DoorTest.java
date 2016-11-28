@@ -8,6 +8,7 @@ import text_engine.items.Key;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -20,6 +21,7 @@ public class DoorTest {
     private final Room r3 = new Room("r3");
     private final Door d1 = new Door(true, r1, r2);
     private final Door d2 = new Door(false, r1, r2);
+    private final Door d3 = new Door(false, r1, r3);
     private final Key d1Key = d1.makeKey("D1 Key", "Door 1 Key");
     private final Key d2Key = d2.makeKey("D2 Key", "Door 2 Key");
 
@@ -60,5 +62,17 @@ public class DoorTest {
 
         final Room room2OtherRoom = d2.getOtherRoom(r2);
         assertEquals(r1, room2OtherRoom);
+    }
+
+    @Test
+    public void testEquals() {
+        assertEquals(d1, d2);
+        assertNotEquals(d1, d3);
+    }
+
+    @Test
+    public void testHashCode() {
+        assertEquals(d1.hashCode(), d2.hashCode());
+        assertNotEquals(d1.hashCode(), d3.hashCode());
     }
 }

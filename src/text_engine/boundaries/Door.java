@@ -49,6 +49,8 @@ public class Door implements Serializable {
      *
      * @param from the room you're coming from
      * @return the room on the other side
+     * @throws IllegalStateException door is locked
+     * @throws IllegalArgumentException given room is not connected to this door
      */
     public Room getOtherRoom(Room from) {
         Objects.requireNonNull(from);
@@ -60,12 +62,11 @@ public class Door implements Serializable {
         if (from.equals(this.room1)) {
             return this.room2;
         }
-        else if (from.equals(this.room2)) {
+        if (from.equals(this.room2)) {
             return this.room1;
         }
-        else {
-            throw new IllegalArgumentException("Given room is not connected to this door");
-        }
+
+        throw new IllegalArgumentException("Given room is not connected to this door");
     }
 
     /**

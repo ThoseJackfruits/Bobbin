@@ -3,7 +3,7 @@ package text_engine.manager;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import text_engine.characters.Player;
+import text_engine.characters.GameCharacter;
 
 /**
  * Manages the game. Oversees prompting the user for input, and communicating that to instances of all
@@ -13,17 +13,17 @@ public class GameManager {
 
     private static ArrayList<String> actionList;
     private static ArrayList<String> articleList;
-    private Player thePlayer;
+    private GameCharacter gameCharacter;
     private Scanner myScan;
     private Input input;
 
     /**
      * Constructs a {@link GameManager} object
      *
-     * @param thePlayer The Player
+     * @param gameCharacter The {@link GameCharacter}
      */
-    public GameManager(Player thePlayer) {
-        this.thePlayer = thePlayer;
+    public GameManager(GameCharacter gameCharacter) {
+        this.gameCharacter = gameCharacter;
         this.input = new Input();
     }
 

@@ -4,18 +4,18 @@ import text_engine.boundaries.Room;
 import text_engine.items.Item;
 
 /**
- * Represents an NPC (Non Player Character)
+ * Represents an NPC (Non GameCharacter GameCharacter)
  */
-public class NonPlayerCharacter extends Player {
+public class NonPlayerCharacter extends GameCharacter {
 
     /**
-     * Constructs a text_engine.characterster object
+     * Constructs a {@link NonPlayerCharacter}
      *
-     * @param inventory The list of items in the text_engine.characterster's possession
+     * @param inventory The list of items in the NPC's possession
      * @param location  The room the NPC is in
      */
-    NonPlayerCharacter(Room location, Item... inventory) {
-        super(location, inventory);
+    NonPlayerCharacter(String name, String description, Room location, Item... inventory) {
+        super(name, description, location, inventory);
     }
 
 
