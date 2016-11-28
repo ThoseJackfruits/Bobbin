@@ -1,6 +1,5 @@
 package text_engine.items;
 
-import java.util.Objects;
 import java.util.Random;
 
 import text_engine.boundaries.Door;
@@ -56,7 +55,6 @@ public class Key extends Item {
      * @return {@code true} if successfully unlocked, {@code false} otherwise
      */
     public boolean unlock(Door toOpen) {
-        Objects.requireNonNull(toOpen);
         return toOpen.unlock(this);
     }
 
