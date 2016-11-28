@@ -10,9 +10,9 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import text_engine.characters.Player;
+import text_engine.characters.GameCharacter;
 
-public class SaveGameSerial extends SaveGame<Player> {
+public class SaveGameSerial extends SaveGame<GameCharacter> {
 
     private final File saveDir;
     private final File saveFile;
@@ -81,7 +81,7 @@ public class SaveGameSerial extends SaveGame<Player> {
     }
 
     @Override // TODO
-    public Player loadGameState() {
+    public GameCharacter loadGameState() {
         FileInputStream fis;
         ObjectInputStream in;
 
@@ -91,7 +91,7 @@ public class SaveGameSerial extends SaveGame<Player> {
             fis = new FileInputStream(new File(saveDir, getName()));
             in = new ObjectInputStream(fis);
 
-            return (Player) in.readObject();
+            return (GameCharacter) in.readObject();
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
             return null;
@@ -99,7 +99,7 @@ public class SaveGameSerial extends SaveGame<Player> {
     }
 
     @Override // TODO
-    public void saveGameState(Player toSave) {
+    public void saveGameState(GameCharacter toSave) {
         FileOutputStream fos;
         ObjectOutputStream out;
         System.out.printf("Saving to %s\n", saveFile.toString());

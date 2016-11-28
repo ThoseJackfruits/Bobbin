@@ -5,12 +5,40 @@ import java.util.Objects;
 import text_engine.items.combinable.CombinableItem;
 
 /**
- * Represents an item that the player can examine and pick up.
+ * Represents a generic in-game object, including characters, interactive items, etc.
  */
 public class Item {
 
-    public final String name;
-    public final String description;
+    private String name;
+    private String description;
+
+    /**
+     * @return name of this {@link Item}
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Set the name of this {@link Item}
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return description of this {@link Item}
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Set the description of this {@link Item}
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     /**
      * Constructs a new item {@link Item}.
@@ -24,6 +52,11 @@ public class Item {
 
         this.name = name;
         this.description = description;
+    }
+
+    public Item() {
+        this.name = "";
+        this.description = "";
     }
 
     /**
