@@ -160,8 +160,13 @@ public class Room implements Serializable {
      */
     public boolean canMoveTo(Room other) {
         for (Door door : exits) {
-            if (door.getOtherRoom(this).equals(other) && !door.isLocked()) {
-                return true;
+            try {
+                Room fetchedOtherRoom = door.getOtherRoom(this);
+                if (fetchedOtherRoom.equals(other)) {
+                    return true;
+                }
+            }
+            catch (IllegalArgumentException | IllegalStateException ignored) {
             }
         }
 

@@ -52,19 +52,19 @@ public class Door implements Serializable {
      */
     public Room getOtherRoom(Room from) {
         Objects.requireNonNull(from);
-        if (!locked) {
-            if (from.equals(this.room1)) {
-                return this.room2;
-            }
-            else if (from.equals(this.room2)) {
-                return this.room1;
-            }
-            else {
-                throw new IllegalArgumentException("Given room is not connected to this door");
-            }
+
+        if (locked) {
+            throw new IllegalStateException("Door is locked.");
+        }
+
+        if (from.equals(this.room1)) {
+            return this.room2;
+        }
+        else if (from.equals(this.room2)) {
+            return this.room1;
         }
         else {
-            throw new IllegalStateException("Door is locked.");
+            throw new IllegalArgumentException("Given room is not connected to this door");
         }
     }
 
@@ -124,16 +124,14 @@ public class Door implements Serializable {
      *
      * @param key        the key used to lock the {@link Door}
      * @param toBeLocked whether the door is to be locked or unlocked
-     * @return {@code true} if successfully lock, {@code false} otherwise
+     * @return {@link #isLocked()}
      */
     public boolean setLocked(boolean toBeLocked, Key key) {
         if (fits(key)) {
             this.locked = toBeLocked;
-            return true;
         }
-        return false;
+        return isLocked();
     }
-
 
     /**
      * Makes a key that fits this {@link Door};
