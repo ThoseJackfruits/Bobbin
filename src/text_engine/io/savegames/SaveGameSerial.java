@@ -10,101 +10,107 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import text_engine.characters.Player;
+import text_engine.characters.GameCharacter;
 
-public class SaveGameSerial extends SaveGame<Player> {
+public class SaveGameSerial extends SaveGame<GameCharacter> {
 
-  /**
-   * Construct a new savegame in the given subdirectory of the main directory.
-   *
-   * @param dirName subdirectory of main directory in which to save gamestates.
-   */
-  public SaveGameSerial(@NotNull String name, @NotNull String dirName)
-    throws IOException, InterruptedException {
-    super(name);
-    File documents = getDocumentsFolder();
+    private final File saveDir;
+    private final File saveFile;
 
-    File parent = new File(documents, "TextEngineSaves");
-    saveDir = new File(parent, dirName);
+    /**
+     * Construct a new savegame in the given subdirectory of the main directory.
+     *
+     * @param name    name of the savegame
+     * @param dirName subdirectory of main directory in which to save gamestates
+     * @throws IOException          if the file cannot be written to, for a variety of reasons
+     * @throws InterruptedException if the base folder could not be fetched from the OS
+     */
+    public SaveGameSerial(@NotNull String name, @NotNull String dirName)
+            throws IOException, InterruptedException {
+        super(name);
+        File documents = getDocumentsFolder();
 
-    checkDir(documents);
-    checkDir(parent);
-    checkDir(saveDir);
+        File parent = new File(documents, "TextEngineSaves");
+        saveDir = new File(parent, dirName);
 
-    saveFile = new File(saveDir, name);
-  }
+        checkDir(documents);
+        checkDir(parent);
+        checkDir(saveDir);
 
-  private static void checkDir(File toCheck) throws IOException {
-    if (toCheck.exists()) {
-      if (toCheck.isDirectory()) {
-        if (!toCheck.canWrite() || !toCheck.canRead()) { // permissions issue
-          throw new IOException("Could not either read from or write to directory");
+        saveFile = new File(saveDir, name);
+    }
+
+    private static void checkDir(File toCheck) throws IOException {
+        if (toCheck.exists()) {
+            if (toCheck.isDirectory()) {
+                if (!toCheck.canWrite() || !toCheck.canRead()) { // permissions issue
+                    throw new IOException("Could not either read from or write to directory");
+                }
+            }
+            else { // non-directory file exists at that location
+                throw new IOException("File exists at directory location");
+            }
         }
-      } else { // non-directory file exists at that location
-        throw new IOException("File exists at directory location");
-      }
-    } else if (!toCheck.mkdir()) { // create save directory
-      throw new IOException(String.format("Could not create directory %s\n(mkdir failed)\n",
-                                          toCheck.toString()));
+        else if (!toCheck.mkdir()) { // create save directory
+            throw new IOException(String.format("Could not create directory %s\n(mkdir failed)\n",
+                                                toCheck.toString()));
+        }
     }
-  }
 
-  private static File getDocumentsFolder() throws IOException, InterruptedException {
-    String myDocuments = null;
-    if (System.getProperty("os.name").contains("Windows")) {
-      Process p = Runtime.getRuntime()
-                         .exec("reg query \"HKCU\\Software\\Microsoft\\Windows"
-                               + "\\CurrentVersion\\Explorer\\Shell Folders\" /v personal");
-      p.waitFor();
+    private static File getDocumentsFolder() throws IOException, InterruptedException {
+        String myDocuments = null;
+        if (System.getProperty("os.name").contains("Windows")) {
+            Process p = Runtime.getRuntime()
+                               .exec("reg query \"HKCU\\Software\\Microsoft\\Windows"
+                                     + "\\CurrentVersion\\Explorer\\Shell Folders\" /v personal");
+            p.waitFor();
 
-      InputStream in = p.getInputStream();
-      byte[] b = new byte[in.available()];
-      in.read(b);
-      in.close();
+            InputStream in = p.getInputStream();
+            byte[] b = new byte[in.available()];
+            in.read(b);
+            in.close();
 
-      myDocuments = new String(b);
-      myDocuments = myDocuments.split("\\s\\s+")[4];
-      return new File(myDocuments);
-    } else {
-      myDocuments = System.getProperty("user.home");
-      return new File(myDocuments, "Documents");
+            myDocuments = new String(b);
+            myDocuments = myDocuments.split("\\s\\s+")[4];
+            return new File(myDocuments);
+        }
+        else {
+            myDocuments = System.getProperty("user.home");
+            return new File(myDocuments, "Documents");
+        }
     }
-  }
 
-  private final File saveDir;
-  private final File saveFile;
+    @Override // TODO
+    public GameCharacter loadGameState() {
+        FileInputStream fis;
+        ObjectInputStream in;
 
-  @Override // TODO
-  public Player loadGameState() {
-    FileInputStream fis;
-    ObjectInputStream in;
+        System.out.printf("Loading from %s\n", saveFile.toString());
 
-    System.out.printf("Loading from %s\n", saveFile.toString());
+        try {
+            fis = new FileInputStream(new File(saveDir, getName()));
+            in = new ObjectInputStream(fis);
 
-    try {
-      fis = new FileInputStream(new File(saveDir, getName()));
-      in = new ObjectInputStream(fis);
-
-      return (Player) in.readObject();
-    } catch (ClassNotFoundException | IOException e) {
-      e.printStackTrace();
-      return null;
+            return (GameCharacter) in.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-  }
 
-  @Override // TODO
-  public void saveGameState(Player toSave) {
-    FileOutputStream fos;
-    ObjectOutputStream out;
-    System.out.printf("Saving to %s\n", saveFile.toString());
-    try {
-      fos = new FileOutputStream(new File(saveDir, getName()));
-      out = new ObjectOutputStream(fos);
+    @Override // TODO
+    public void saveGameState(GameCharacter toSave) {
+        FileOutputStream fos;
+        ObjectOutputStream out;
+        System.out.printf("Saving to %s\n", saveFile.toString());
+        try {
+            fos = new FileOutputStream(new File(saveDir, getName()));
+            out = new ObjectOutputStream(fos);
 
-      out.writeObject(toSave);
-      out.close();
-    } catch (IOException e) {
-      e.printStackTrace();
+            out.writeObject(toSave);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-  }
 }

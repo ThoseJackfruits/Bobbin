@@ -1,6 +1,7 @@
 # Java output directory
 out/
 target/
+doc/
 
 # Windows image file caches
 Thumbs.db
