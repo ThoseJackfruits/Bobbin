@@ -38,9 +38,9 @@ public class GameCharacterTest {
     @Test
     public void testInventory() {
         final Item blueberry = new Item("Blueberry", "A berry.");
-        Item sausage = new Item("Sausage", "A salty tube of preserved meat.");
+        final Item sausage = new Item("Sausage", "A salty tube of preserved meat.");
         GameCharacter character2 = new GameCharacter("Other Character", "", room1, blueberry, sausage);
-        List<Item> inventory = character2.getInventory();
+        final List<Item> inventory = character2.getInventory();
         assertEquals(new HashSet<>(Arrays.asList(blueberry, sausage)), new HashSet<>(inventory));
     }
 }

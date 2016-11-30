@@ -1,35 +1,43 @@
-package text_engine.items.combinable;
+package text_engine.items;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
-import text_engine.items.Item;
+import text_engine.items.combinations.Combination;
+import text_engine.items.combinations.Combinations;
 
-public class CombinableItemBuilder {
+public class ItemBuilder {
 
     private String name;
     private String description;
     private Combinations combinations = new Combinations();
+    private Stack<Object> effects = new Stack<>();
 
-    public CombinableItemBuilder() {
+    public ItemBuilder() {
     }
 
-    public CombinableItemBuilder(String name, String description) {
+    public ItemBuilder(String name, String description) {
         setName(name);
     }
 
-    public CombinableItemBuilder setName(String name) {
+    public ItemBuilder setName(String name) {
         this.name = name;
         return this;
     }
 
-    public CombinableItemBuilder setDescription(String description) {
+    public ItemBuilder setDescription(String description) {
         this.description = description;
         return this;
     }
 
-    public CombinableItemBuilder addCombination(Combination combination, Item item) {
+    public ItemBuilder addCombination(Combination combination, Item item) {
         this.combinations.put(combination, item);
+        return this;
+    }
+
+    public ItemBuilder addConsumption(Object effect) {  // TODO: change this once Effects are added
+        this.effects.push(effect);
         return this;
     }
 
@@ -53,9 +61,9 @@ public class CombinableItemBuilder {
         }
     }
 
-    public CombinableItem build() {
+    public Item build() {
         buildChecks();
 
-        return new CombinableItem(name, description, combinations);
+        return new Item(name, description, combinations, effects);
     }
 }

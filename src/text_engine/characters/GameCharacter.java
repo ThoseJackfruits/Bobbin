@@ -8,12 +8,14 @@ import java.util.Objects;
 
 import text_engine.boundaries.Door;
 import text_engine.boundaries.Room;
+import text_engine.items.GameEntity;
 import text_engine.items.Item;
+import text_engine.items.Key;
 
 /**
  * Represents an in-game character, including both the player character and NPCs.
  */
-public class GameCharacter extends Item implements Serializable {
+public class GameCharacter extends GameEntity implements Serializable {
 
     private final List<Item> inventory;
     private Room location;
@@ -83,7 +85,20 @@ public class GameCharacter extends Item implements Serializable {
      * @throws IllegalArgumentException given room is not connected to this door
      */
     public void moveThroughDoor(Door door) {
-        Room room = door.getOtherRoom(this.getLocation());
+        Room room;
+        try {
+            room = door.getOtherRoom(this.getLocation());
+        }
+        catch (IllegalStateException exc) {
+            if (getInventory().stream()
+                              .filter((item) -> item.getClass().equals(Key.class))
+                              .anyMatch((key) -> !door.unlock((Key) key))) {
+                room = door.getOtherRoom(this.getLocation());
+            }
+            else {
+                throw exc;
+            }
+        }
         moveTo(room);
     }
 }

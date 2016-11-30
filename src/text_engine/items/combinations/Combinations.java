@@ -1,12 +1,13 @@
-package text_engine.items.combinable;
+package text_engine.items.combinations;
 
 import java.util.HashMap;
 
+import text_engine.items.GameEntity;
 import text_engine.items.Item;
 
 public class Combinations extends HashMap<Combination, Item> {
 
-    public Item get(CombinableItem... items) {
+    public GameEntity get(Item... items) {
         return super.get(new Combination(items));
     }
 }
