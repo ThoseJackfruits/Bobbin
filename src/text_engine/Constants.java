@@ -1,6 +1,6 @@
 package text_engine;
 
-import text_engine.items.Item;
+import text_engine.items.GameEntity;
 
 /**
  * Global constants
@@ -16,7 +16,7 @@ public class Constants {
      */
     public class Items {
 
-        public Item BLUEBERRY = new Item("Blueberry", "A delicious dark berry.");
-        public Item BED = new Item("Bed", "Something you can sleep in.");
+        public GameEntity BLUEBERRY = new GameEntity("Blueberry", "A delicious dark berry.");
+        public GameEntity BED = new GameEntity("Bed", "Something you can sleep in.");
     }
 }

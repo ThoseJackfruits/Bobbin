@@ -107,8 +107,8 @@ public class Room implements Serializable {
      */
     public void addContents(Item... contents) {
         Item[] cleanedContents = Arrays.stream(contents)
-                                       .filter((item) -> !this.contents.contains(item))
-                                       .toArray(Item[]::new);
+                                             .filter((item) -> !this.contents.contains(item))
+                                             .toArray(Item[]::new);
 
         if (cleanedContents.length + this.contents.size() > CONTENT_LIMIT) {
             throw new IllegalArgumentException(String.format("Rooms can have a maximum of %d items.",
