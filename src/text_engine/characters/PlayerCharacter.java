@@ -3,6 +3,8 @@ package text_engine.characters;
 import text_engine.boundaries.Room;
 import text_engine.items.Item;
 
+import java.util.ArrayList;
+
 public class PlayerCharacter extends GameCharacter {
 
     /**
@@ -22,5 +24,10 @@ public class PlayerCharacter extends GameCharacter {
      */
     public PlayerCharacter(String name, String description, Room location) {
         super(name, description, location);
+    }
+
+    public void wipeInventory()
+    {
+        this.inventory.clear();
     }
 }

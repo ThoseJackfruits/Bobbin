@@ -15,7 +15,7 @@ import text_engine.items.Item;
  */
 public class GameCharacter extends Item implements Serializable {
 
-    private final List<Item> inventory;
+    protected final List<Item> inventory;
     private Room location;
 
     public GameCharacter() {
