@@ -12,7 +12,7 @@ import text_engine.characters.GameCharacter;
 /**
  * Represents a generic in-game object, including characters, interactive items, etc.
  */
-public class GameEntity implements Serializable {
+public class GameEntity implements Serializable, Cloneable {
 
     private String name;
     private String description;

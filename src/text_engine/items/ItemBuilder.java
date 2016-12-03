@@ -42,7 +42,7 @@ public class ItemBuilder {
         return this;
     }
 
-    private void buildChecks() {
+    private void buildChecks() throws IllegalStateException {
         List<String> missingAttributes = new ArrayList<>(3);
         if (name == null) {
             missingAttributes.add("name");

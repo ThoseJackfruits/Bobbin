@@ -52,7 +52,7 @@ public class Door implements Serializable {
      * @throws IllegalStateException door is locked
      * @throws IllegalArgumentException given room is not connected to this door
      */
-    public Room getOtherRoom(Room from) {
+    public Room getOtherRoom(Room from) throws IllegalArgumentException, IllegalStateException {
         Objects.requireNonNull(from);
 
         if (from != room1 && from != room2) {

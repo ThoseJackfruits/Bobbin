@@ -38,7 +38,8 @@ public class Room extends GameEntity implements Serializable {
      * @param doors       The initial doors for the room
      */
     public Room(@NotNull String name, @NotNull String description,
-                @NotNull Collection<Item> items, @NotNull Collection<Door> doors) {
+                @NotNull Collection<Item> items, @NotNull Collection<Door> doors)
+            throws IllegalArgumentException {
         super(name, description);
 
         if (items.size() > CONTENT_LIMIT) {
@@ -100,7 +101,7 @@ public class Room extends GameEntity implements Serializable {
      * @param door the {@link Door} through which to get the next {@link Room}.
      * @return {@link Room} on the other side of the given {@link Door}.
      */
-    public Room getRoomThroughDoor(Door door) {
+    public Room getRoomThroughDoor(Door door) throws IllegalArgumentException {
         if (doors.contains(door)) {
             return door.getOtherRoom(this);
         }

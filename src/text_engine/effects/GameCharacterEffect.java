@@ -29,7 +29,7 @@ public class GameCharacterEffect extends Effect<GameCharacter> {
     public static final GameCharacterEffect CLEAR_INVENTORY =
             new GameCharacterEffect(
                     "Clear Inventory",
-                    "Wipes your inventory. Yikes!",
-                    "Your inventory has been wiped",
+                    "Clears your inventory. Yikes!",
+                    "Your inventory has been cleared.",
                     (player) -> player.getInventory().clear());
 }

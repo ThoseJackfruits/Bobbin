@@ -82,7 +82,8 @@ public class Item extends GameEntity implements Serializable {
      *                                  the given items.
      * @throws NullPointerException     if either given Object is null
      */
-    public GameEntity combine(List<GameEntity> inventory, Item... otherItems) {
+    public GameEntity combine(List<GameEntity> inventory, Item... otherItems)
+            throws IllegalArgumentException {
         Objects.requireNonNull(otherItems);
         Objects.requireNonNull(inventory);
 
@@ -107,5 +108,12 @@ public class Item extends GameEntity implements Serializable {
         inventory.removeAll(allItems);
         inventory.add(result);
         return result;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Stack<Effect<? extends GameEntity>> effectsCopy = new Stack<>();
+        effectsCopy.addAll(effects);
+        return new Item(getName(), getDescription(), combinations, effectsCopy);
     }
 }
