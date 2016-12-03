@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Stack;
 
+import text_engine.characters.GameCharacter;
+import text_engine.effects.Effect;
 import text_engine.items.combinations.Combinations;
 
 /**
@@ -14,13 +16,14 @@ import text_engine.items.combinations.Combinations;
 public class Item extends GameEntity {
 
     private final Combinations combinations;
-    private final Stack<Object> effects;  // TODO: change this once Effects are added
+    private final Stack<Effect<? extends GameEntity>> effects;
 
     public Item(String name, String description) {
         this(name, description, new Combinations(), new Stack<>());
     }
 
-    public Item(String name, String description, Combinations combinations, Stack<Object> effects) {
+    public Item(String name, String description, Combinations combinations,
+                Stack<Effect<? extends GameEntity>> effects) {
         super(name, description);
         this.combinations = combinations;
         this.effects = effects;
@@ -38,25 +41,26 @@ public class Item extends GameEntity {
     }
 
     /**
-     * @return whether this {@link Item} can be combined with another {@link Item}.
+     * @return whether this {@link Item} can be combined.
      */
     public boolean isCombinable() {
         return !combinations.isEmpty();
     }
 
     /**
-     * @return whether this {@link Item} can be consumed for an (todo Effect).
+     * @return whether this {@link Item} can be consumed for an {@link Effect}.
      */
     public boolean isConsumable() {
         return !effects.isEmpty();
     }
 
-    public void consume() {
+    public void consume(GameCharacter gameCharacter) {
         if (!isConsumable()) {
             throw new InvalidStateException(String.format("%s is not consumable.", this.getName()));
         }
+
         while (!effects.isEmpty()) {
-            effects.pop();//.apply() // TODO: change this once Effects are added
+            effects.pop().accept(gameCharacter);
         }
     }
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import text_engine.effects.Effect;
 import text_engine.items.combinations.Combination;
 import text_engine.items.combinations.Combinations;
 
@@ -12,7 +13,7 @@ public class ItemBuilder {
     private String name;
     private String description;
     private Combinations combinations = new Combinations();
-    private Stack<Object> effects = new Stack<>();
+    private Stack<Effect<? extends GameEntity>> effects = new Stack<>();
 
     public ItemBuilder() {
     }
@@ -36,7 +37,7 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder addConsumption(Object effect) {  // TODO: change this once Effects are added
+    public ItemBuilder addConsumption(Effect<? extends GameEntity> effect) {
         this.effects.push(effect);
         return this;
     }
