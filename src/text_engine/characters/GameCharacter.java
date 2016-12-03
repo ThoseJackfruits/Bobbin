@@ -1,6 +1,5 @@
 package text_engine.characters;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,9 +14,9 @@ import text_engine.items.Key;
 /**
  * Represents an in-game character, including both the player character and NPCs.
  */
-public class GameCharacter extends GameEntity implements Serializable {
+public class GameCharacter extends GameEntity {
 
-    protected final List<Item> inventory;
+    private final List<Item> inventory;
     private Room location;
 
     public GameCharacter() {

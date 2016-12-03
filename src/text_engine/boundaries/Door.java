@@ -32,8 +32,8 @@ public class Door implements Serializable {
         this.room1 = room1;
         this.room2 = room2;
 
-        room1.addExits(this);
-        room2.addExits(this);
+        room1.addDoors(this);
+        room2.addDoors(this);
     }
 
     public Room getRoom1() {
@@ -55,18 +55,19 @@ public class Door implements Serializable {
     public Room getOtherRoom(Room from) {
         Objects.requireNonNull(from);
 
+        if (from != room1 && from != room2) {
+            throw new IllegalArgumentException("Given room is not connected to this door");
+        }
+
         if (locked) {
             throw new IllegalStateException("Door is locked.");
         }
 
-        if (from.equals(this.room1)) {
-            return this.room2;
+        if (from.equals(room1)) {
+            return room2;
+        } else {  // from must be room2
+            return room1;
         }
-        if (from.equals(this.room2)) {
-            return this.room1;
-        }
-
-        throw new IllegalArgumentException("Given room is not connected to this door");
     }
 
     /**
@@ -124,12 +125,12 @@ public class Door implements Serializable {
      * Tries to change the lock of this {@link Door} with the given {@link Key}.
      *
      * @param key        the key used to lock the {@link Door}
-     * @param toBeLocked whether the door is to be locked or unlocked
+     * @param locked whether the door is to be locked or unlocked
      * @return {@link #isLocked()}
      */
-    public boolean setLocked(boolean toBeLocked, Key key) {
-        if (fits(key)) {
-            this.locked = toBeLocked;
+    public boolean setLocked(boolean locked, Key key) {
+        if (locked != this.locked && fits(key)) {
+            this.locked = locked;
         }
         return isLocked();
     }
