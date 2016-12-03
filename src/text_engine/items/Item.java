@@ -1,5 +1,7 @@
 package text_engine.items;
 
+import com.sun.istack.internal.NotNull;
+
 import sun.plugin.dom.exception.InvalidStateException;
 
 import java.io.Serializable;
@@ -20,16 +22,17 @@ public class Item extends GameEntity implements Serializable {
     private final Combinations combinations;
     private final Stack<Effect<? extends GameEntity>> effects;
 
-    public Item(String name, String description) {
-        this(name, description, new Combinations(), new Stack<>());
-    }
-
     public Item(String name, String description, Combinations combinations,
                 Stack<Effect<? extends GameEntity>> effects) {
         super(name, description);
         this.combinations = combinations;
         this.effects = effects;
     }
+
+    public Item(String name, String description) {
+        this(name, description, new Combinations(), new Stack<>());
+    }
+
 
     /**
      * Can one combine this item with the given one?
@@ -60,10 +63,13 @@ public class Item extends GameEntity implements Serializable {
     }
 
     @Override
-    public void consume(GameCharacter gameCharacter) {
+    public void consume(@NotNull GameCharacter gameCharacter) {
+        Objects.requireNonNull(gameCharacter);
         if (!isConsumable()) {
             throw new InvalidStateException(String.format("%s is not consumable.", this.getName()));
         }
+
+        gameCharacter.getInventory().remove(this);
 
         while (!effects.isEmpty()) {
             effects.pop().accept(gameCharacter);
@@ -112,6 +118,7 @@ public class Item extends GameEntity implements Serializable {
 
     @Override
     public Object clone() throws CloneNotSupportedException {
+        super.clone();
         Stack<Effect<? extends GameEntity>> effectsCopy = new Stack<>();
         effectsCopy.addAll(effects);
         return new Item(getName(), getDescription(), combinations, effectsCopy);

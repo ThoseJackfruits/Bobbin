@@ -26,11 +26,12 @@ public class BaseTest {
             = new PlayerCharacter("Player Character",
                                   "The main Player Character, initially in Room 1.",
                                   room1,
-                                  Items.BLUEBERRY, Items.FLOUR, Items.SUGAR, Items.WATER, Items.BED);
+                                  Items.getCopiesOf(Items.BLUEBERRY, Items.FLOUR, Items.SUGAR,
+                                                    Items.WATER, Items.BED));
 
     protected final GameCharacter gameCharacter
             = new GameCharacter("Generic Game Character",
                                 "A generic GameCharacter, initially in Room 2.",
                                 room2,
-                                Items.WATER);
+                                Items.getCopyOf(Items.WATER));
 }
