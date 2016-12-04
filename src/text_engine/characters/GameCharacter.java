@@ -7,14 +7,14 @@ import java.util.Objects;
 
 import text_engine.boundaries.Door;
 import text_engine.boundaries.Room;
-import text_engine.items.GameEntity;
+import text_engine.items.BaseGameEntity;
 import text_engine.items.Item;
 import text_engine.items.Key;
 
 /**
  * Represents an in-game character, including both the player character and NPCs.
  */
-public class GameCharacter extends GameEntity implements Cloneable {
+public class GameCharacter extends BaseGameEntity implements Cloneable {
 
     private final List<Item> inventory;
     private Room location;

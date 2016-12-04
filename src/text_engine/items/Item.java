@@ -2,8 +2,6 @@ package text_engine.items;
 
 import com.sun.istack.internal.NotNull;
 
-import sun.plugin.dom.exception.InvalidStateException;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -11,28 +9,29 @@ import java.util.Objects;
 import java.util.Stack;
 
 import text_engine.characters.GameCharacter;
+import text_engine.effects.BaseEffector;
 import text_engine.effects.Effect;
+import text_engine.effects.Effector;
 import text_engine.items.combinations.Combinations;
 
 /**
- * A non-character {@link GameEntity}. Has the ability to be combinable or consumable.
+ * A non-character {@link BaseGameEntity}. Has the ability to be combinable or consumable.
  */
-public class Item extends GameEntity implements Serializable {
+public class Item extends BaseGameEntity implements Serializable {
 
     private final Combinations combinations;
-    private final Stack<Effect<? extends GameEntity>> effects;
+    private final Effector effector;
 
     public Item(String name, String description, Combinations combinations,
-                Stack<Effect<? extends GameEntity>> effects) {
+                List<Effect<? extends GameEntity>> effects) {
         super(name, description);
         this.combinations = combinations;
-        this.effects = effects;
+        this.effector = new BaseEffector(effects);
     }
 
     public Item(String name, String description) {
         this(name, description, new Combinations(), new Stack<>());
     }
-
 
     /**
      * Can one combine this item with the given one?
@@ -59,21 +58,14 @@ public class Item extends GameEntity implements Serializable {
      */
     @Override
     public boolean isConsumable() {
-        return !effects.isEmpty();
+        return effector.hasEffects();
     }
 
     @Override
     public void consume(@NotNull GameCharacter gameCharacter) {
-        Objects.requireNonNull(gameCharacter);
-        if (!isConsumable()) {
-            throw new InvalidStateException(String.format("%s is not consumable.", this.getName()));
-        }
+        effector.apply(gameCharacter);
 
         gameCharacter.getInventory().remove(this);
-
-        while (!effects.isEmpty()) {
-            effects.pop().accept(gameCharacter);
-        }
     }
 
     /**
@@ -119,8 +111,6 @@ public class Item extends GameEntity implements Serializable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         super.clone();
-        Stack<Effect<? extends GameEntity>> effectsCopy = new Stack<>();
-        effectsCopy.addAll(effects);
-        return new Item(getName(), getDescription(), combinations, effectsCopy);
+        return new Item(getName(), getDescription(), combinations, effector.getEffects());
     }
 }

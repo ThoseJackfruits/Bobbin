@@ -3,12 +3,13 @@ package text_engine.effects;
 import java.util.function.Consumer;
 
 import text_engine.characters.GameCharacter;
+import text_engine.items.BaseGameEntity;
 import text_engine.items.GameEntity;
 
 /**
  * Represents something that changes the state of the game.
  */
-public abstract class Effect<T extends GameEntity> extends GameEntity implements Consumer<GameCharacter> {
+public abstract class Effect<T extends GameEntity> extends BaseGameEntity implements Consumer<GameCharacter> {
 
     protected final String report;
     protected final Consumer<T> consumer;
