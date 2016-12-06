@@ -1,6 +1,5 @@
 package text_engine.characters;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,14 +14,10 @@ import text_engine.items.Key;
 /**
  * Represents an in-game character, including both the player character and NPCs.
  */
-public class GameCharacter extends GameEntity implements Serializable {
+public class GameCharacter extends GameEntity implements Cloneable {
 
-    protected final List<Item> inventory;
+    private final List<Item> inventory;
     private Room location;
-
-    public GameCharacter() {
-        this.inventory = new ArrayList<>();
-    }
 
     /**
      * Constructs a {@link GameCharacter} in the given location, with the given inventory.
@@ -35,7 +30,9 @@ public class GameCharacter extends GameEntity implements Serializable {
         Objects.requireNonNull(inventory);
         Objects.requireNonNull(location);
 
-        this.inventory = Arrays.asList(inventory);
+        // Need to do this because Arrays.asList() returns Arrays#ArrayList, not java.util.ArrayList,
+        // which is mutable in contents but not in length, and thus does not implement #clear().
+        this.inventory = new ArrayList<>(Arrays.asList(inventory));
         this.location = location;
     }
 
@@ -45,11 +42,7 @@ public class GameCharacter extends GameEntity implements Serializable {
      * @param location The room the {@link GameCharacter} is in
      */
     public GameCharacter(String name, String description, Room location) {
-        super(name, description);
-        Objects.requireNonNull(location);
-
-        this.inventory = new ArrayList<>();
-        this.location = location;
+        this(name, description, location, new Item[0]);
     }
 
     /**
@@ -100,5 +93,12 @@ public class GameCharacter extends GameEntity implements Serializable {
             }
         }
         moveTo(room);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        super.clone();
+        return new GameCharacter(getName(), getDescription(), getLocation(),
+                                 getInventory().toArray(new Item[getInventory().size()]));
     }
 }

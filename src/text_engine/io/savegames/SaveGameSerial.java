@@ -80,7 +80,7 @@ public class SaveGameSerial extends SaveGame<GameCharacter> {
         }
     }
 
-    @Override // TODO
+    @Override
     public GameCharacter loadGameState() {
         FileInputStream fis;
         ObjectInputStream in;
@@ -98,7 +98,7 @@ public class SaveGameSerial extends SaveGame<GameCharacter> {
         }
     }
 
-    @Override // TODO
+    @Override
     public void saveGameState(GameCharacter toSave) {
         FileOutputStream fos;
         ObjectOutputStream out;

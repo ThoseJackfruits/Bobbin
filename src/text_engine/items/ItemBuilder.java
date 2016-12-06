@@ -20,6 +20,7 @@ public class ItemBuilder {
 
     public ItemBuilder(String name, String description) {
         setName(name);
+        setDescription(description);
     }
 
     public ItemBuilder setName(String name) {
@@ -42,17 +43,13 @@ public class ItemBuilder {
         return this;
     }
 
-    private void buildChecks() {
+    private void buildChecks() throws IllegalStateException {
         List<String> missingAttributes = new ArrayList<>(3);
         if (name == null) {
             missingAttributes.add("name");
         }
         if (description == null) {
             missingAttributes.add("description");
-        }
-
-        if (combinations.size() == 0) {
-            missingAttributes.add("combinations");
         }
 
         if (missingAttributes.size() != 0) {

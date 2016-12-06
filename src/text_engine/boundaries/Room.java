@@ -5,8 +5,10 @@ import com.sun.istack.internal.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,23 +23,43 @@ public class Room extends GameEntity implements Serializable {
     public static final int CONTENT_LIMIT = 10;
   /*
   INVARIANTS:
-  - `exits` can hold only one copy of a given door (all Doors in `exits` must be unique)
+  - `doors` can hold only one copy of a given door (all Doors in `doors` must be unique)
    */
 
-    private final String name;
-    private final ArrayList<Item> contents = new ArrayList<>();
-    private final Set<Door> exits = new HashSet<>();
+    private final List<Item> items;
+    private final Set<Door> doors;
 
     /**
-     * Constructs a {@link Room}, with an initial set of exits.
+     * Base constructor. Constructs a {@link Room}, with an initial set of items and doors.
+     *
+     * @param name        The name of the room
+     * @param description The description of the room
+     * @param items       The initial items in the room
+     * @param doors       The initial doors for the room
+     */
+    public Room(@NotNull String name, @NotNull String description,
+                @NotNull Collection<Item> items, @NotNull Collection<Door> doors)
+            throws IllegalArgumentException {
+        super(name, description);
+
+        if (items.size() > CONTENT_LIMIT) {
+            throw new IllegalArgumentException(String.format("Rooms can have a maximum of %d items.",
+                                                             CONTENT_LIMIT));
+        }
+
+        this.items = new ArrayList<>(items);
+        this.doors = new HashSet<>(doors);
+    }
+
+    /**
+     * Constructs a {@link Room}, with an initial set of doors.
      *
      * @param name  The name of the room
-     * @param exits The initial exits for the room
+     * @param doors The initial doors for the room
      */
-    public Room(@NotNull String name, Door... exits) {
-        this(name);
-
-        Collections.addAll(this.exits, exits);
+    public Room(@NotNull String name, @NotNull String description, Door... doors) {
+        this(name, description, new ArrayList<>(), Arrays.asList(doors));
+        Collections.addAll(this.doors, doors);
     }
 
     /**
@@ -47,50 +69,40 @@ public class Room extends GameEntity implements Serializable {
      * @param items The initial items in the room
      * @throws IllegalArgumentException {@code items} is larger than {@value CONTENT_LIMIT}.
      */
-    public Room(@NotNull String name, Item... items) {
-        this(name);
-
-        if (items.length > CONTENT_LIMIT) {
-            throw new IllegalArgumentException(String.format("Rooms can have a maximum of %d items.",
-                                                             CONTENT_LIMIT));
-        }
-
-        Collections.addAll(this.contents, items);
+    public Room(@NotNull String name, @NotNull String description, Item... items) {
+        this(name, description, Arrays.asList(items), new ArrayList<>());
+        Collections.addAll(this.items, items);
     }
 
     /**
-     * Constructs a {@link Room}, only a name (no contents or doors).
+     * Constructs a {@link Room}, only a name (no items or doors).
      *
      * @param name the name of the room
      */
-    public Room(@NotNull String name) {
-        Objects.requireNonNull(name);
-        this.name = name;
+    public Room(@NotNull String name, @NotNull String description) {
+        this(name, description, new ArrayList<>(), new ArrayList<>());
     }
 
     /**
-     * Adds new {@link Door}s as exits to this {@link Room}.
+     * Adds new {@link Door}s as doors to this {@link Room}.
      *
-     * @param exits {@link Door}s to be added
+     * @param doors {@link Door}s to be added
      * @return doors which have been successfully added to the room.
      */
-    Door[] addExits(Door... exits) {
-        Door[] newDoors = Arrays.stream(exits)
-                                .filter((door) -> !this.exits.contains(door)).toArray(Door[]::new);
-        Collections.addAll(this.exits, newDoors);
-        return newDoors;
+    Door[] addDoors(Door... doors) {
+        return Arrays.stream(doors).filter(this.doors::add).toArray(Door[]::new);
     }
 
-    public Door[] getExits() {
-        return exits.toArray(new Door[exits.size()]);
+    public Door[] getDoors() {
+        return doors.toArray(new Door[doors.size()]);
     }
 
     /**
      * @param door the {@link Door} through which to get the next {@link Room}.
      * @return {@link Room} on the other side of the given {@link Door}.
      */
-    public Room getRoomThroughDoor(Door door) {
-        if (exits.contains(door)) {
+    public Room getRoomThroughDoor(Door door) throws IllegalArgumentException {
+        if (doors.contains(door)) {
             return door.getOtherRoom(this);
         }
 
@@ -100,23 +112,19 @@ public class Room extends GameEntity implements Serializable {
     }
 
     /**
-     * Adds new {@link Item}s as contents to this room.
+     * Adds a new {@link Item} to this room.
      *
-     * @param contents {@link Item}s to be added
-     * @throws IllegalArgumentException if the number of new, unique contents + current contents are
-     *                                  more than the {@link #CONTENT_LIMIT}.
+     * @param item {@link Item} to be added
+     * @throws IllegalArgumentException if the number of new, unique items + current items are more
+     *                                  than the {@link #CONTENT_LIMIT}.
      */
-    public void addContents(Item... contents) {
-        Item[] cleanedContents = Arrays.stream(contents)
-                                             .filter((item) -> !this.contents.contains(item))
-                                             .toArray(Item[]::new);
-
-        if (cleanedContents.length + this.contents.size() > CONTENT_LIMIT) {
-            throw new IllegalArgumentException(String.format("Rooms can have a maximum of %d items.",
+    public void addItem(Item item) {
+        if (!this.items.contains(item) && this.items.size() == CONTENT_LIMIT) {
+            throw new IllegalArgumentException(String.format("Room has hit limit of %d items.",
                                                              CONTENT_LIMIT));
         }
 
-        Collections.addAll(this.contents, cleanedContents);
+        this.items.add(item);
     }
 
     /**
@@ -126,31 +134,13 @@ public class Room extends GameEntity implements Serializable {
      */
     public String examine() {
         String result = "";
-        for (Item item : this.contents) {
+        for (Item item : this.items) {
             result += item.toString() + "\n";
         }
-        for (Door door : this.exits) {
+        for (Door door : this.doors) {
             result += door.toString() + "\n";
         }
         return result;
-    }
-
-    /**
-     * Get the name of this {@link Room}.
-     *
-     * @return The name of this {@link Room}
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Remove a door from this room. Must be called when a {@link Door} changes its {@link Room}s.
-     *
-     * @param toRemove The {@link Door} to remove.
-     */
-    void removeExit(Door toRemove) {
-        exits.remove(toRemove);
     }
 
     /**
@@ -160,7 +150,7 @@ public class Room extends GameEntity implements Serializable {
      * @return Whether the two {@link Room}s are connected
      */
     public boolean canMoveTo(Room other) {
-        for (Door door : exits) {
+        for (Door door : doors) {
             try {
                 Room fetchedOtherRoom = door.getOtherRoom(this);
                 if (fetchedOtherRoom.equals(other)) {
