@@ -8,7 +8,7 @@ import text_engine.items.GameEntity;
 /**
  * Represents something that changes the state of the game.
  */
-public abstract class Effect<T extends GameEntity> extends GameEntity implements Consumer<GameCharacter> {
+public abstract class Effect<T extends GameEntity> extends GameEntity implements Consumer<T> {
 
     protected final String report;
     protected final Consumer<T> consumer;
