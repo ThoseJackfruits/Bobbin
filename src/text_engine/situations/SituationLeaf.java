@@ -1,11 +1,11 @@
 package text_engine.situations;
 
+import text_engine.characters.GameCharacter;
 import text_engine.effects.Effect;
-import text_engine.items.GameEntity;
 
 public class SituationLeaf {
     private final SituationNode parent;
-    private final Effect<GameEntity> effect;
+    private final Effect<GameCharacter> effect;
     private final NextSituation next;
 
     /**
@@ -22,7 +22,7 @@ public class SituationLeaf {
      * @param effect the effect that {@link this} should have after completion
      * @param next the next place to move to
      */
-    public SituationLeaf(SituationNode parent, Effect<GameEntity> effect, NextSituation next) {
+    public SituationLeaf(SituationNode parent, Effect<GameCharacter> effect, NextSituation next) {
         this.parent = parent;
         this.effect = effect;
         this.next = next;
@@ -32,9 +32,4 @@ public class SituationLeaf {
         return parent.root();
     }
 
-    void select(GameEntity gameEntity) {
-        effect.accept(gameEntity);
-        // will replace this with `interact` with relevant exceptions & console
-        // interaction
-    }
 }

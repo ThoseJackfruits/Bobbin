@@ -1,9 +1,14 @@
 package text_engine.characters;
 
 import text_engine.boundaries.Room;
+import text_engine.interaction.ExitToException;
 import text_engine.items.Item;
 
 public class PlayerCharacter extends GameCharacter {
+
+    public class ExitToPlayerCharacterException extends ExitToException {
+
+    }
 
     /**
      * Constructs a {@link PlayerCharacter} in the given location, with the given inventory.

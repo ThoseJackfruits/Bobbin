@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import text_engine.boundaries.Door;
 import text_engine.boundaries.Room;
+import text_engine.interaction.ExitToException;
 import text_engine.items.GameEntity;
 import text_engine.items.Item;
 import text_engine.items.Key;
@@ -15,6 +16,10 @@ import text_engine.items.Key;
  * Represents an in-game character, including both the player character and NPCs.
  */
 public class GameCharacter extends GameEntity implements Cloneable {
+
+    public class ExitToGameCharacterException extends ExitToException {
+
+    }
 
     private final List<Item> inventory;
     private Room location;

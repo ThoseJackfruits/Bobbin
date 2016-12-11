@@ -7,8 +7,12 @@ import text_engine.items.GameEntity;
 
 /**
  * Represents something that changes the state of the game.
+ *
+ * Will always take in a {@link GameCharacter}, and each implementation of {@link Effect} needs to get
+ * the relevant subclass of {@link GameEntity} from the {@link GameCharacter}.
  */
-public abstract class Effect<T extends GameEntity> extends GameEntity implements Consumer<T> {
+public abstract class Effect<T extends GameEntity> extends GameEntity
+        implements Consumer<GameCharacter> {
 
     protected final String report;
     protected final Consumer<T> consumer;
