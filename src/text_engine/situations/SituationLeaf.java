@@ -31,5 +31,7 @@ public class SituationLeaf {
     protected SituationNode root() {
         return parent.root();
     }
+    protected Effect<GameCharacter> getEffect() { return effect; }
+    protected NextSituation getNext() { return next; }
 
 }

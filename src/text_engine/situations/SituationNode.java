@@ -14,6 +14,11 @@ public class SituationNode extends SituationLeaf {
         super(parent, effect, next);
     }
 
+    public SituationNode(Effect<GameCharacter> effect, NextSituation next)
+    {
+        this(null, effect, next);
+    }
+
     public SituationNode addChildLeafToExit(Effect<GameCharacter> effect) {
         addChildLeaf(effect, NextSituation.EXIT);
         return this;
@@ -51,6 +56,12 @@ public class SituationNode extends SituationLeaf {
 
     public SituationNode addChildNode(Effect<GameCharacter> effect, NextSituation next) {
         situationNodes.add(new SituationNode(this, effect, next));
+        return this;
+    }
+
+    public SituationNode addChildNode(SituationNode node)
+    {
+        this.addChildNode(node.getEffect(), node.getNext());
         return this;
     }
 }
