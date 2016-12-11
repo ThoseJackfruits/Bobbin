@@ -40,7 +40,7 @@ public abstract class Interactive {
      *                       throws an {@link ExitToException}
      */
     public int interact(GameEntity from, InputStream in, PrintStream out) throws ExitToException {
-        return Math.max(1, respondToInteraction(from, in, out));
+        return Math.max(0, respondToInteraction(from, in, out) - 1);
     }
 
     /**
