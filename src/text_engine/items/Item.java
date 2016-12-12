@@ -12,6 +12,7 @@ import text_engine.characters.GameCharacter;
 import text_engine.effects.BaseEffector;
 import text_engine.effects.Effect;
 import text_engine.effects.Effector;
+import text_engine.items.combinations.Combination;
 import text_engine.items.combinations.Combinations;
 
 /**
@@ -59,6 +60,38 @@ public class Item extends BaseGameEntity implements Serializable {
     @Override
     public boolean isConsumable() {
         return effector.hasEffects();
+    }
+
+    /**
+     * Adds the given list of {@link Item}s as a new {@link Combination} to the {@link Combinations}
+     * of both {@link this} and all of the other given {@link Item}s.
+     *
+     * Returns {@link this} so it can be used in a pseudo-builder style.
+     *
+     * @param items {@link Item}s to be added to the new {@link Combination}
+     * @param result result of the {@link Combination}
+     * @return {@link this}
+     */
+    public Item addCombination(Item result, Item... items) {
+        Combination combination = new Combination(items);
+
+        for (Item otherItem : items) {
+            otherItem.addCombination(combination, result);
+        }
+
+        return addCombination(combination, result);
+    }
+
+    /**
+     * Adds the given combination to {@link this} {@link Item}'s {@link Combinations}.
+     *
+     * @param combination {@link Combination} to add
+     * @param result result of the {@link Combination}
+     * @return {@link this}
+     */
+    private Item addCombination(Combination combination, Item result) {
+        combinations.put(combination, result);
+        return this;
     }
 
     @Override

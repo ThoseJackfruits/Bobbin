@@ -4,12 +4,17 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
 
+import text_engine.interaction.ExitToException;
 import text_engine.items.Key;
 
 /**
  * Represents a door from one {@link Door} to another
  */
 public class Door implements Serializable {
+
+    public class ExitToDoorException extends ExitToException {
+
+    }
 
     private final long lock;
     private final Room room1;
@@ -49,7 +54,7 @@ public class Door implements Serializable {
      *
      * @param from the room you're coming from
      * @return the room on the other side
-     * @throws IllegalStateException door is locked
+     * @throws IllegalStateException    door is locked
      * @throws IllegalArgumentException given room is not connected to this door
      */
     public Room getOtherRoom(Room from) throws IllegalArgumentException, IllegalStateException {
@@ -65,7 +70,8 @@ public class Door implements Serializable {
 
         if (from.equals(room1)) {
             return room2;
-        } else {  // from must be room2
+        }
+        else {  // from must be room2
             return room1;
         }
     }
@@ -124,7 +130,7 @@ public class Door implements Serializable {
     /**
      * Tries to change the lock of this {@link Door} with the given {@link Key}.
      *
-     * @param key        the key used to lock the {@link Door}
+     * @param key    the key used to lock the {@link Door}
      * @param locked whether the door is to be locked or unlocked
      * @return {@link #isLocked()}
      */

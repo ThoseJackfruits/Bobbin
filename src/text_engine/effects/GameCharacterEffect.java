@@ -19,17 +19,16 @@ public class GameCharacterEffect extends Effect<GameCharacter> {
         this.consumer.accept(gameCharacter);
     }
 
-    public static final GameCharacterEffect NULL =
-            new GameCharacterEffect(
-                    "No effect.",
-                    "",
-                    "",
-                    (player) -> {});
+    public static final GameCharacterEffect NULL = new GameCharacterEffect(
+            "No effect.",
+            "",
+            "",
+            (gameCharacter) -> { });
 
     public static final GameCharacterEffect CLEAR_INVENTORY =
             new GameCharacterEffect(
                     "Clear Inventory",
                     "Clears your inventory. Yikes!",
                     "Your inventory has been cleared.",
-                    (player) -> player.getInventory().clear());
+                    (gameCharacter) -> gameCharacter.getInventory().clear());
 }

@@ -13,12 +13,17 @@ import java.util.Objects;
 import java.util.Set;
 
 import text_engine.items.BaseGameEntity;
+import text_engine.interaction.ExitToException;
 import text_engine.items.Item;
 
 /**
  * Represents a room.
  */
 public class Room extends BaseGameEntity implements Serializable {
+
+    public class ExitToRoomException extends ExitToException {
+
+    }
 
     public static final int CONTENT_LIMIT = 10;
   /*
