@@ -23,9 +23,9 @@ public abstract class Interactive {
      *     catch (RelevantExceptionToThisClass) {
      *         continue;
      *     }
-     * } while (height = 0);
+     * } while (height == 0);
      *
-     * return height;
+     * return height - 1;
      * </pre>
      *
      * The minimum {@code 1} return value means that, by default, we will always be doing an action
