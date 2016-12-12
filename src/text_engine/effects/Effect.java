@@ -3,6 +3,7 @@ package text_engine.effects;
 import java.util.function.Consumer;
 
 import text_engine.characters.GameCharacter;
+import text_engine.items.BaseGameEntity;
 import text_engine.items.GameEntity;
 
 /**
@@ -11,7 +12,7 @@ import text_engine.items.GameEntity;
  * Will always take in a {@link GameCharacter}, and each implementation of {@link Effect} needs to get
  * the relevant subclass of {@link GameEntity} from the {@link GameCharacter}.
  */
-public abstract class Effect<T extends GameEntity> extends GameEntity
+public abstract class Effect<T extends GameEntity> extends BaseGameEntity
         implements Consumer<GameCharacter> {
 
     protected final String report;

@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import text_engine.items.BaseGameEntity;
 import text_engine.interaction.ExitToException;
-import text_engine.items.GameEntity;
 import text_engine.items.Item;
 
 /**
  * Represents a room.
  */
-public class Room extends GameEntity implements Serializable {
+public class Room extends BaseGameEntity implements Serializable {
 
     public class ExitToRoomException extends ExitToException {
 
