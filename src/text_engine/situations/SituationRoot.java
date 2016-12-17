@@ -1,13 +1,12 @@
 package text_engine.situations;
 
 import text_engine.characters.GameCharacter;
-import text_engine.effects.Effect;
+import text_engine.effects.BaseEffect;
 import text_engine.effects.GameCharacterEffect;
-import text_engine.items.GameEntity;
 
 public class SituationRoot extends SituationNode {
 
-    public SituationRoot(Effect<GameCharacter> effect) {
+    public SituationRoot(BaseEffect<GameCharacter> effect) {
         super(null, effect, NextSituation.EXIT);
     }
 

@@ -3,6 +3,7 @@ package text_engine.items;
 import com.sun.istack.internal.NotNull;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -10,7 +11,7 @@ import java.util.Stack;
 
 import text_engine.characters.GameCharacter;
 import text_engine.effects.BaseEffector;
-import text_engine.effects.Effect;
+import text_engine.effects.BaseEffect;
 import text_engine.effects.Effector;
 import text_engine.items.combinations.Combination;
 import text_engine.items.combinations.Combinations;
@@ -23,15 +24,14 @@ public class Item extends BaseGameEntity implements Serializable {
     private final Combinations combinations;
     private final Effector effector;
 
-    public Item(String name, String description, Combinations combinations,
-                List<Effect<? extends GameEntity>> effects) {
+    public Item(String name, String description, List<BaseEffect<? extends GameEntity>> effects) {
         super(name, description);
-        this.combinations = combinations;
+        this.combinations = new Combinations();
         this.effector = new BaseEffector(effects);
     }
 
     public Item(String name, String description) {
-        this(name, description, new Combinations(), new Stack<>());
+        this(name, description, new Stack<>());
     }
 
     /**
@@ -43,6 +43,7 @@ public class Item extends BaseGameEntity implements Serializable {
     @Override
     public boolean isCompatible(Item... otherItems) {
         Item[] toCombine = Arrays.copyOf(otherItems, otherItems.length + 1);
+        toCombine[toCombine.length - 1] = this; // Add this item to the combination to check for
         return combinations.get(toCombine) != null;
     }
 
@@ -55,7 +56,7 @@ public class Item extends BaseGameEntity implements Serializable {
     }
 
     /**
-     * @return whether this {@link Item} can be consumed for an {@link Effect}.
+     * @return whether this {@link Item} can be consumed for an {@link BaseEffect}.
      */
     @Override
     public boolean isConsumable() {
@@ -68,15 +69,18 @@ public class Item extends BaseGameEntity implements Serializable {
      *
      * Returns {@link this} so it can be used in a pseudo-builder style.
      *
-     * @param items {@link Item}s to be added to the new {@link Combination}
+     * @param items  {@link Item}s to be added to the new {@link Combination}
      * @param result result of the {@link Combination}
      * @return {@link this}
      */
     public Item addCombination(Item result, Item... items) {
         Combination combination = new Combination(items);
+        combination.add(this);
 
         for (Item otherItem : items) {
-            otherItem.addCombination(combination, result);
+            if (!otherItem.equals(this)) {
+                otherItem.addCombination(combination, result);
+            }
         }
 
         return addCombination(combination, result);
@@ -86,11 +90,16 @@ public class Item extends BaseGameEntity implements Serializable {
      * Adds the given combination to {@link this} {@link Item}'s {@link Combinations}.
      *
      * @param combination {@link Combination} to add
-     * @param result result of the {@link Combination}
+     * @param result      result of the {@link Combination}
      * @return {@link this}
      */
     private Item addCombination(Combination combination, Item result) {
         combinations.put(combination, result);
+        return this;
+    }
+
+    public Item addEffect(BaseEffect<? extends GameEntity> effect) {
+        effector.addEffect(effect);
         return this;
     }
 
@@ -105,24 +114,25 @@ public class Item extends BaseGameEntity implements Serializable {
      * Combines this item with the given one. EFFECTS: Changes the given inventory to remove this item
      * and the given items, replacing them with the new result of the combination.
      *
+     * @param owner      The {@link GameCharacter} whose inventory contains all the necessary items.
      * @param otherItems The items to be combined with this item.
-     * @param inventory  The player's inventory
      * @return The new combined items as one
      * @throws IllegalArgumentException if the inventory does not contain both this item and the given
      *                                  item, no items were provided, or no combination was found for
      *                                  the given items.
      * @throws NullPointerException     if either given Object is null
      */
-    public GameEntity combine(List<GameEntity> inventory, Item... otherItems)
+    public GameEntity combine(GameCharacter owner, Item... otherItems)
             throws IllegalArgumentException {
+        Objects.requireNonNull(owner);
         Objects.requireNonNull(otherItems);
-        Objects.requireNonNull(inventory);
+        List<Item> inventory = owner.getInventory();
 
         if (otherItems.length == 0) {
             throw new IllegalArgumentException("No items were provided.");
         }
 
-        List<Item> allItems = Arrays.asList(otherItems);
+        List<Item> allItems = new ArrayList<>(Arrays.asList(otherItems));
         allItems.add(this);
 
         if (!(inventory.containsAll(allItems))) {
@@ -130,7 +140,7 @@ public class Item extends BaseGameEntity implements Serializable {
                     "Both this item and all of the given items must be in the given inventory.");
         }
 
-        GameEntity result = combinations.get(allItems);
+        Item result = combinations.get(allItems);
 
         if (result == null) {
             throw new IllegalArgumentException(String.format("%s cannot be combined.", allItems));
@@ -143,7 +153,6 @@ public class Item extends BaseGameEntity implements Serializable {
 
     @Override
     public Object clone() throws CloneNotSupportedException {
-        super.clone();
-        return new Item(getName(), getDescription(), combinations, effector.getEffects());
+        return super.clone();
     }
 }

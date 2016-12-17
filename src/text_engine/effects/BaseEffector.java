@@ -4,9 +4,9 @@ import com.sun.istack.internal.NotNull;
 
 import sun.plugin.dom.exception.InvalidStateException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Stack;
 import java.util.Vector;
 
 import text_engine.characters.GameCharacter;
@@ -14,26 +14,22 @@ import text_engine.items.BaseGameEntity;
 import text_engine.items.GameEntity;
 
 /**
- * All {@link BaseGameEntity}'s which apply some kind of {@link Effect} should implement {@link
+ * All {@link BaseGameEntity}'s which apply some kind of {@link BaseEffect} should implement {@link
  * Effector} and delegate to a {@link BaseEffector}.
  */
 public class BaseEffector extends BaseGameEntity implements Effector {
 
-    private final Stack<Effect<? extends GameEntity>> effects;
+    private final List<BaseEffect<? extends GameEntity>> effects;
 
-    public BaseEffector(Stack<Effect<? extends GameEntity>> effects) {
-        this.effects = effects;
-    }
-
-    public BaseEffector(List<Effect<? extends GameEntity>> effects) {
-        this.effects = new Stack<>();
+    public BaseEffector(List<BaseEffect<? extends GameEntity>> effects) {
+        this.effects = new ArrayList<>();
         this.effects.addAll(effects);
     }
 
     /**
-     * Apply {@link this} object's {@link Effect}s to the given {@link GameCharacter}.
+     * Apply {@link this} object's {@link BaseEffect}s to the given {@link GameCharacter}.
      *
-     * @param gameCharacter the {@link GameCharacter} to apply {@link Effect}s to.
+     * @param gameCharacter the {@link GameCharacter} to apply {@link BaseEffect}s to.
      */
     @Override
     public void apply(@NotNull GameCharacter gameCharacter) {
@@ -43,7 +39,7 @@ public class BaseEffector extends BaseGameEntity implements Effector {
         }
 
         while (!effects.isEmpty()) {
-            effects.pop().accept(gameCharacter);
+            effects.remove(0).accept(gameCharacter);
         }
     }
 
@@ -56,13 +52,22 @@ public class BaseEffector extends BaseGameEntity implements Effector {
     }
 
     /**
+     * Add the given effect to the effector.
+     *
+     * @param effect to add
+     * @return {@link this}
+     */
+    @Override
+    public Effector addEffect(BaseEffect<? extends GameEntity> effect) {
+        effects.add(effect);
+        return this;
+    }
+
+    /**
      * Return a {@link Vector} of effects contained by this {@link Effector}.
      */
     @Override
-    public Vector<Effect<? extends GameEntity>> getEffects() {
-        @SuppressWarnings("unchecked")
-        Vector<Effect<? extends GameEntity>>
-                result = (Vector<Effect<? extends GameEntity>>) effects.clone();
-        return result;
+    public List<BaseEffect<? extends GameEntity>> getEffects() {
+        return new ArrayList<>(effects);
     }
 }

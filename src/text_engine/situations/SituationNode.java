@@ -1,8 +1,7 @@
 package text_engine.situations;
 
 import text_engine.characters.GameCharacter;
-import text_engine.effects.Effect;
-import text_engine.items.GameEntity;
+import text_engine.effects.BaseEffect;
 
 import java.util.List;
 
@@ -10,51 +9,51 @@ public class SituationNode extends SituationLeaf {
     List<SituationNode> situationNodes;
     List<SituationLeaf> situationLeaves;
 
-    public SituationNode(SituationNode parent, Effect<GameCharacter> effect, NextSituation next) {
+    public SituationNode(SituationNode parent, BaseEffect<GameCharacter> effect, NextSituation next) {
         super(parent, effect, next);
     }
 
-    public SituationNode(Effect<GameCharacter> effect, NextSituation next)
+    public SituationNode(BaseEffect<GameCharacter> effect, NextSituation next)
     {
         this(null, effect, next);
     }
 
-    public SituationNode addChildLeafToExit(Effect<GameCharacter> effect) {
+    public SituationNode addChildLeafToExit(BaseEffect<GameCharacter> effect) {
         addChildLeaf(effect, NextSituation.EXIT);
         return this;
     }
 
-    public SituationNode addChildLeafToParent(Effect<GameCharacter> effect) {
+    public SituationNode addChildLeafToParent(BaseEffect<GameCharacter> effect) {
         addChildLeaf(effect, NextSituation.PARENT);
         return this;
     }
 
-    public SituationNode addChildLeafToRoot(Effect<GameCharacter> effect) {
+    public SituationNode addChildLeafToRoot(BaseEffect<GameCharacter> effect) {
         addChildLeaf(effect, NextSituation.ROOT);
         return this;
     }
 
-    public SituationNode addChildLeaf(Effect<GameCharacter> effect, NextSituation next) {
+    public SituationNode addChildLeaf(BaseEffect<GameCharacter> effect, NextSituation next) {
         situationLeaves.add(new SituationLeaf(this, effect, next));
         return this;
     }
 
-    public SituationNode addChildNodeToExit(Effect<GameCharacter> effect) {
+    public SituationNode addChildNodeToExit(BaseEffect<GameCharacter> effect) {
         addChildNode(effect, NextSituation.EXIT);
         return this;
     }
 
-    public SituationNode addChildNodeToParent(Effect<GameCharacter> effect) {
+    public SituationNode addChildNodeToParent(BaseEffect<GameCharacter> effect) {
         addChildNode(effect, NextSituation.PARENT);
         return this;
     }
 
-    public SituationNode addChildNodeToRoot(Effect<GameCharacter> effect) {
+    public SituationNode addChildNodeToRoot(BaseEffect<GameCharacter> effect) {
         addChildNode(effect, NextSituation.ROOT);
         return this;
     }
 
-    public SituationNode addChildNode(Effect<GameCharacter> effect, NextSituation next) {
+    public SituationNode addChildNode(BaseEffect<GameCharacter> effect, NextSituation next) {
         situationNodes.add(new SituationNode(this, effect, next));
         return this;
     }

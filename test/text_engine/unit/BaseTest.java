@@ -12,7 +12,8 @@ import text_engine.items.Key;
  */
 public class BaseTest {
 
-    protected final Room room1 = new Room("Room 1", "Starting room, attached to Room 2.");
+    protected final Room room1 = new Room("Room 1", "Starting room, attached to Room 2.",
+                                          Items.getCopiesOf(Items.BLUEBERRY, Items.FLOUR));
     protected final Room room2 = new Room("Room 2", "Attached to Room 1.");
     protected final Room room3 = new Room("Room 3", "Attached to Room 2.");
 

@@ -83,20 +83,10 @@ public class Door implements Serializable {
      */
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        if (room1 != null && room2 != null) {
-            result.append("Door between ")
-                  .append(room1.getName())
-                  .append(" and ")
-                  .append(room2.getName());
-        }
-        else if (room1 != null ^ room2 != null) {
-            result.append("Dead-end door connected to ");
-            result.append(room1 != null ? room1 : room2);
-        }
-        else {
-            result.append("Roomless door");
-        }
+        StringBuilder result = new StringBuilder("Door between ")
+                .append(room1.getName())
+                .append(" and ")
+                .append(room2.getName());
 
         if (locked) {
             result.append(" (locked)");

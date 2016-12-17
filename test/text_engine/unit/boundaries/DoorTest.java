@@ -44,14 +44,21 @@ public class DoorTest extends BaseTest {
         assertFalse(door2Room2Room3Locked.isLocked());
     }
 
+    @Test
+    public void testLock() {
+        assertFalse(door1Room1Room2Unlocked.isLocked());
+        assertTrue(door1Room1Room2Unlocked.lock(keyDoor1));
+        assertTrue(door1Room1Room2Unlocked.isLocked());
+    }
+
     @Test(expected = IllegalStateException.class)
-    public void testGetOtherRoomLocked() {
+    public void testGetOtherRoom_locked() {
         // Try to get room3, but fail because of locked door.
         door2Room2Room3Locked.getOtherRoom(room2);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testGetOtherRoomUnattachedRoom() {
+    public void testGetOtherRoom_unattachedRoom() {
         // Try to get other room when door is not attached to given room.
         door2Room2Room3Locked.getOtherRoom(room1);
     }
@@ -77,5 +84,19 @@ public class DoorTest extends BaseTest {
     public void testHashCode() {
         assertEquals(door1Room1Room2Unlocked.hashCode(), door1Duplicate.hashCode());
         assertNotEquals(door1Room1Room2Unlocked.hashCode(), door2Room2Room3Locked.hashCode());
+    }
+
+    @Test
+    public void testGetRoomNum() {
+        assertEquals(room1, door1Room1Room2Unlocked.getRoom1());
+        assertEquals(room2, door1Room1Room2Unlocked.getRoom2());
+    }
+
+    @Test
+    public void testToString() {
+        final String result = door2Room2Room3Locked.toString();
+        assertTrue(result.contains(room2.getName()));
+        assertTrue(result.contains(room3.getName()));
+        assertTrue(result.contains("locked"));
     }
 }
