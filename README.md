@@ -11,7 +11,7 @@
 Branch name formatting should be as follows:
 - If there is a relevant, single Issue that the branch will completely solve:  
   `devname`/`issuenumber`/`short-description`  
-  _e.g._ `logan/21-pull-out-base-class-functionality`
+  _e.g._ `logan/21/pull-out-base-class-functionality`
 
 - If the branch wraps up multiple Issues or has no associated Issue:  
   `devname`/`short-description`  
