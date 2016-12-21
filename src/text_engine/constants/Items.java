@@ -5,12 +5,11 @@ import java.util.Objects;
 
 import text_engine.effects.GameCharacterEffect;
 import text_engine.items.Item;
-import text_engine.items.ItemBuilder;
 
 public class Items {
     public static final Item BED = new Item("Bed", "Something you can sleep in.");
-    public static final Item BLUEBERRY = new ItemBuilder("Blueberry", "A delicious dark berry.")
-            .addConsumption(GameCharacterEffect.NULL).build();
+    public static final Item BLUEBERRY = new Item("Blueberry", "A delicious dark berry.")
+            .addEffect(GameCharacterEffect.NULL);
     public static final Item FLOUR = new Item("Flour", "Finely-ground flour, great for baking!");
     public static final Item SUGAR = new Item("Water", "Essential for survival.");
     public static final Item WATER = new Item("Water", "Essential for survival.");

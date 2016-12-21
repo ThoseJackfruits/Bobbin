@@ -3,7 +3,7 @@ package text_engine.effects;
 import com.sun.istack.internal.NotNull;
 
 import java.util.Collection;
-import java.util.Vector;
+import java.util.List;
 
 import text_engine.characters.GameCharacter;
 import text_engine.items.GameEntity;
@@ -11,9 +11,9 @@ import text_engine.items.GameEntity;
 public interface Effector {
 
     /**
-     * Apply {@link this} {@link Effector}'s {@link Effect}s to the given {@link GameCharacter}.
+     * Apply {@link this} {@link Effector}'s {@link BaseEffect}s to the given {@link GameCharacter}.
      *
-     * @param gameCharacter the {@link GameCharacter} to apply {@link Effect}s to.
+     * @param gameCharacter the {@link GameCharacter} to apply {@link BaseEffect}s to.
      * @throws IllegalStateException no effects to apply.
      */
     void apply(@NotNull GameCharacter gameCharacter) throws IllegalStateException;
@@ -27,7 +27,15 @@ public interface Effector {
     boolean hasEffects();
 
     /**
+     * Add the given effect to the effector.
+     *
+     * @param effect to add
+     * @return {@link this}
+     */
+    Effector addEffect(BaseEffect<? extends GameEntity> effect);
+
+    /**
      * Return the {@link Collection} of effects contained by this {@link Effector}.
      */
-    Vector<Effect<? extends GameEntity>> getEffects();
+    List<BaseEffect<? extends GameEntity>> getEffects();
 }

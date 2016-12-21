@@ -120,16 +120,19 @@ public class Room extends BaseGameEntity implements Serializable {
      * Adds a new {@link Item} to this room.
      *
      * @param item {@link Item} to be added
-     * @throws IllegalArgumentException if the number of new, unique items + current items are more
-     *                                  than the {@link #CONTENT_LIMIT}.
+     * @throws IllegalStateException {@link #CONTENT_LIMIT} would be surpassed by adding the item.
+     * @return whether or not the item was added
      */
-    public void addItem(Item item) {
-        if (!this.items.contains(item) && this.items.size() == CONTENT_LIMIT) {
-            throw new IllegalArgumentException(String.format("Room has hit limit of %d items.",
+    public boolean addItem(Item item) {
+        if (this.items.contains(item)) {
+            return false;
+        }
+        if (this.items.size() == CONTENT_LIMIT) {
+            throw new IllegalStateException(String.format("Room has hit limit of %d items.",
                                                              CONTENT_LIMIT));
         }
 
-        this.items.add(item);
+        return this.items.add(item);
     }
 
     /**

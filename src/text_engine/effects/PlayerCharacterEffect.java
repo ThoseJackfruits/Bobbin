@@ -1,14 +1,12 @@
 package text_engine.effects;
 
-import java.util.function.Consumer;
-
 import text_engine.characters.GameCharacter;
 import text_engine.characters.PlayerCharacter;
 
-public class PlayerCharacterEffect extends Effect<PlayerCharacter> {
+public class PlayerCharacterEffect extends BaseEffect<PlayerCharacter> {
 
     public PlayerCharacterEffect(String name, String description, String report,
-                                 Consumer<PlayerCharacter> consumer) {
+                                 Effect<PlayerCharacter> consumer) {
         super(name, description, report, consumer);
     }
 

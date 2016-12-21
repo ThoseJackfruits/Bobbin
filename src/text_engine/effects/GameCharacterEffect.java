@@ -1,16 +1,14 @@
 package text_engine.effects;
 
-import java.util.function.Consumer;
-
 import text_engine.characters.GameCharacter;
 
 /**
  * Represents an effect on the player. Affects anything about the player's status.
  */
-public class GameCharacterEffect extends Effect<GameCharacter> {
+public class GameCharacterEffect extends BaseEffect<GameCharacter> {
 
     private GameCharacterEffect(String name, String description, String report,
-                                Consumer<GameCharacter> consumer) {
+                                Effect<GameCharacter> consumer) {
         super(name, description, report, consumer);
     }
 

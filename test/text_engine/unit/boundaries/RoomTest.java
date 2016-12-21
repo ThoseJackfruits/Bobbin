@@ -3,6 +3,9 @@ package text_engine.unit.boundaries;
 import org.junit.Test;
 
 import text_engine.boundaries.Door;
+import text_engine.boundaries.Room;
+import text_engine.constants.Items;
+import text_engine.items.Item;
 import text_engine.unit.BaseTest;
 
 import static org.junit.Assert.assertEquals;
@@ -13,11 +16,11 @@ public class RoomTest extends BaseTest {
 
     @Test
     public void testAddDuplicateDoor() {
-        Door door4 = new Door(false, room1, room2);
+        final Door door4 = new Door(false, room1, room2);
         assertEquals(1, room1.getDoors().length);
         assertEquals(2, room2.getDoors().length);
 
-        Door door5 = new Door(true, room1, room2);
+        final Door door5 = new Door(true, room1, room2);
         assertEquals(1, room1.getDoors().length);
         assertEquals(2, room2.getDoors().length);
     }
@@ -35,5 +38,42 @@ public class RoomTest extends BaseTest {
         // Locked door
         assertFalse(room2.canMoveTo(room3));
         assertFalse(room3.canMoveTo(room2));
+    }
+
+    @Test
+    public void testGetRoomThroughDoor() {
+        assertEquals(room2, room1.getRoomThroughDoor(door1Room1Room2Unlocked));
+        assertEquals(room1, room2.getRoomThroughDoor(door1Room1Room2Unlocked));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetRoomThroughDoor_notInRoom() {
+        room1.getRoomThroughDoor(door2Room2Room3Locked);
+    }
+
+    @Test
+    public void testAddItem_duplicate() {
+        assertFalse(room1.addItem(Items.BLUEBERRY));
+    }
+
+    private static void fillRoomToLimit(Room room) {
+        for (int i = 0; i < Room.CONTENT_LIMIT; i++) {
+            room.addItem(new Item(String.format("item_%d", i), ""));
+        }
+    }
+
+    @Test
+    public void testAddItem_underItemLimit() {
+        final Room room = new Room("room", "A room full of items");
+        fillRoomToLimit(room);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testAddItem_overItemLimit() {
+        final Room room = new Room("room", "A room full of items");
+        fillRoomToLimit(room);
+
+        final Item straw = new Item("straw", "The straw that broke the camel's back.");
+        room.addItem(straw);
     }
 }
