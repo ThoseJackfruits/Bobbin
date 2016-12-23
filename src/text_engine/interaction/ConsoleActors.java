@@ -3,7 +3,10 @@ package text_engine.interaction;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.List;
+
+import text_engine.constants.Prompts;
 
 /**
  * The primary method of interacting with the player console.
@@ -29,7 +32,7 @@ public class ConsoleActors {
         Integer selection = null;
 
         while (selection == null) {
-            writer.printf("%s: ", prompt).flush();
+            writer.printf(Prompts.PROMPT_FORMAT, prompt).flush();
             try {
                 selection = Integer.parseInt(reader.readLine());
             }
@@ -76,10 +79,28 @@ public class ConsoleActors {
      * @param writer to print prompt to
      * @param list   for the player to choose from
      */
-    public static int getChoiceIndexFromList(BufferedReader reader, PrintWriter writer,
-                                             List list, String prompt) {
+    public static int getChoiceIndex(BufferedReader reader, PrintWriter writer,
+                                     List list, String prompt) {
         Printers.printOrderedList(writer, list);
-        return getResponseInt(reader, writer, prompt) - 1; // Visual list is 1-indexed
+
+        Integer choice = null;
+        while (choice == null || choice < 0 || choice >= list.size()) {
+            choice = getResponseInt(reader, writer, prompt) - 1; // Visual list is 1-indexed
+        }
+        return choice;
+    }
+
+    /**
+     * Given a list, ask the player to make a selection from that list and return the index of their
+     * selection in that list.
+     *
+     * @param reader to read response from
+     * @param writer to print prompt to
+     * @param array   for the player to choose from
+     */
+    public static int getChoiceIndex(BufferedReader reader, PrintWriter writer,
+                                     Object[] array, String prompt) {
+        return getChoiceIndex(reader, writer, Arrays.asList(array), prompt);
     }
 
     /**
@@ -89,8 +110,20 @@ public class ConsoleActors {
      * @param writer  to print prompt to
      * @param list for the player to choose from
      */
-    public static <T> T getChoiceFromList(BufferedReader reader, PrintWriter writer,
-                                          List<T> list, String prompt) {
-        return list.get(getChoiceIndexFromList(reader, writer, list, prompt));
+    public static <T> T getChoice(BufferedReader reader, PrintWriter writer,
+                                  List<T> list, String prompt) {
+        return list.get(getChoiceIndex(reader, writer, list, prompt));
+    }
+
+    /**
+     * Given an array, ask the player to make a selection from that array and return the selected object.
+     *
+     * @param reader   to read response from
+     * @param writer  to print prompt to
+     * @param array for the player to choose from
+     */
+    public static <T> T getChoice(BufferedReader reader, PrintWriter writer,
+                                          T[] array, String prompt) {
+        return getChoice(reader, writer, Arrays.asList(array), prompt);
     }
 }

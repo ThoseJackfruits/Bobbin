@@ -15,14 +15,14 @@ public class ItemsTest extends BaseTest {
     private final Item blueberryCopy = Items.getCopyOf(Items.BLUEBERRY);
 
     @Test
-    public void testGetCopyOf() {
+    public void getCopyOf() {
         assertNotNull(blueberryCopy);
         assertTrue(blueberryCopy != Items.BLUEBERRY);  // Memory addresses should be different,
         assertEquals(blueberryCopy, Items.BLUEBERRY);  // but properties should be the same.
     }
 
     @Test
-    public void testGetCopyOfConsume() {
+    public void consume_copy() {
         assertNotNull(blueberryCopy);
         assertTrue(playerCharacter.getInventory().contains(blueberryCopy));
         blueberryCopy.consume(playerCharacter);

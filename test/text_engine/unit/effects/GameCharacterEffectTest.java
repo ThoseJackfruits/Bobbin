@@ -9,17 +9,19 @@ import text_engine.unit.BaseTest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class TestGameCharacterEffect extends BaseTest {
+public class GameCharacterEffectTest extends BaseTest {
+
+    // Static effect tests
 
     @Test
-    public void testClearInventoryEffect() {
+    public void effect_CLEAR_INVENTORY() {
         assertNotEquals(0, gameCharacter.getInventory().size());
         GameCharacterEffect.CLEAR_INVENTORY.accept(gameCharacter);
         assertEquals(0, gameCharacter.getInventory().size());
     }
 
     @Test
-    public void testNullEffect() throws CloneNotSupportedException {
+    public void effect_NULL() throws CloneNotSupportedException {
         GameCharacter before = (GameCharacter) gameCharacter.clone();
         GameCharacterEffect.NULL.accept(gameCharacter);
         assertEquals(before, gameCharacter);

@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 public class SaveGameSerialTest extends BaseTest {
 
     @Test
-    public void saveGameTest() throws Exception {
+    public void saveGameState() throws Exception {
         SaveGameSerial saveGame = new SaveGameSerial("TestSave1", "TestSaveDir");
         saveGame.saveGameState(gameCharacter);
         GameCharacter loadedCharacter = saveGame.loadGameState();
