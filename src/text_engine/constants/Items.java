@@ -30,8 +30,8 @@ public class Items {
         }
         catch (CloneNotSupportedException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
 

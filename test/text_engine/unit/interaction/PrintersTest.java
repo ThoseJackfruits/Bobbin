@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class TestPrinters extends BaseTest {
+public class PrintersTest extends BaseTest {
 
     private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     private final PrintWriter writer = new PrintWriter(baos);
@@ -25,7 +25,7 @@ public class TestPrinters extends BaseTest {
     }
 
     @Test
-    public void testPrintUnorderedList() {
+    public void printUnorderedList() {
         List list = playerCharacter.getInventory();
         Printers.printUnorderedList(writer, list);
         final String response = new String(baos.toByteArray());
@@ -36,7 +36,7 @@ public class TestPrinters extends BaseTest {
     }
 
     @Test
-    public void testPrintOrderedList() {
+    public void printOrderedList() {
         List list = playerCharacter.getInventory();
         Printers.printOrderedList(writer, list);
         final String response = new String(baos.toByteArray());
@@ -47,7 +47,7 @@ public class TestPrinters extends BaseTest {
     }
 
     @Test
-    public void testPrint() {
+    public void print() {
         Item item = playerCharacter.getInventory().get(0);
         Printers.print(writer, item);
 

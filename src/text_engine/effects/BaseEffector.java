@@ -7,7 +7,6 @@ import sun.plugin.dom.exception.InvalidStateException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Vector;
 
 import text_engine.characters.GameCharacter;
 import text_engine.items.BaseGameEntity;
@@ -64,7 +63,7 @@ public class BaseEffector extends BaseGameEntity implements Effector {
     }
 
     /**
-     * Return a {@link Vector} of effects contained by this {@link Effector}.
+     * Return a {@link List} of effects contained by this {@link Effector}.
      */
     @Override
     public List<BaseEffect<? extends GameEntity>> getEffects() {

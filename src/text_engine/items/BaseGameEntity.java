@@ -4,14 +4,19 @@ import com.sun.istack.internal.NotNull;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.util.Objects;
 
 import text_engine.characters.GameCharacter;
+import text_engine.interaction.ExitToException;
+import text_engine.interaction.Interactive;
+import text_engine.interaction.Printers;
 
 /**
  * Represents a generic in-game object, including characters, interactive items, etc.
  */
-public class BaseGameEntity implements GameEntity {
+public class BaseGameEntity extends Interactive implements GameEntity {
 
     private String name;
     private String description;
@@ -98,5 +103,16 @@ public class BaseGameEntity implements GameEntity {
     @Override
     public int hashCode() {
         return name.hashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected int respondToInteraction(
+            GameEntity from, BufferedReader reader, PrintWriter writer, String prompt)
+            throws ExitToException {
+        Printers.print(writer, this);
+        return Interactive.PARENT;
     }
 }
