@@ -4,14 +4,14 @@ import org.junit.Test;
 
 import text_engine.constants.Items;
 import text_engine.items.Item;
-import text_engine.unit.BaseTest;
+import text_engine.unit.BaseUnitTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class ItemsTest extends BaseTest {
+public class ItemsTest extends BaseUnitTest {
     private final Item blueberryCopy = Items.getCopyOf(Items.BLUEBERRY);
 
     @Test

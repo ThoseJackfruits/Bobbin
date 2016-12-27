@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import text_engine.boundaries.Door;
 import text_engine.boundaries.Room;
-import text_engine.unit.BaseTest;
+import text_engine.unit.BaseUnitTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Unit tests for {@link Door}s.
  */
-public class DoorTest extends BaseTest {
+public class DoorTest extends BaseUnitTest {
     private final Door door1Duplicate = new Door(false, room1, room2);
 
     @Test

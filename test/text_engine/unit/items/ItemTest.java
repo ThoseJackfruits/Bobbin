@@ -4,13 +4,13 @@ import org.junit.Test;
 
 import text_engine.effects.GameCharacterEffect;
 import text_engine.items.Item;
-import text_engine.unit.BaseTest;
+import text_engine.unit.BaseUnitTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class ItemTest extends BaseTest {
+public class ItemTest extends BaseUnitTest {
 
     private final Item combinationResult = new Item("combinationResult", "Result Item");
     private final Item item1 = new Item("item1", "Item 1");

@@ -4,11 +4,11 @@ import org.junit.Test;
 
 import text_engine.characters.GameCharacter;
 import text_engine.io.savegames.SaveGameSerial;
-import text_engine.unit.BaseTest;
+import text_engine.unit.BaseUnitTest;
 
 import static org.junit.Assert.assertEquals;
 
-public class SaveGameSerialTest extends BaseTest {
+public class SaveGameSerialTest extends BaseUnitTest {
 
     @Test
     public void saveGameState() throws Exception {

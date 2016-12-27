@@ -8,13 +8,13 @@ import java.util.List;
 
 import text_engine.interaction.Printers;
 import text_engine.items.Item;
-import text_engine.unit.BaseTest;
+import text_engine.unit.BaseUnitTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class PrintersTest extends BaseTest {
+public class PrintersTest extends BaseUnitTest {
 
     private final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     private final PrintWriter writer = new PrintWriter(baos);

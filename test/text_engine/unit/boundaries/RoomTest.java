@@ -6,13 +6,13 @@ import text_engine.boundaries.Door;
 import text_engine.boundaries.Room;
 import text_engine.constants.Items;
 import text_engine.items.Item;
-import text_engine.unit.BaseTest;
+import text_engine.unit.BaseUnitTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class RoomTest extends BaseTest {
+public class RoomTest extends BaseUnitTest {
 
     private static void fillRoomToLimit(Room room) {
         for (int i = 0; i < Room.CONTENT_LIMIT; i++) {

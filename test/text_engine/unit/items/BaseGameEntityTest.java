@@ -5,11 +5,11 @@ import org.junit.Test;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import text_engine.items.BaseGameEntity;
-import text_engine.unit.BaseTest;
+import text_engine.unit.BaseUnitTest;
 
 import static org.junit.Assert.assertFalse;
 
-public class BaseGameEntityTest extends BaseTest {
+public class BaseGameEntityTest extends BaseUnitTest {
     private final BaseGameEntity bge = new BaseGameEntity("bge", "Generic game entity");
 
     @Test
