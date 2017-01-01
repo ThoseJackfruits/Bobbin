@@ -31,10 +31,11 @@ public class Printers {
      * @param writer     to print prompt to
      * @param collection for the player to choose from
      */
-    public static void printUnorderedList(PrintWriter writer, Collection collection) {
-        for (Object o : collection) {
+    public static void printUnorderedList(PrintWriter writer, Collection<Interactive> collection) {
+        for (Interactive gameEntity : collection) {
             writer.append(Prompts.UNORDERED_LIST_PREFIX)
-                  .println(o.toString());
+                  .println(gameEntity.toString());
+            gameEntity.setSeen();
         }
         writer.flush();
     }
@@ -45,12 +46,13 @@ public class Printers {
      * @param writer to print prompt to
      * @param list   for the player to choose from
      */
-    public static void printOrderedList(PrintWriter writer, List list) {
+    public static <T extends Interactive> void printOrderedList(PrintWriter writer, List<T> list) {
         int i = 1;
-        for (Object o : list) {
+        for (Interactive gameEntity : list) {
             writer.append(ORDERED_LIST_PREFIX(i))
-                  .println(o.toString());
+                  .println(gameEntity.toString());
             ++i;
+            gameEntity.setSeen();
         }
         writer.flush();
     }
@@ -61,11 +63,12 @@ public class Printers {
      * @param writer to print prompt to
      * @param array  for the player to choose from
      */
-    public static void printOrderedArray(PrintWriter writer, Object[] array) {
+    public static void printOrderedArray(PrintWriter writer, Interactive[] array) {
         printOrderedList(writer, Arrays.asList(array));
     }
 
-    public static void print(PrintWriter writer, Object o) {
-        writer.printf(o.toString()).flush();
+    public static void print(PrintWriter writer, Interactive gameEntity) {
+        writer.printf(gameEntity.toString()).flush();
+        gameEntity.setSeen();
     }
 }

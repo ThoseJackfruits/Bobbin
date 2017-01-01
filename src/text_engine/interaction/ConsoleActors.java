@@ -79,8 +79,8 @@ public class ConsoleActors {
      * @param writer to print prompt to
      * @param list   for the player to choose from
      */
-    public static int getChoiceIndex(BufferedReader reader, PrintWriter writer,
-                                     List list, String prompt) {
+    public static <T extends Interactive> int
+    getChoiceIndex(BufferedReader reader, PrintWriter writer, List<T> list, String prompt) {
         Printers.printOrderedList(writer, list);
 
         Integer choice = null;
@@ -96,34 +96,35 @@ public class ConsoleActors {
      *
      * @param reader to read response from
      * @param writer to print prompt to
-     * @param array   for the player to choose from
+     * @param array  for the player to choose from
      */
-    public static int getChoiceIndex(BufferedReader reader, PrintWriter writer,
-                                     Object[] array, String prompt) {
+    public static <T extends Interactive> int
+    getChoiceIndex(BufferedReader reader, PrintWriter writer, T[] array, String prompt) {
         return getChoiceIndex(reader, writer, Arrays.asList(array), prompt);
     }
 
     /**
      * Given a list, ask the player to make a selection from that list and return the selected object.
      *
-     * @param reader   to read response from
-     * @param writer  to print prompt to
-     * @param list for the player to choose from
+     * @param reader to read response from
+     * @param writer to print prompt to
+     * @param list   for the player to choose from
      */
-    public static <T> T getChoice(BufferedReader reader, PrintWriter writer,
-                                  List<T> list, String prompt) {
+    public static <T extends Interactive> T getChoice(BufferedReader reader, PrintWriter writer,
+                                                      List<T> list, String prompt) {
         return list.get(getChoiceIndex(reader, writer, list, prompt));
     }
 
     /**
-     * Given an array, ask the player to make a selection from that array and return the selected object.
+     * Given an array, ask the player to make a selection from that array and return the selected
+     * object.
      *
-     * @param reader   to read response from
-     * @param writer  to print prompt to
-     * @param array for the player to choose from
+     * @param reader to read response from
+     * @param writer to print prompt to
+     * @param array  for the player to choose from
      */
-    public static <T> T getChoice(BufferedReader reader, PrintWriter writer,
-                                          T[] array, String prompt) {
+    public static <T extends Interactive> T getChoice(BufferedReader reader, PrintWriter writer,
+                                                      T[] array, String prompt) {
         return getChoice(reader, writer, Arrays.asList(array), prompt);
     }
 }

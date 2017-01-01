@@ -10,7 +10,7 @@ import text_engine.items.Key;
 /**
  * Base class for all tests. Gives the basic environment that most tests will require.
  */
-public class BaseTest {
+public class BaseUnitTest {
 
     protected final Room room1 = new Room("Room 1", "Starting room, attached to Room 2.",
                                           Items.getCopiesOf(Items.BLUEBERRY, Items.FLOUR));

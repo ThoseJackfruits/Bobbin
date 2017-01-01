@@ -2,11 +2,11 @@ package text_engine.unit.characters;
 
 import org.junit.Test;
 
-import text_engine.unit.BaseTest;
+import text_engine.unit.BaseUnitTest;
 
 import static org.junit.Assert.assertEquals;
 
-public class GameCharacterTest extends BaseTest {
+public class GameCharacterTest extends BaseUnitTest {
 
     @Test
     public void moveTo() {

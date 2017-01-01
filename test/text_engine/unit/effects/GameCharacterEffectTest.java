@@ -4,12 +4,12 @@ import org.junit.Test;
 
 import text_engine.characters.GameCharacter;
 import text_engine.effects.GameCharacterEffect;
-import text_engine.unit.BaseTest;
+import text_engine.unit.BaseUnitTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class GameCharacterEffectTest extends BaseTest {
+public class GameCharacterEffectTest extends BaseUnitTest {
 
     // Static effect tests
 

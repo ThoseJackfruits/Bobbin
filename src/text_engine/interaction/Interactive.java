@@ -1,7 +1,6 @@
 package text_engine.interaction;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 import text_engine.characters.GameCharacter;
@@ -13,6 +12,37 @@ public abstract class Interactive {
     protected static final int THIS = 0;
     protected static final int PARENT = 1;
     protected static final int GRANDPARENT = 2;
+
+
+    /**
+     * Whether the player has interacted with {@link this}.
+     *
+     * @return whether or not the player has interacted with {@link this}.
+     */
+    public boolean isVisited() {
+        return visited;
+    }
+
+    private boolean visited = false;
+
+    /**
+     * Whether the player has seen {@link this}. The requirements of something being "seen" is rather
+     * vague, but it will likely be anything that the player has seen printed in a console prompt.
+     *
+     * @return whether or not the player has seen {@link this}.
+     */
+    public boolean isSeen() {
+        return seen;
+    }
+
+    /**
+     * Confirm that the player has seen {@link this}.
+     */
+    public void setSeen() {
+        this.seen = true;
+    }
+
+    private boolean seen = false;
 
     /**
      * Interact with the given object, implying that that object takes over the console and all
@@ -26,7 +56,6 @@ public abstract class Interactive {
      * @param from   {@link GameEntity} interacting with this object
      * @param reader to read response from
      * @param writer to print prompt to
-     * @param prompt to show the player
      * @return the number of levels to go up from the current stage.
      * @throws IllegalStateException the height returned by {@link #respondToInteraction(GameEntity,
      *                               BufferedReader, PrintWriter, String)} is negative
@@ -35,7 +64,7 @@ public abstract class Interactive {
      */
     public int interact(GameEntity from, BufferedReader reader, PrintWriter writer)
             throws ExitToException {
-
+        visited = true;
         int height;
         do {
             height = respondToInteraction(from, reader, writer, Prompts.PC_SELECT_ACTION);

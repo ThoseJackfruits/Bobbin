@@ -3,11 +3,11 @@ package text_engine.unit.interaction;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 
-import text_engine.unit.BaseTest;
+import text_engine.unit.BaseUnitTest;
 
 import static org.junit.Assert.assertTrue;
 
-public class BaseConsoleTest extends BaseTest {
+public class BaseConsoleTest extends BaseUnitTest {
 
     protected final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     protected final PrintWriter writer = new PrintWriter(baos);
