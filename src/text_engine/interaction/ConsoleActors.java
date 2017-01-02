@@ -4,9 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.List;
-
-import text_engine.constants.Prompts;
 
 /**
  * The primary method of interacting with the player console.
@@ -32,7 +31,7 @@ public class ConsoleActors {
         Integer selection = null;
 
         while (selection == null) {
-            writer.printf(Prompts.PROMPT_FORMAT, prompt).flush();
+            Printers.printGenericPrompt(writer, prompt);
             try {
                 selection = Integer.parseInt(reader.readLine());
             }
@@ -45,6 +44,58 @@ public class ConsoleActors {
         }
 
         return selection;
+    }
+
+    /**
+     * Ask a boolean (yes/no) question to the player, optionally providing a default response.
+     *
+     * @param reader          to read response from
+     * @param writer          to print prompt to
+     * @param defaultResponse the default response of the player, if the player submits empty input.
+     *                        If {@code null}, an explicit response is required.
+     * @param prompt          to present to the user when asking for input
+     * @return the player's response
+     */
+    public static boolean getResponseBoolean(BufferedReader reader, PrintWriter writer,
+                                             Boolean defaultResponse, String prompt) {
+        boolean response;
+        while (true) {
+            Printers.printBooleanPrompt(writer, defaultResponse, prompt);
+            try {
+                response = getResponse(defaultResponse, reader.readLine());
+                break;
+            }
+            catch (InputMismatchException ignored) {
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return response;
+    }
+
+    private static boolean getResponse(Boolean defaultResponse, String response)
+            throws InputMismatchException {
+        Boolean booleanResponse = getBoolean(response);
+        if (booleanResponse != null) {
+            return booleanResponse;
+        }
+        if (defaultResponse == null) {
+            throw new InputMismatchException();
+        }
+        return defaultResponse;
+    }
+
+    private static Boolean getBoolean(String response) {
+        if ("y".equalsIgnoreCase(response)) {
+            return true;
+        }
+        else if ("n".equalsIgnoreCase(response)) {
+            return false;
+        }
+
+        return null;
     }
 
     /**
@@ -81,7 +132,7 @@ public class ConsoleActors {
      */
     public static <T extends Interactive> int
     getChoiceIndex(BufferedReader reader, PrintWriter writer, List<T> list, String prompt) {
-        Printers.printOrderedList(writer, list);
+        Printers.printOrdered(writer, list);
 
         Integer choice = null;
         while (choice == null || choice < 0 || choice >= list.size()) {

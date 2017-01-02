@@ -27,7 +27,7 @@ public class BaseUnitTest {
             = new PlayerCharacter("Player Character",
                                   "The main Player Character, initially in Room 1.",
                                   room1,
-                                  Items.getCopiesOf(Items.BLUEBERRY, Items.FLOUR, Items.SUGAR,
+                                  Items.getCopiesOf(Items.BLUEBERRY, Items.FLOUR,
                                                     Items.WATER, Items.BED));
 
     protected final GameCharacter gameCharacter

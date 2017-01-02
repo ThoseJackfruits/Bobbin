@@ -1,14 +1,12 @@
 package text_engine.characters;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import text_engine.boundaries.Door;
 import text_engine.boundaries.Room;
-import text_engine.items.BaseGameEntity;
 import text_engine.interaction.ExitToException;
+import text_engine.items.BaseGameEntity;
+import text_engine.items.Inventory;
 import text_engine.items.Item;
 import text_engine.items.Key;
 
@@ -21,23 +19,23 @@ public class GameCharacter extends BaseGameEntity implements Cloneable {
 
     }
 
-    private final List<Item> inventory;
+    private final Inventory inventory;
     private Room location;
 
     /**
      * Constructs a {@link GameCharacter} in the given location, with the given inventory.
      *
-     * @param inventory The list of items in the {@link GameCharacter}'s inventory
-     * @param location  The room the {@link GameCharacter} is in
+     * @param items    The list of items in the {@link GameCharacter}'s inventory
+     * @param location The room the {@link GameCharacter} is in
      */
-    public GameCharacter(String name, String description, Room location, Item... inventory) {
+    public GameCharacter(String name, String description, Room location, Item... items) {
         super(name, description);
-        Objects.requireNonNull(inventory);
+        Objects.requireNonNull(items);
         Objects.requireNonNull(location);
 
         // Need to do this because Arrays.asList() returns Arrays#ArrayList, not java.util.ArrayList,
         // which is mutable in contents but not in length, and thus does not implement #clear().
-        this.inventory = new ArrayList<>(Arrays.asList(inventory));
+        this.inventory = new Inventory(items);
         this.location = location;
     }
 
@@ -53,7 +51,7 @@ public class GameCharacter extends BaseGameEntity implements Cloneable {
     /**
      * @return This {@link GameCharacter}'s inventory.
      */
-    public List<Item> getInventory() {
+    public Inventory getInventory() {
         return this.inventory;
     }
 
@@ -88,9 +86,7 @@ public class GameCharacter extends BaseGameEntity implements Cloneable {
             room = door.getOtherRoom(this.getLocation());
         }
         catch (IllegalStateException exc) {
-            if (getInventory().stream()
-                              .filter((item) -> item.getClass().equals(Key.class))
-                              .anyMatch((key) -> !door.unlock((Key) key))) {
+            if (getInventory().hasKeyThatMatches((key) -> !door.unlock((Key) key))) {
                 room = door.getOtherRoom(this.getLocation());
             }
             else {
@@ -104,6 +100,6 @@ public class GameCharacter extends BaseGameEntity implements Cloneable {
     public Object clone() throws CloneNotSupportedException {
         super.clone();
         return new GameCharacter(getName(), getDescription(), getLocation(),
-                                 getInventory().toArray(new Item[getInventory().size()]));
+                                 getInventory().toArray());
     }
 }
