@@ -7,12 +7,19 @@ import text_engine.effects.GameCharacterEffect;
 import text_engine.items.Item;
 
 public class Items {
-    public static final Item BED = new Item("Bed", "Something you can sleep in.");
-    public static final Item BLUEBERRY = new Item("Blueberry", "A delicious dark berry.")
+    public static final Item BED = new Item(Prompts.messages.getString("Items.BED.name"),
+                                            Prompts.messages.getString("Items.BED.description"));
+
+    public static final Item BLUEBERRY =
+            new Item(Prompts.messages.getString("Items.BLUEBERRY.name"),
+                     Prompts.messages.getString("Items.BLUEBERRY.description"))
             .addEffect(GameCharacterEffect.NULL);
-    public static final Item FLOUR = new Item("Flour", "Finely-ground flour, great for baking!");
-    public static final Item SUGAR = new Item("Water", "Essential for survival.");
-    public static final Item WATER = new Item("Water", "Essential for survival.");
+
+    public static final Item FLOUR = new Item(Prompts.messages.getString("Items.FLOUR.name"),
+                                              Prompts.messages.getString("Items.FLOUR.description"));
+
+    public static final Item WATER = new Item(Prompts.messages.getString("Items.WATER.name"),
+                                              Prompts.messages.getString("Items.WATER.description"));
 
     /**
      * Get a copy of the given {@link Item}.

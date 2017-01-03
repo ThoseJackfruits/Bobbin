@@ -3,46 +3,99 @@ package text_engine.interaction;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 
+import text_engine.boundaries.Room;
 import text_engine.characters.GameCharacter;
 import text_engine.constants.Prompts;
 import text_engine.items.GameEntity;
 
 public abstract class Interactive {
 
-    protected static final int THIS = 0;
-    protected static final int PARENT = 1;
-    protected static final int GRANDPARENT = 2;
-
-
     /**
-     * Whether the player has interacted with {@link this}.
+     * Should be caught at the highest level possible (e.g. the main game loop) which should, after
+     * catching it, call {@link #then#interact(GameEntity, BufferedReader, PrintWriter)}.
      *
-     * @return whether or not the player has interacted with {@link this}.
+     * This will allow for the stack to be reset whenever moving from one {@link Interactive} to
+     * another is not necessarily a parent-child jump. For example, when moving between {@link Room}s,
+     * one {@link Room} wouldn't be considered the parent or the child of the other.
+     *
+     * This is to allow for continuous use of Java's stack as a method of "tree" traversal and state
+     * management without the risk of exceeding the recursion limit.
      */
-    public boolean isVisited() {
-        return visited;
+    public class ResetStackException extends ExitToException {
+
+        public final Interactive then;
+
+        public ResetStackException(Interactive then) {
+            this.then = then;
+        }
+
     }
 
-    private boolean visited = false;
+    public enum Visibility {
+        FRESH(1000), SEEN(100), VISITED(10), HIDDEN(0);
+
+        final int level;
+
+        Visibility(int level) {
+            this.level = level;
+        }
+    }
 
     /**
-     * Whether the player has seen {@link this}. The requirements of something being "seen" is rather
-     * vague, but it will likely be anything that the player has seen printed in a console prompt.
-     *
-     * @return whether or not the player has seen {@link this}.
+     * Class of shortcuts for return statements in {@link #interact(GameEntity, BufferedReader,
+     * PrintWriter)}, {@link #respondToInteraction(GameEntity, BufferedReader, PrintWriter,
+     * String)}, and the like. Makes the semantics of the return statements in these methods more
+     * reader-friendly.
      */
-    public boolean isSeen() {
-        return seen;
+    protected class GoTo {
+        public static final int THIS = 0;
+        public static final int PARENT = 1;
+        public static final int GRANDPARENT = 2;
+    }
+
+    private Visibility visibility = Visibility.FRESH;
+
+    /**
+     * Get the player-facing {@link Visibility} of {@link this}.
+     *
+     * @return player-facing {@link Visibility} of {@link this}.
+     */
+    public Visibility getVisibility() {
+        return visibility;
     }
 
     /**
      * Confirm that the player has seen {@link this}.
      */
     public void setSeen() {
-        this.seen = true;
+        setVisibilityDownTo(Visibility.SEEN);
     }
 
-    private boolean seen = false;
+    /**
+     * Confirm that the player has seen {@link this}.
+     */
+    public void setHidden() {
+        setVisibilityDownTo(Visibility.HIDDEN);
+    }
+
+    /**
+     * Confirm that the player has visited {@link this}.
+     */
+    public void setVisited() {
+        setVisibilityDownTo(Visibility.VISITED);
+    }
+
+    /**
+     * Brings the visibility of {@link this} down to the given {@link Visibility}. Will not change the
+     * {@link Visibility} if the current value is already lower than {@code v}.
+     *
+     * @param v the new {@link Visibility}
+     */
+    private void setVisibilityDownTo(Visibility v) {
+        if (visibility.level > v.level) {
+            visibility = v;
+        }
+    }
 
     /**
      * Interact with the given object, implying that that object takes over the console and all
@@ -64,17 +117,22 @@ public abstract class Interactive {
      */
     public int interact(GameEntity from, BufferedReader reader, PrintWriter writer)
             throws ExitToException {
-        visited = true;
+        setVisibilityDownTo(Visibility.VISITED);
         int height;
         do {
-            height = respondToInteraction(from, reader, writer, Prompts.PC_SELECT_ACTION);
-        } while (height == 0);
+            height = respondToInteraction(from, reader, writer,
+                                          Prompts.messages.getString("Prompts.selectAnAction"));
+        } while (height == GoTo.THIS);
 
         if (height < 0) {
             throw new IllegalStateException(String.format("negative height (%d) found", height));
         }
 
         return height - 1;
+    }
+
+    public void resetStackAndInteract() throws ResetStackException {
+        throw new ResetStackException(this);
     }
 
     /**

@@ -113,6 +113,6 @@ public class BaseGameEntity extends Interactive implements GameEntity {
             GameEntity from, BufferedReader reader, PrintWriter writer, String prompt)
             throws ExitToException {
         Printers.print(writer, this);
-        return Interactive.PARENT;
+        return GoTo.PARENT;
     }
 }

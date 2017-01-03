@@ -126,13 +126,14 @@ public class Item extends BaseGameEntity implements Serializable {
             throws IllegalArgumentException {
         Objects.requireNonNull(owner);
         Objects.requireNonNull(otherItems);
-        List<Item> inventory = owner.getInventory();
+        Inventory inventory = owner.getInventory();
 
         if (otherItems.length == 0) {
             throw new IllegalArgumentException("No items were provided.");
         }
 
-        List<Item> allItems = new ArrayList<>(Arrays.asList(otherItems));
+        List<Item> allItems = new ArrayList<>(otherItems.length + 1);
+        allItems.addAll(Arrays.asList(otherItems));
         allItems.add(this);
 
         if (!(inventory.containsAll(allItems))) {

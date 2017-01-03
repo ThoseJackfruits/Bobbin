@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import text_engine.interaction.Printers;
+import text_engine.items.Inventory;
 import text_engine.items.Item;
 import text_engine.unit.BaseUnitTest;
 
@@ -26,19 +27,19 @@ public class PrintersTest extends BaseUnitTest {
 
     @Test
     public void printUnorderedList() {
-        List list = playerCharacter.getInventory();
-        Printers.printUnorderedList(writer, list);
+        List inventory = playerCharacter.getInventory();
+        Printers.printUnordered(writer, inventory);
         final String response = new String(baos.toByteArray());
 
         assertFalse("should not have number prefixes", response.contains("1. "));
         assertTrue("should have dash prefixes", response.startsWith("- "));
-        commonListAssertions(list, response);
+        commonListAssertions(inventory, response);
     }
 
     @Test
     public void printOrderedList() {
-        List list = playerCharacter.getInventory();
-        Printers.printOrderedList(writer, list);
+        Inventory list = playerCharacter.getInventory();
+        Printers.printOrdered(writer, list);
         final String response = new String(baos.toByteArray());
 
         assertTrue("should have number prefixes", response.contains("1. "));
