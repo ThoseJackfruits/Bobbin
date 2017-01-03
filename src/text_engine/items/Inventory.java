@@ -95,6 +95,7 @@ public class Inventory extends BaseGameEntity implements List<Item> {
         items.clear();
     }
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object o) {
         return items.equals(o);

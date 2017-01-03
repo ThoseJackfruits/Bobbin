@@ -13,13 +13,14 @@ public class BaseUsabilityTest extends BaseConsoleTest {
 
         while (true) {
             try {
-                next.interact(null, reader, writer);
+                next.interact(playerCharacter, null, reader, writer);
             }
             catch (Interactive.ResetStackException e) {
                 next = e.then;
             }
             catch (ExitToException e) {
                 System.out.print("Test completed.");
+                break;
             }
         }
     }

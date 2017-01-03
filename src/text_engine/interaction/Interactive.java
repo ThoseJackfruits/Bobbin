@@ -2,6 +2,7 @@ package text_engine.interaction;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.util.Objects;
 
 import text_engine.boundaries.Room;
 import text_engine.characters.GameCharacter;
@@ -12,7 +13,8 @@ public abstract class Interactive {
 
     /**
      * Should be caught at the highest level possible (e.g. the main game loop) which should, after
-     * catching it, call {@link #then#interact(GameEntity, BufferedReader, PrintWriter)}.
+     * catching it, call {@link #then#interact(GameCharacter, GameEntity, BufferedReader,
+     * PrintWriter)}.
      *
      * This will allow for the stack to be reset whenever moving from one {@link Interactive} to
      * another is not necessarily a parent-child jump. For example, when moving between {@link Room}s,
@@ -42,12 +44,13 @@ public abstract class Interactive {
     }
 
     /**
-     * Class of shortcuts for return statements in {@link #interact(GameEntity, BufferedReader,
-     * PrintWriter)}, {@link #respondToInteraction(GameEntity, BufferedReader, PrintWriter,
-     * String)}, and the like. Makes the semantics of the return statements in these methods more
-     * reader-friendly.
+     * Class of shortcuts for return statements in {@link #interact(GameCharacter, GameEntity,
+     * BufferedReader, PrintWriter)}, {@link #respondToInteraction(GameCharacter, GameEntity,
+     * BufferedReader, PrintWriter, String)}, and the like. Makes the semantics of the return
+     * statements in these methods more reader-friendly.
      */
     protected class GoTo {
+
         public static final int THIS = 0;
         public static final int PARENT = 1;
         public static final int GRANDPARENT = 2;
@@ -102,25 +105,32 @@ public abstract class Interactive {
      * interaction with the player.
      *
      * The default implementation will work for both single-action pop-in-and-out {@link
-     * #respondToInteraction(GameEntity, BufferedReader, PrintWriter, String)} implementations, which
-     * would require that they return a {@code 1} or greater. A {@code 0} return value from that
-     * method would imply that this should continue to call it until a non-zero return value is found
+     * #respondToInteraction(GameCharacter, GameEntity, BufferedReader, PrintWriter, String)}
+     * implementations, which would require that they return a {@code 1} or greater. A {@code 0}
+     * return value from that method would imply that this should continue to call it until a non-zero
+     * return value is found
      *
-     * @param from   {@link GameEntity} interacting with this object
+     * @param actor  {@link GameCharacter} interacting with {@link this}
+     * @param from   {@link GameEntity} that the {@link GameCharacter} came from
      * @param reader to read response from
      * @param writer to print prompt to
-     * @return the number of levels to go up from the current stage.
-     * @throws IllegalStateException the height returned by {@link #respondToInteraction(GameEntity,
-     *                               BufferedReader, PrintWriter, String)} is negative
-     * @throws ExitToException       {@link #respondToInteraction(GameEntity, BufferedReader,
-     *                               PrintWriter, String)} throws an {@link ExitToException}
+     * @return the number of levels to go up from the current stage
+     * @throws IllegalStateException the height returned by {@link #respondToInteraction(GameCharacter,
+     *                               GameEntity, BufferedReader, PrintWriter, String)} is negative
+     * @throws ExitToException       {@link #respondToInteraction(GameCharacter, GameEntity,
+     *                               BufferedReader, PrintWriter, String)} throws an {@link
+     *                               ExitToException}
      */
-    public int interact(GameEntity from, BufferedReader reader, PrintWriter writer)
-            throws ExitToException {
+    public int interact(GameCharacter actor, GameEntity from, BufferedReader reader,
+                        PrintWriter writer) throws ExitToException {
+        Objects.requireNonNull(actor);
+        Objects.requireNonNull(reader);
+        Objects.requireNonNull(writer);
+
         setVisibilityDownTo(Visibility.VISITED);
         int height;
         do {
-            height = respondToInteraction(from, reader, writer,
+            height = respondToInteraction(actor, from, reader, writer,
                                           Prompts.messages.getString("Prompts.selectAnAction"));
         } while (height == GoTo.THIS);
 
@@ -143,9 +153,9 @@ public abstract class Interactive {
      * @param writer to print prompt to
      * @return the number of levels to go up from the current stage.
      */
-    protected abstract int respondToInteraction(
-            GameEntity from, BufferedReader reader, PrintWriter writer, String prompt)
-            throws ExitToException;
+    protected abstract int
+    respondToInteraction(GameCharacter actor, GameEntity from, BufferedReader reader,
+                         PrintWriter writer, String prompt) throws ExitToException;
 
 
     // This is a holdover until we have a proper exit game confirmation dialogue.
