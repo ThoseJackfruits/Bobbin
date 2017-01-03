@@ -15,7 +15,7 @@ public class MainUsabilityTestRunner extends BaseConsoleTest {
 
     private void start(BufferedReader reader) {
         try {
-            playerCharacter.interact(null, reader, writer);
+            playerCharacter.interact(playerCharacter, null, reader, writer);
         }
         catch (ExitToException e) {
             System.out.print("Test completed.");

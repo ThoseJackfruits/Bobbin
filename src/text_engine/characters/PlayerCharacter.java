@@ -47,12 +47,13 @@ public class PlayerCharacter extends GameCharacter {
 
 
     @Override
-    protected int respondToInteraction(GameEntity from, BufferedReader reader, PrintWriter writer,
+    protected int respondToInteraction(GameCharacter actor, GameEntity from, BufferedReader reader,
+                                       PrintWriter writer,
                                        String prompt)
             throws ExitToException {
         Interactive choice = ConsoleActors.getChoice(reader, writer,
                                 actions.stream().map(f -> f.apply(this))
                                        .collect(Collectors.toList()), prompt);
-        return choice.interact(from, reader, writer);
+        return choice.interact(this, from, reader, writer);
     }
 }
