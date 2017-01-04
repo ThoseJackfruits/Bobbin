@@ -55,7 +55,7 @@ public class PlayerCharacter extends GameCharacter {
                                        PrintWriter writer) throws ExitToException {
         Interactive choice = ConsolePrompt.getChoice(
                 reader, writer, actions(actor, from, reader, writer),
-                Prompts.messages.getString("Prompts.genericPrompt"));
+                Prompts.messages.getString("Prompts.selectAnAction"));
         return choice.interact(this, from, reader, writer);
     }
 }

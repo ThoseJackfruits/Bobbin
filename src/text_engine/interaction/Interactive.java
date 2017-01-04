@@ -7,6 +7,7 @@ import java.util.Objects;
 import text_engine.boundaries.Room;
 import text_engine.characters.GameCharacter;
 import text_engine.characters.PlayerCharacter;
+import text_engine.constants.Prompts;
 import text_engine.interaction.actions.ActionList;
 import text_engine.interaction.actions.BaseAction;
 import text_engine.items.GameEntity;
@@ -27,7 +28,8 @@ public abstract class Interactive {
             GameCharacter actor, GameEntity from, BufferedReader reader, PrintWriter writer) {
         ActionList actions = new ActionList();
 
-        actions.add(new BaseAction(playerCharacter -> (Interactive) from));
+        actions.add(new BaseAction(Prompts.messages.getString("Actions.BACK.name"), "",
+                                   playerCharacter -> (Interactive) from));
 
         return actions;
     }
