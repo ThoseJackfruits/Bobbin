@@ -2,21 +2,18 @@ package text_engine.characters;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import text_engine.boundaries.Room;
-import text_engine.interaction.ConsoleActors;
+import text_engine.constants.Actions;
+import text_engine.constants.Prompts;
+import text_engine.interaction.ConsolePrompt;
 import text_engine.interaction.ExitToException;
 import text_engine.interaction.Interactive;
+import text_engine.interaction.actions.ActionList;
 import text_engine.items.GameEntity;
 import text_engine.items.Item;
 
 public class PlayerCharacter extends GameCharacter {
-
-    private static List<Function<PlayerCharacter, Interactive>> actions = new ArrayList<>();
 
     public class ExitToPlayerCharacterException extends ExitToException {
 
@@ -30,10 +27,17 @@ public class PlayerCharacter extends GameCharacter {
      */
     public PlayerCharacter(String name, String description, Room location, Item... inventory) {
         super(name, description, location, inventory);
+    }
 
-        // Actions
-        actions.add(GameCharacter::getLocation);
-        actions.add(Interactive::exitGame);
+    @Override
+    protected ActionList actions(GameCharacter actor, GameEntity from, BufferedReader reader,
+                                 PrintWriter writer) {
+        ActionList actions = super.actions(actor, from, reader, writer);
+
+        actions.add(Actions.LOOK_AROUND);
+        actions.add(Actions.EXIT_GAME);
+
+        return actions;
     }
 
     /**
@@ -47,11 +51,11 @@ public class PlayerCharacter extends GameCharacter {
 
 
     @Override
-    protected int respondToInteraction(GameCharacter actor, GameEntity from, BufferedReader reader,
-                                       PrintWriter writer, String prompt) throws ExitToException {
-        Interactive choice = ConsoleActors.getChoice(reader, writer,
-                                                     actions.stream().map(f -> f.apply(this))
-                                                            .collect(Collectors.toList()), prompt);
+    protected int respondToInteraction(PlayerCharacter actor, GameEntity from, BufferedReader reader,
+                                       PrintWriter writer) throws ExitToException {
+        Interactive choice = ConsolePrompt.getChoice(
+                reader, writer, actions(actor, from, reader, writer),
+                Prompts.messages.getString("Prompts.genericPrompt"));
         return choice.interact(this, from, reader, writer);
     }
 }

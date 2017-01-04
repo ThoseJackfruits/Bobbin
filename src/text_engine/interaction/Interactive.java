@@ -6,15 +6,35 @@ import java.util.Objects;
 
 import text_engine.boundaries.Room;
 import text_engine.characters.GameCharacter;
-import text_engine.constants.Prompts;
+import text_engine.characters.PlayerCharacter;
+import text_engine.interaction.actions.ActionList;
+import text_engine.interaction.actions.BaseAction;
 import text_engine.items.GameEntity;
 
 public abstract class Interactive {
 
     /**
+     * Get the base set of actions to present to the player. Should be fetched and then added to by
+     * each {@link Interactive} subclass for context-specific options.
+     *
+     * @param actor  {@link GameCharacter} interacting with {@link this}
+     * @param from   {@link GameEntity} that the {@link GameCharacter} came from
+     * @param reader to read response from
+     * @param writer to print prompt to
+     * @return the base set of player actions
+     */
+    protected ActionList actions(
+            GameCharacter actor, GameEntity from, BufferedReader reader, PrintWriter writer) {
+        ActionList actions = new ActionList();
+
+        actions.add(new BaseAction(playerCharacter -> (Interactive) from));
+
+        return actions;
+    }
+
+    /**
      * Should be caught at the highest level possible (e.g. the main game loop) which should, after
-     * catching it, call {@link #then#interact(GameCharacter, GameEntity, BufferedReader,
-     * PrintWriter)}.
+     * catching it, call {@link #then#interact(PlayerCharacter, GameEntity, BufferedReader, PrintWriter)}.
      *
      * This will allow for the stack to be reset whenever moving from one {@link Interactive} to
      * another is not necessarily a parent-child jump. For example, when moving between {@link Room}s,
@@ -44,9 +64,7 @@ public abstract class Interactive {
     }
 
     /**
-     * Class of shortcuts for return statements in {@link #interact(GameCharacter, GameEntity,
-     * BufferedReader, PrintWriter)}, {@link #respondToInteraction(GameCharacter, GameEntity,
-     * BufferedReader, PrintWriter, String)}, and the like. Makes the semantics of the return
+     * Class of shortcuts for return statements in {@link #interact(PlayerCharacter, GameEntity, BufferedReader, PrintWriter)}, {@link #respondToInteraction(PlayerCharacter, GameEntity, BufferedReader, PrintWriter)}, and the like. Makes the semantics of the return
      * statements in these methods more reader-friendly.
      */
     protected class GoTo {
@@ -63,6 +81,7 @@ public abstract class Interactive {
      *
      * @return player-facing {@link Visibility} of {@link this}.
      */
+
     public Visibility getVisibility() {
         return visibility;
     }
@@ -105,33 +124,32 @@ public abstract class Interactive {
      * interaction with the player.
      *
      * The default implementation will work for both single-action pop-in-and-out {@link
-     * #respondToInteraction(GameCharacter, GameEntity, BufferedReader, PrintWriter, String)}
+     * #respondToInteraction(PlayerCharacter, GameEntity, BufferedReader, PrintWriter)}
      * implementations, which would require that they return a {@code 1} or greater. A {@code 0}
      * return value from that method would imply that this should continue to call it until a non-zero
      * return value is found
      *
-     * @param actor  {@link GameCharacter} interacting with {@link this}
+     * @param actor  {@link PlayerCharacter} interacting with {@link this}
      * @param from   {@link GameEntity} that the {@link GameCharacter} came from
      * @param reader to read response from
      * @param writer to print prompt to
      * @return the number of levels to go up from the current stage
-     * @throws IllegalStateException the height returned by {@link #respondToInteraction(GameCharacter,
-     *                               GameEntity, BufferedReader, PrintWriter, String)} is negative
-     * @throws ExitToException       {@link #respondToInteraction(GameCharacter, GameEntity,
-     *                               BufferedReader, PrintWriter, String)} throws an {@link
+     * @throws IllegalStateException the height returned by {@link #respondToInteraction(PlayerCharacter, GameEntity, BufferedReader, PrintWriter)} is negative
+     * @throws ExitToException       {@link #respondToInteraction(PlayerCharacter, GameEntity, BufferedReader, PrintWriter)} throws an {@link
      *                               ExitToException}
      */
-    public int interact(GameCharacter actor, GameEntity from, BufferedReader reader,
+    public int interact(PlayerCharacter actor, GameEntity from, BufferedReader reader,
                         PrintWriter writer) throws ExitToException {
         Objects.requireNonNull(actor);
         Objects.requireNonNull(reader);
         Objects.requireNonNull(writer);
 
         setVisibilityDownTo(Visibility.VISITED);
+
         int height;
         do {
-            height = respondToInteraction(actor, from, reader, writer,
-                                          Prompts.messages.getString("Prompts.selectAnAction"));
+            height = respondToInteraction(actor, from, reader, writer
+                                         );
         } while (height == GoTo.THIS);
 
         if (height < 0) {
@@ -148,19 +166,21 @@ public abstract class Interactive {
     /**
      * Respond to interaction from another {@link GameEntity}.
      *
+     *
+     * @param actor
      * @param from   source of the interaction.
      * @param reader to read response from
      * @param writer to print prompt to
      * @return the number of levels to go up from the current stage.
      */
     protected abstract int
-    respondToInteraction(GameCharacter actor, GameEntity from, BufferedReader reader,
-                         PrintWriter writer, String prompt) throws ExitToException;
+    respondToInteraction(PlayerCharacter actor, GameEntity from, BufferedReader reader,
+                         PrintWriter writer) throws ExitToException;
 
 
     // This is a holdover until we have a proper exit game confirmation dialogue.
     @Deprecated
-    protected static Interactive exitGame(GameCharacter gc) {
+    public static Interactive exitGame(GameCharacter gc) {
         System.exit(0);
         return null;  // Solely to allow exitGame() to fit in cleanly with other action lambdas.
     }

@@ -85,8 +85,6 @@ public class SaveGameSerial extends SaveGame<GameCharacter> {
         FileInputStream fis;
         ObjectInputStream in;
 
-        System.out.printf("Loading from %s\n", saveFile.toString());
-
         try {
             fis = new FileInputStream(new File(saveDir, getName()));
             in = new ObjectInputStream(fis);
@@ -102,7 +100,6 @@ public class SaveGameSerial extends SaveGame<GameCharacter> {
     public void saveGameState(GameCharacter toSave) {
         FileOutputStream fos;
         ObjectOutputStream out;
-        System.out.printf("Saving to %s\n", saveFile.toString());
         try {
             fos = new FileOutputStream(new File(saveDir, getName()));
             out = new ObjectOutputStream(fos);

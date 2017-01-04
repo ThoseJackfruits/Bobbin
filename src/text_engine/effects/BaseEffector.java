@@ -21,8 +21,7 @@ public class BaseEffector extends BaseGameEntity implements Effector {
     private final List<BaseEffect<? extends GameEntity>> effects;
 
     public BaseEffector(List<BaseEffect<? extends GameEntity>> effects) {
-        this.effects = new ArrayList<>();
-        this.effects.addAll(effects);
+        this.effects = new ArrayList<>(effects);
     }
 
     /**

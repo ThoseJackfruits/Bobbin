@@ -10,12 +10,12 @@ import java.util.List;
 /**
  * The primary method of interacting with the player console.
  */
-public class ConsoleActors {
+public class ConsolePrompt {
 
     /**
      * Protect constructor, since it is a static only class
      */
-    protected ConsoleActors() {
+    protected ConsolePrompt() {
     }
 
     /**
@@ -51,18 +51,18 @@ public class ConsoleActors {
      *
      * @param reader          to read response from
      * @param writer          to print prompt to
-     * @param defaultResponse the default response of the player, if the player submits empty input.
+     * @param prompt          to present to the player when asking for input
+     * @param defaultChoice the default response of the player, if the player submits empty input.
      *                        If {@code null}, an explicit response is required.
-     * @param prompt          to present to the user when asking for input
      * @return the player's response
      */
-    public static boolean getResponseBoolean(BufferedReader reader, PrintWriter writer,
-                                             Boolean defaultResponse, String prompt) {
-        boolean response;
+    public static boolean getChoiceBoolean(BufferedReader reader, PrintWriter writer,
+                                           String prompt, Boolean defaultChoice) {
+        boolean choice;
         while (true) {
-            Printers.printBooleanPrompt(writer, defaultResponse, prompt);
+            Printers.printBooleanPrompt(writer, prompt, defaultChoice);
             try {
-                response = getResponse(defaultResponse, reader.readLine());
+                choice = getChoice(defaultChoice, reader.readLine());
                 break;
             }
             catch (InputMismatchException ignored) {
@@ -72,19 +72,19 @@ public class ConsoleActors {
             }
         }
 
-        return response;
+        return choice;
     }
 
-    private static boolean getResponse(Boolean defaultResponse, String response)
+    private static boolean getChoice(Boolean defaultChoice, String response)
             throws InputMismatchException {
-        Boolean booleanResponse = getBoolean(response);
-        if (booleanResponse != null) {
-            return booleanResponse;
+        Boolean choice = getBoolean(response);
+        if (choice != null) {
+            return choice;
         }
-        if (defaultResponse == null) {
+        if (defaultChoice == null) {
             throw new InputMismatchException();
         }
-        return defaultResponse;
+        return defaultChoice;
     }
 
     private static Boolean getBoolean(String response) {

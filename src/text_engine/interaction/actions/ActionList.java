@@ -13,7 +13,7 @@ import text_engine.interaction.Interactive;
  * - Keeps {@link Interactive}s fresh, as they are fetched only when the player is prompted
  * - More extensible than other options. Can keep Actions as a group of constants
  */
-public class ActionList extends ArrayList<Action> {
+public class ActionList extends ArrayList<BaseAction> {
 
     /**
      * Apply all of the {@link Action}s in the {@link ActionList}.

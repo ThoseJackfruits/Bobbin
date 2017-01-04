@@ -77,14 +77,12 @@ public class Printers {
 
     /**
      * Prints out a boolean prompt to the user, hinting at the {@code defaultResponse}.
-     *
-     * @param writer          to print prompt to
-     * @param defaultResponse the default response of the player, if the player submits empty input.
-     *                        If {@code null}, there is no default hinted.
+     *  @param writer          to print prompt to
      * @param prompt          to display to the user
+     * @param defaultResponse the default response of the player, if the player submits empty input.
+ *                        If {@code null}, there is no default hinted.
      */
-    public static void printBooleanPrompt(PrintWriter writer, Boolean defaultResponse,
-                                          String prompt) {
+    public static void printBooleanPrompt(PrintWriter writer, String prompt, Boolean defaultResponse) {
         String options;
 
         if (defaultResponse == null) {
