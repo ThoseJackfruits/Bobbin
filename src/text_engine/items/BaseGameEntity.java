@@ -87,7 +87,7 @@ public class BaseGameEntity extends Interactive implements GameEntity {
 
     @Override
     public String toString() {
-        return this.name.concat(": ").concat(this.description);
+        return this.name + ": " + this.description;
     }
 
     @Override
