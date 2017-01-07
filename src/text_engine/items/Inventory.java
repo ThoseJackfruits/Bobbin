@@ -1,5 +1,7 @@
 package text_engine.items;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -7,6 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Predicate;
+
+import text_engine.characters.GameCharacter;
+import text_engine.constants.Actions;
+import text_engine.interaction.actions.ActionList;
 
 public class Inventory extends BaseGameEntity implements List<Item> {
     private final List<Item> items;
@@ -22,6 +28,18 @@ public class Inventory extends BaseGameEntity implements List<Item> {
     public boolean hasKeyThatMatches(Predicate<Item> match) {
         return stream().filter((item) -> item.getClass().equals(Key.class))
                        .anyMatch(match);
+    }
+
+    @Override
+    protected ActionList actions(GameCharacter actor, BaseGameEntity from, BufferedReader reader,
+                                 PrintWriter writer) {
+        ActionList actions = super.actions(actor, from, reader, writer);
+
+        for (Item item : items) {
+            actions.add(Actions.ITEM(item));
+        }
+
+        return actions;
     }
 
     // List Methods

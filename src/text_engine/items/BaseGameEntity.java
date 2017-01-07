@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import text_engine.characters.GameCharacter;
 import text_engine.characters.PlayerCharacter;
+import text_engine.interaction.ConsolePrompt;
 import text_engine.interaction.ExitToException;
 import text_engine.interaction.Interactive;
 import text_engine.interaction.Printers;
@@ -87,7 +88,9 @@ public class BaseGameEntity extends Interactive implements GameEntity {
 
     @Override
     public String toString() {
-        return this.name + ": " + this.description;
+        return this.getDescription().isEmpty()
+               ? this.getName()
+               : this.getName() + ": " + this.getDescription();
     }
 
     @Override
@@ -107,13 +110,16 @@ public class BaseGameEntity extends Interactive implements GameEntity {
         return name.hashCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
-                                       PrintWriter writer) throws ExitToException {
+    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
+                                       BufferedReader reader, PrintWriter writer)
+            throws ExitToException {
+        Printers.println(writer);
         Printers.print(writer, this);
-        return GoTo.PARENT;
+        Printers.println(writer);
+
+        return ConsolePrompt.getChoice(reader, writer, actions(actor, from, reader, writer), null)
+                            .apply(actor)
+                            .interact(actor, this, reader, writer);
     }
 }
