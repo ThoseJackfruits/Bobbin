@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.naming.directory.InvalidSearchFilterException;
 
-import text_engine.constants.Prompts;
+import text_engine.constants.Globals;
 
 /**
  * The primary method of interacting with the player console.
@@ -136,11 +136,11 @@ public class ConsolePrompt {
      */
     private static <T extends Interactive> int findChoiceIndexByName(List<T> list, String response)
             throws InvalidSearchFilterException {
-        String normalisedResponse = response.toLowerCase(Prompts.locale);
+        String normalisedResponse = response.toLowerCase(Globals.locale);
         ArrayList<Integer> indexesFound = new ArrayList<>(2);
 
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).toString().toLowerCase(Prompts.locale).contains(normalisedResponse)) {
+            if (list.get(i).toString().toLowerCase(Globals.locale).contains(normalisedResponse)) {
                 indexesFound.add(i);
             }
 

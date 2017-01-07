@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 
-import text_engine.constants.Prompts;
+import text_engine.constants.Globals;
 import text_engine.interaction.Printers;
 import text_engine.items.Inventory;
 import text_engine.items.Item;
@@ -76,9 +76,9 @@ public class PrintersTest extends BaseUnitTest {
     public void printBooleanPrompt() {
         Boolean[] defaultResponses = new Boolean[] {null, false, true};
         String[] expectedOptions = new String[] {
-                Prompts.messages.getString("Prompts.booleanOptions"),
-                Prompts.messages.getString("Prompts.booleanOptions_noDefault"),
-                Prompts.messages.getString("Prompts.booleanOptions_yesDefault")};
+                Globals.messages.getString("Prompts.booleanOptions"),
+                Globals.messages.getString("Prompts.booleanOptions_noDefault"),
+                Globals.messages.getString("Prompts.booleanOptions_yesDefault")};
         String prompt = "yes or no?";
 
         for (int i = 0; i < defaultResponses.length; i++) {

@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.util.List;
 
-import text_engine.constants.Prompts;
+import text_engine.constants.Globals;
 import text_engine.interaction.ConsolePrompt;
 import text_engine.items.Item;
 import text_engine.usability.BufferedUserInput;
@@ -77,8 +77,8 @@ public class ConsolePromptTest extends BaseConsoleTest {
         final String prompt = "Choose from the list: ";
         final List<Item> list = playerCharacter.getInventory();
 
-        final String[] responses = {Prompts.messages.getString("Items.BLUEBERRY.name"),
-                                    Prompts.messages.getString("Items.FLOUR.name")};
+        final String[] responses = {Globals.messages.getString("Items.BLUEBERRY.name"),
+                                    Globals.messages.getString("Items.FLOUR.name")};
         final int[] expected = new int[]{0, 1};
         final BufferedReader reader = new BufferedUserInput().appendAllOnNewLines(responses).build();
 

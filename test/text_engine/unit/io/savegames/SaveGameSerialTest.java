@@ -2,8 +2,8 @@ package text_engine.unit.io.savegames;
 
 import org.junit.Test;
 
-import text_engine.characters.GameCharacter;
-import text_engine.io.savegames.SaveGameSerial;
+import text_engine.characters.PlayerCharacter;
+import text_engine.io.gamedata.SaveGameSerial;
 import text_engine.unit.BaseUnitTest;
 
 import static org.junit.Assert.assertEquals;
@@ -12,14 +12,17 @@ public class SaveGameSerialTest extends BaseUnitTest {
 
     @Test
     public void saveGameState() throws Exception {
-        SaveGameSerial saveGame = new SaveGameSerial("TestSave1", "TestSaveDir");
-        saveGame.saveGameState(gameCharacter);
-        GameCharacter loadedCharacter = saveGame.loadGameState();
-        assertEquals(gameCharacter.getLocation().getName(), loadedCharacter.getLocation().getName());
-        assertEquals(gameCharacter.getLocation().getDoors()[1]
-                             .getOtherRoom(gameCharacter.getLocation())
+        SaveGameSerial saveGame = new SaveGameSerial("TestSave1");
+        saveGame.saveData(playerCharacter);
+
+        PlayerCharacter loadedCharacter = saveGame.loadData();
+        assertEquals(playerCharacter.getLocation().getName(), loadedCharacter.getLocation().getName());
+
+        // Try some door/room traversal
+        assertEquals(playerCharacter.getLocation().getDoors()[0]
+                             .getOtherRoom(playerCharacter.getLocation())
                              .getName(),
-                     loadedCharacter.getLocation().getDoors()[1]
+                     loadedCharacter.getLocation().getDoors()[0]
                              .getOtherRoom(loadedCharacter.getLocation())
                              .getName());
     }

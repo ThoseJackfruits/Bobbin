@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 
 import text_engine.characters.PlayerCharacter;
 import text_engine.interaction.actions.Action;
-import text_engine.items.GameEntity;
+import text_engine.items.BaseGameEntity;
 
 public class Confirmation extends Interactive {
 
@@ -30,7 +30,7 @@ public class Confirmation extends Interactive {
     }
 
     @Override
-    protected int respondToInteraction(PlayerCharacter actor, GameEntity from, BufferedReader reader,
+    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
                                        PrintWriter writer) throws ExitToException {
         if (ConsolePrompt.getChoiceBoolean(reader, writer, prompt, defaultChoice)) {
             action.apply(actor);

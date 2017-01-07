@@ -2,13 +2,16 @@ package text_engine.interaction.actions;
 
 import com.sun.istack.internal.NotNull;
 
+import java.util.function.Function;
+
 import text_engine.characters.PlayerCharacter;
 import text_engine.interaction.Interactive;
 import text_engine.items.BaseGameEntity;
+import text_engine.items.GameEntity;
 
 public class BaseAction extends BaseGameEntity implements Action {
 
-    private Action action;
+    private Function<PlayerCharacter, BaseGameEntity> action;
 
     /**
      * Constructs a new item {@link BaseGameEntity}.
@@ -17,13 +20,45 @@ public class BaseAction extends BaseGameEntity implements Action {
      * @param description The description of the object
      */
     public BaseAction(@NotNull String name, @NotNull String description,
-                      Action action) {
+                      Function<PlayerCharacter, BaseGameEntity> action) {
         super(name, description);
         this.action = action;
     }
 
     public BaseAction(Action action) {
+        super();
         this.action = action;
+    }
+
+    /**
+     * Alternative to {@link #getName()} which falls back on
+     * {@link #apply(PlayerCharacter)#getName(PlayerCharacter)}
+     * if {@link this} does not have an explicit name.
+     *
+     * @param playerCharacter the {@link PlayerCharacter} taking the action
+     * @return description of this {@link GameEntity}
+     */
+    public String getName(PlayerCharacter playerCharacter) {
+        String name = getName();
+        if (name.isEmpty()) {
+            name = apply(playerCharacter).getName();
+        }
+        return name;
+    }
+
+    /**
+     * Alternative to {@link #getDescription()} which falls back on the {@link BaseGameEntity} that
+     * {@link #apply(PlayerCharacter)} gets off of the {@link PlayerCharacter}
+     *
+     * @param playerCharacter the {@link PlayerCharacter} taking the action
+     * @return description of this {@link GameEntity}
+     */
+    public String getDescription(PlayerCharacter playerCharacter) {
+        String description = super.getDescription();
+        if (description.isEmpty()) {
+            description = apply(playerCharacter).getDescription();
+        }
+        return description;
     }
 
     /**
@@ -32,11 +67,11 @@ public class BaseAction extends BaseGameEntity implements Action {
      * Should be called when presenting an {@link Action} to the player, in order to get the relevant
      * {@link Interactive} item to interact with off of the {@link PlayerCharacter}.
      *
-     * @param playerCharacter the {@link PlayerCharacter} taking the action.
+     * @param playerCharacter the {@link PlayerCharacter} taking the action
      * @return the relevant {@link Interactive} item to interact with
      */
     @Override
-    public Interactive apply(PlayerCharacter playerCharacter) {
+    public BaseGameEntity apply(PlayerCharacter playerCharacter) {
         return action.apply(playerCharacter);
     }
 }

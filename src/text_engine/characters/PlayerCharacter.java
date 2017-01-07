@@ -5,12 +5,12 @@ import java.io.PrintWriter;
 
 import text_engine.boundaries.Room;
 import text_engine.constants.Actions;
-import text_engine.constants.Prompts;
+import text_engine.constants.Globals;
 import text_engine.interaction.ConsolePrompt;
 import text_engine.interaction.ExitToException;
 import text_engine.interaction.Interactive;
 import text_engine.interaction.actions.ActionList;
-import text_engine.items.GameEntity;
+import text_engine.items.BaseGameEntity;
 import text_engine.items.Item;
 
 public class PlayerCharacter extends GameCharacter {
@@ -30,12 +30,13 @@ public class PlayerCharacter extends GameCharacter {
     }
 
     @Override
-    protected ActionList actions(GameCharacter actor, GameEntity from, BufferedReader reader,
+    protected ActionList actions(GameCharacter actor, BaseGameEntity from, BufferedReader reader,
                                  PrintWriter writer) {
         ActionList actions = super.actions(actor, from, reader, writer);
 
         actions.add(Actions.LOOK_AROUND);
         actions.add(Actions.EXIT_GAME);
+        actions.add(Actions.OPEN_INVENTORY);
 
         return actions;
     }
@@ -51,11 +52,11 @@ public class PlayerCharacter extends GameCharacter {
 
 
     @Override
-    protected int respondToInteraction(PlayerCharacter actor, GameEntity from, BufferedReader reader,
+    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
                                        PrintWriter writer) throws ExitToException {
         Interactive choice = ConsolePrompt.getChoice(
                 reader, writer, actions(actor, from, reader, writer),
-                Prompts.messages.getString("Prompts.selectAnAction"));
+                Globals.messages.getString("Prompts.selectAnAction"));
         return choice.interact(this, from, reader, writer);
     }
 }
