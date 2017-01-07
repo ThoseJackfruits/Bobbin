@@ -111,7 +111,7 @@ public class BaseGameEntity extends Interactive implements GameEntity {
      * {@inheritDoc}
      */
     @Override
-    protected int respondToInteraction(PlayerCharacter actor, GameEntity from, BufferedReader reader,
+    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
                                        PrintWriter writer) throws ExitToException {
         Printers.print(writer, this);
         return GoTo.PARENT;

@@ -6,14 +6,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import text_engine.constants.Prompts;
+import text_engine.constants.Globals;
 
 /**
  * Primary method of printing to the player console.
  */
 public class Printers {
 
-    private static final MessageFormat formatter = new MessageFormat("", Prompts.locale);
+    private static final MessageFormat formatter = new MessageFormat("", Globals.locale);
 
     /**
      * Protect constructor, since it is a static only class
@@ -22,14 +22,14 @@ public class Printers {
     }
 
     private static String format(String messageKey, Object... arguments) {
-        formatter.applyPattern(Prompts.messages.getString(messageKey));
+        formatter.applyPattern(Globals.messages.getString(messageKey));
         return formatter.format(arguments);
     }
 
     public static void printMessage(PrintWriter writer, String messageKey, Object... arguments) {
         String message = (arguments != null && arguments.length > 0)
                          ? format(messageKey, arguments)
-                         : Prompts.messages.getString(messageKey);
+                         : Globals.messages.getString(messageKey);
         writer.println(message);
         writer.flush();
     }
@@ -96,13 +96,13 @@ public class Printers {
         String options;
 
         if (defaultChoice == null) {
-            options = Prompts.messages.getString("Prompts.booleanOptions");
+            options = Globals.messages.getString("Prompts.booleanOptions");
         }
         else if (defaultChoice) {
-            options = Prompts.messages.getString("Prompts.booleanOptions_yesDefault");
+            options = Globals.messages.getString("Prompts.booleanOptions_yesDefault");
         }
         else {
-            options = Prompts.messages.getString("Prompts.booleanOptions_noDefault");
+            options = Globals.messages.getString("Prompts.booleanOptions_noDefault");
         }
 
         writer.println(format("Prompts.booleanPrompt", prompt, options));

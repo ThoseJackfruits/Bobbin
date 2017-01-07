@@ -7,19 +7,19 @@ import text_engine.effects.GameCharacterEffect;
 import text_engine.items.Item;
 
 public class Items {
-    public static final Item BED = new Item(Prompts.messages.getString("Items.BED.name"),
-                                            Prompts.messages.getString("Items.BED.description"));
+    public static final Item BED = new Item(Globals.messages.getString("Items.BED.name"),
+                                            Globals.messages.getString("Items.BED.description"));
 
     public static final Item BLUEBERRY =
-            new Item(Prompts.messages.getString("Items.BLUEBERRY.name"),
-                     Prompts.messages.getString("Items.BLUEBERRY.description"))
+            new Item(Globals.messages.getString("Items.BLUEBERRY.name"),
+                     Globals.messages.getString("Items.BLUEBERRY.description"))
             .addEffect(GameCharacterEffect.NULL);
 
-    public static final Item FLOUR = new Item(Prompts.messages.getString("Items.FLOUR.name"),
-                                              Prompts.messages.getString("Items.FLOUR.description"));
+    public static final Item FLOUR = new Item(Globals.messages.getString("Items.FLOUR.name"),
+                                              Globals.messages.getString("Items.FLOUR.description"));
 
-    public static final Item WATER = new Item(Prompts.messages.getString("Items.WATER.name"),
-                                              Prompts.messages.getString("Items.WATER.description"));
+    public static final Item WATER = new Item(Globals.messages.getString("Items.WATER.name"),
+                                              Globals.messages.getString("Items.WATER.description"));
 
     /**
      * Get a copy of the given {@link Item}.

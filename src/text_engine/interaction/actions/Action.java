@@ -4,12 +4,14 @@ import java.util.function.Function;
 
 import text_engine.characters.PlayerCharacter;
 import text_engine.interaction.Interactive;
+import text_engine.items.BaseGameEntity;
+import text_engine.items.GameEntity;
 
 /**
  * Provides a way to get the freshest source of a given {@link Interactive} off of a {@link
  * PlayerCharacter}.
  */
-public interface Action extends Function<PlayerCharacter, Interactive> {
+public interface Action extends Function<PlayerCharacter, BaseGameEntity>, GameEntity {
 
     /**
      * Fetch the {@link Interactive} object from this {@link PlayerCharacter}.
@@ -21,5 +23,5 @@ public interface Action extends Function<PlayerCharacter, Interactive> {
      * @return the relevant {@link Interactive} item to interact with
      */
     @Override
-    Interactive apply(PlayerCharacter playerCharacter);
+    BaseGameEntity apply(PlayerCharacter playerCharacter);
 }
