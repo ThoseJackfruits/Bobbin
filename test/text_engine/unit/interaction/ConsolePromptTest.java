@@ -5,20 +5,22 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.util.List;
 
-import text_engine.interaction.ConsoleActors;
+import text_engine.constants.Prompts;
+import text_engine.interaction.ConsolePrompt;
 import text_engine.items.Item;
 import text_engine.usability.BufferedUserInput;
 
 import static org.junit.Assert.assertEquals;
 
-public class ConsoleActorsTest extends BaseConsoleTest {
+public class ConsolePromptTest extends BaseConsoleTest {
+
     @Test
     public void getResponseInt() {
         final String prompt = "Enter a Number: ";
         final BufferedReader reader = new BufferedUserInput().appendLine(1).appendLine(10).build();
 
-        assertEquals(1, ConsoleActors.getResponseInt(reader, writer, prompt));
-        assertEquals(10, ConsoleActors.getResponseInt(reader, writer, prompt));
+        assertEquals(1, ConsolePrompt.getResponseInt(reader, writer, prompt));
+        assertEquals(10, ConsolePrompt.getResponseInt(reader, writer, prompt));
 
         assertPromptOutput(prompt);
     }
@@ -30,7 +32,7 @@ public class ConsoleActorsTest extends BaseConsoleTest {
         final BufferedReader reader = new BufferedUserInput().appendAllOnNewLines(responses).build();
 
         for (String response : responses) {
-            assertEquals(response, ConsoleActors.getResponseString(reader, writer, prompt));
+            assertEquals(response, ConsolePrompt.getResponseString(reader, writer, prompt));
         }
 
         assertPromptOutput(prompt);
@@ -39,7 +41,7 @@ public class ConsoleActorsTest extends BaseConsoleTest {
     @Test
     public void getChoiceIndexFromList() {
         final String prompt = "Choose from the list: ";
-        final List<Item> listToChooseFrom = playerCharacter.getInventory();
+        final List<Item> list = playerCharacter.getInventory();
 
         final String[] responses = {"1", "2"};
         final BufferedReader reader = new BufferedUserInput().appendAllOnNewLines(responses).build();
@@ -47,7 +49,7 @@ public class ConsoleActorsTest extends BaseConsoleTest {
         for (String response : responses) {
             assertEquals(
                     Integer.parseInt(response) - 1,
-                    ConsoleActors.getChoiceIndex(reader, writer, listToChooseFrom, prompt));
+                    ConsolePrompt.getChoiceIndex(reader, writer, list, prompt));
         }
 
         assertPromptOutput(prompt);
@@ -56,15 +58,32 @@ public class ConsoleActorsTest extends BaseConsoleTest {
     @Test
     public void getChoiceFromList() {
         final String prompt = "Choose from the list: ";
-        final List<Item> listToChooseFrom = playerCharacter.getInventory();
+        final List<Item> list = playerCharacter.getInventory();
 
         final String[] responses = {"1", "2"};
         final BufferedReader reader = new BufferedUserInput().appendAllOnNewLines(responses).build();
 
         for (String response : responses) {
             assertEquals(
-                    listToChooseFrom.get(Integer.parseInt(response) - 1),
-                    ConsoleActors.getChoice(reader, writer, listToChooseFrom, prompt));
+                    list.get(Integer.parseInt(response) - 1),
+                    ConsolePrompt.getChoice(reader, writer, list, prompt));
+        }
+
+        assertPromptOutput(prompt);
+    }
+
+    @Test
+    public void getChoiceIndex_byName() {
+        final String prompt = "Choose from the list: ";
+        final List<Item> list = playerCharacter.getInventory();
+
+        final String[] responses = {Prompts.messages.getString("Items.BLUEBERRY.name"),
+                                    Prompts.messages.getString("Items.FLOUR.name")};
+        final int[] expected = new int[]{0, 1};
+        final BufferedReader reader = new BufferedUserInput().appendAllOnNewLines(responses).build();
+
+        for (int index : expected) {
+            assertEquals(index, ConsolePrompt.getChoiceIndex(reader, writer, list, prompt));
         }
 
         assertPromptOutput(prompt);

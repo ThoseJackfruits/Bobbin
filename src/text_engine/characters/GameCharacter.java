@@ -33,8 +33,6 @@ public class GameCharacter extends BaseGameEntity implements Cloneable {
         Objects.requireNonNull(items);
         Objects.requireNonNull(location);
 
-        // Need to do this because Arrays.asList() returns Arrays#ArrayList, not java.util.ArrayList,
-        // which is mutable in contents but not in length, and thus does not implement #clear().
         this.inventory = new Inventory(items);
         this.location = location;
     }
@@ -85,7 +83,7 @@ public class GameCharacter extends BaseGameEntity implements Cloneable {
         try {
             room = door.getOtherRoom(this.getLocation());
         }
-        catch (IllegalStateException exc) {
+        catch (IllegalStateException exc) {  // door is locked
             if (getInventory().hasKeyThatMatches((key) -> !door.unlock((Key) key))) {
                 room = door.getOtherRoom(this.getLocation());
             }

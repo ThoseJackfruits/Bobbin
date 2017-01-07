@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.util.Objects;
 
 import text_engine.characters.GameCharacter;
+import text_engine.characters.PlayerCharacter;
 import text_engine.interaction.ExitToException;
 import text_engine.interaction.Interactive;
 import text_engine.interaction.Printers;
@@ -48,6 +49,7 @@ public class BaseGameEntity extends Interactive implements GameEntity {
      * @param description The description of the object
      */
     public BaseGameEntity(@NotNull String name, @NotNull String description) {
+        super();
         Objects.requireNonNull(name);
         Objects.requireNonNull(description);
 
@@ -85,7 +87,7 @@ public class BaseGameEntity extends Interactive implements GameEntity {
 
     @Override
     public String toString() {
-        return this.name.concat(": ").concat(this.description);
+        return this.name + ": " + this.description;
     }
 
     @Override
@@ -109,8 +111,8 @@ public class BaseGameEntity extends Interactive implements GameEntity {
      * {@inheritDoc}
      */
     @Override
-    protected int respondToInteraction(GameCharacter actor, GameEntity from, BufferedReader reader,
-                                       PrintWriter writer, String prompt) throws ExitToException {
+    protected int respondToInteraction(PlayerCharacter actor, GameEntity from, BufferedReader reader,
+                                       PrintWriter writer) throws ExitToException {
         Printers.print(writer, this);
         return GoTo.PARENT;
     }

@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import text_engine.items.BaseGameEntity;
 import text_engine.interaction.ExitToException;
+import text_engine.items.BaseGameEntity;
 import text_engine.items.Item;
 
 /**
@@ -47,12 +47,11 @@ public class Room extends BaseGameEntity implements Serializable {
             throws IllegalArgumentException {
         super(name, description);
 
-        if (items.size() > CONTENT_LIMIT) {
-            throw new IllegalArgumentException(String.format("Rooms can have a maximum of %d items.",
-                                                             CONTENT_LIMIT));
+        this.items = new ArrayList<>(items.size());
+        for (Item i : items) {
+            addItem(i);
         }
 
-        this.items = new ArrayList<>(items);
         this.doors = new HashSet<>(doors);
     }
 
@@ -63,8 +62,7 @@ public class Room extends BaseGameEntity implements Serializable {
      * @param doors The initial doors for the room
      */
     public Room(@NotNull String name, @NotNull String description, Door... doors) {
-        this(name, description, new ArrayList<>(), Arrays.asList(doors));
-        Collections.addAll(this.doors, doors);
+        this(name, description, Collections.emptyList(), Arrays.asList(doors));
     }
 
     /**
@@ -75,8 +73,7 @@ public class Room extends BaseGameEntity implements Serializable {
      * @throws IllegalArgumentException {@code items} is larger than {@value CONTENT_LIMIT}.
      */
     public Room(@NotNull String name, @NotNull String description, Item... items) {
-        this(name, description, Arrays.asList(items), new ArrayList<>());
-        Collections.addAll(this.items, items);
+        this(name, description, Arrays.asList(items), Collections.emptyList());
     }
 
     /**
@@ -85,7 +82,7 @@ public class Room extends BaseGameEntity implements Serializable {
      * @param name the name of the room
      */
     public Room(@NotNull String name, @NotNull String description) {
-        this(name, description, new ArrayList<>(), new ArrayList<>());
+        this(name, description, Collections.emptyList(), Collections.emptyList());
     }
 
     /**
@@ -133,22 +130,6 @@ public class Room extends BaseGameEntity implements Serializable {
         }
 
         return this.items.add(item);
-    }
-
-    /**
-     * Examine the room, collecting all available objects into a string.
-     *
-     * @return A concatenation of all items' descriptions and door locations
-     */
-    public String examine() {
-        String result = "";
-        for (Item item : this.items) {
-            result += item.toString() + "\n";
-        }
-        for (Door door : this.doors) {
-            result += door.toString() + "\n";
-        }
-        return result;
     }
 
     /**

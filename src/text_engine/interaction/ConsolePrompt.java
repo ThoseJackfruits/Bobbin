@@ -3,19 +3,24 @@ package text_engine.interaction;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
 
+import javax.naming.directory.InvalidSearchFilterException;
+
+import text_engine.constants.Prompts;
+
 /**
  * The primary method of interacting with the player console.
  */
-public class ConsoleActors {
+public class ConsolePrompt {
 
     /**
      * Protect constructor, since it is a static only class
      */
-    protected ConsoleActors() {
+    protected ConsolePrompt() {
     }
 
     /**
@@ -27,19 +32,16 @@ public class ConsoleActors {
      * @param prompt to present to the user when asking for input
      * @return number given by the player
      */
-    public static int getResponseInt(BufferedReader reader, PrintWriter writer, String prompt) {
+    public static int getResponseInt(BufferedReader reader, PrintWriter writer, String prompt)
+            throws NumberFormatException {
         Integer selection = null;
 
         while (selection == null) {
-            Printers.printGenericPrompt(writer, prompt);
             try {
-                selection = Integer.parseInt(reader.readLine());
+                selection = Integer.parseInt(getResponseString(reader, writer, prompt));
             }
             catch (NumberFormatException e) {
-                writer.printf("Invalid input: %s", e.getLocalizedMessage()).flush();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
+                Printers.printMessage(writer, "Error.invalidInput.generic");
             }
         }
 
@@ -49,20 +51,20 @@ public class ConsoleActors {
     /**
      * Ask a boolean (yes/no) question to the player, optionally providing a default response.
      *
-     * @param reader          to read response from
-     * @param writer          to print prompt to
-     * @param defaultResponse the default response of the player, if the player submits empty input.
-     *                        If {@code null}, an explicit response is required.
-     * @param prompt          to present to the user when asking for input
+     * @param reader        to read response from
+     * @param writer        to print prompt to
+     * @param prompt        to present to the player when asking for input
+     * @param defaultChoice the default response of the player, if the player submits empty input. If
+     *                      {@code null}, an explicit response is required.
      * @return the player's response
      */
-    public static boolean getResponseBoolean(BufferedReader reader, PrintWriter writer,
-                                             Boolean defaultResponse, String prompt) {
-        boolean response;
+    public static boolean getChoiceBoolean(BufferedReader reader, PrintWriter writer,
+                                           String prompt, Boolean defaultChoice) {
+        boolean choice;
         while (true) {
-            Printers.printBooleanPrompt(writer, defaultResponse, prompt);
+            Printers.printBooleanPrompt(writer, prompt, defaultChoice);
             try {
-                response = getResponse(defaultResponse, reader.readLine());
+                choice = getChoice(defaultChoice, reader.readLine());
                 break;
             }
             catch (InputMismatchException ignored) {
@@ -72,19 +74,19 @@ public class ConsoleActors {
             }
         }
 
-        return response;
+        return choice;
     }
 
-    private static boolean getResponse(Boolean defaultResponse, String response)
+    private static boolean getChoice(Boolean defaultChoice, String response)
             throws InputMismatchException {
-        Boolean booleanResponse = getBoolean(response);
-        if (booleanResponse != null) {
-            return booleanResponse;
+        Boolean choice = getBoolean(response);
+        if (choice != null) {
+            return choice;
         }
-        if (defaultResponse == null) {
+        if (defaultChoice == null) {
             throw new InputMismatchException();
         }
-        return defaultResponse;
+        return defaultChoice;
     }
 
     private static Boolean getBoolean(String response) {
@@ -110,16 +112,63 @@ public class ConsoleActors {
         String response = null;
 
         while (response == null) {
-            writer.printf("%s: ", prompt).flush();
+            Printers.printGenericPrompt(writer, prompt);
             try {
                 response = reader.readLine();
             }
             catch (IOException e) {
-                writer.printf("Invalid input: %s", e.getLocalizedMessage()).flush();
+                e.printStackTrace();
             }
         }
 
         return response;
+    }
+
+    /**
+     * Get the index of an {@link Interactive} from the given list whose name or description matches
+     * the player's response.
+     *
+     * @param list     the {@link List<T>} to choose from
+     * @param response the player's response to search for in the list
+     * @param <T>      the type of {@link Interactive} objects in the given list
+     * @return the index of the item that matches
+     * @throws InvalidSearchFilterException the number of matches found is not equal to 1
+     */
+    private static <T extends Interactive> int findChoiceIndexByName(List<T> list, String response)
+            throws InvalidSearchFilterException {
+        String normalisedResponse = response.toLowerCase(Prompts.locale);
+        ArrayList<Integer> indexesFound = new ArrayList<>(2);
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).toString().toLowerCase(Prompts.locale).contains(normalisedResponse)) {
+                indexesFound.add(i);
+            }
+
+            if (indexesFound.size() > 1) {  // Found more than 1 match
+                throw new InvalidSearchFilterException("Error.invalidInput.search.beMoreSpecific");
+            }
+        }
+
+        if (indexesFound.size() < 1) {  // Found less than 1 match
+            throw new InvalidSearchFilterException("Error.invalidInput.generic");
+        }
+
+        return indexesFound.get(0);  // Goldilocks
+    }
+
+    /**
+     * Get an {@link Interactive} from the given list whose name or description matches the player's
+     * response.
+     *
+     * @param list     the {@link List<T>} to choose from
+     * @param response the player's response to search for in the list
+     * @param <T>      the type of {@link Interactive} objects in the given list
+     * @return the index of the item that matches
+     * @throws InvalidSearchFilterException the number of matches found is not equal to 1
+     */
+    private static <T extends Interactive> T findChoiceByName(List<T> list, String response)
+            throws InvalidSearchFilterException {
+        return list.get(findChoiceIndexByName(list, response));
     }
 
     /**
@@ -136,7 +185,19 @@ public class ConsoleActors {
 
         Integer choice = null;
         while (choice == null || choice < 0 || choice >= list.size()) {
-            choice = getResponseInt(reader, writer, prompt) - 1; // Visual list is 1-indexed
+            String response = getResponseString(reader, writer, prompt);
+
+            try {
+                choice = Integer.parseInt(response) - 1;  // Visual list is 1-indexed
+            }
+            catch (NumberFormatException numberException) {
+                try {
+                    choice = findChoiceIndexByName(list, response);
+                }
+                catch (InvalidSearchFilterException e) {
+                    Printers.printMessage(writer, e.getMessage());
+                }
+            }
         }
         return choice;
     }

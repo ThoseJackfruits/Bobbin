@@ -12,6 +12,7 @@ import text_engine.constants.Prompts;
  * Primary method of printing to the player console.
  */
 public class Printers {
+
     private static final MessageFormat formatter = new MessageFormat("", Prompts.locale);
 
     /**
@@ -23,6 +24,14 @@ public class Printers {
     private static String format(String messageKey, Object... arguments) {
         formatter.applyPattern(Prompts.messages.getString(messageKey));
         return formatter.format(arguments);
+    }
+
+    public static void printMessage(PrintWriter writer, String messageKey, Object... arguments) {
+        String message = (arguments != null && arguments.length > 0)
+                         ? format(messageKey, arguments)
+                         : Prompts.messages.getString(messageKey);
+        writer.println(message);
+        writer.flush();
     }
 
     /**
@@ -76,21 +85,20 @@ public class Printers {
     }
 
     /**
-     * Prints out a boolean prompt to the user, hinting at the {@code defaultResponse}.
+     * Prints out a boolean prompt to the user, hinting at the {@code defaultChoice}.
      *
-     * @param writer          to print prompt to
-     * @param defaultResponse the default response of the player, if the player submits empty input.
-     *                        If {@code null}, there is no default hinted.
-     * @param prompt          to display to the user
+     * @param writer        to print prompt to
+     * @param prompt        to display to the user
+     * @param defaultChoice the default response of the player, if the player submits empty input. If
+     *                      {@code null}, there is no default hinted.
      */
-    public static void printBooleanPrompt(PrintWriter writer, Boolean defaultResponse,
-                                          String prompt) {
+    public static void printBooleanPrompt(PrintWriter writer, String prompt, Boolean defaultChoice) {
         String options;
 
-        if (defaultResponse == null) {
+        if (defaultChoice == null) {
             options = Prompts.messages.getString("Prompts.booleanOptions");
         }
-        else if (defaultResponse) {
+        else if (defaultChoice) {
             options = Prompts.messages.getString("Prompts.booleanOptions_yesDefault");
         }
         else {
