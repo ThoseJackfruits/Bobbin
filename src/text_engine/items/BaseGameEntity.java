@@ -8,8 +8,8 @@ import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.Objects;
 
-import text_engine.characters.GameCharacter;
 import text_engine.characters.PlayerCharacter;
+import text_engine.effects.BaseEffector;
 import text_engine.interaction.ConsolePrompt;
 import text_engine.interaction.ExitToException;
 import text_engine.interaction.Interactive;
@@ -82,7 +82,7 @@ public class BaseGameEntity extends Interactive implements GameEntity {
     }
 
     @Override
-    public void consume(GameCharacter gameCharacter) {
+    public BaseEffector consume() {
         throw new NotImplementedException();
     }
 

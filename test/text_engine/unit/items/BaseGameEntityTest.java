@@ -19,7 +19,7 @@ public class BaseGameEntityTest extends BaseUnitTest {
 
     @Test(expected = NotImplementedException.class)
     public void consume() {
-        bge.consume(playerCharacter);
+        bge.consume();
     }
 
 }

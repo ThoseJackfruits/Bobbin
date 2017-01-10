@@ -4,7 +4,8 @@ import com.sun.istack.internal.NotNull;
 
 import java.io.Serializable;
 
-import text_engine.characters.GameCharacter;
+import text_engine.effects.BaseEffector;
+import text_engine.effects.Effector;
 
 public interface GameEntity extends Serializable, Cloneable {
 
@@ -50,5 +51,10 @@ public interface GameEntity extends Serializable, Cloneable {
      */
     boolean isConsumable();
 
-    void consume(GameCharacter gameCharacter);
+    /**
+     * Get the {@link Effector} from consuming {@link this}.
+     *
+     * @return {@link Effector} from consuming {@link this}.
+     */
+    BaseEffector consume();
 }

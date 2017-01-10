@@ -8,7 +8,7 @@ import java.util.List;
 import text_engine.characters.GameCharacter;
 import text_engine.items.GameEntity;
 
-public interface Effector {
+public interface Effector extends GameEntity {
 
     /**
      * Apply {@link this} {@link Effector}'s {@link BaseEffect}s to the given {@link GameCharacter}.
