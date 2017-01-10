@@ -2,7 +2,6 @@ package text_engine.items;
 
 import com.sun.istack.internal.NotNull;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,8 +9,8 @@ import java.util.Objects;
 import java.util.Stack;
 
 import text_engine.characters.GameCharacter;
-import text_engine.effects.BaseEffector;
 import text_engine.effects.BaseEffect;
+import text_engine.effects.BaseEffector;
 import text_engine.effects.Effector;
 import text_engine.items.combinations.Combination;
 import text_engine.items.combinations.Combinations;
@@ -19,7 +18,7 @@ import text_engine.items.combinations.Combinations;
 /**
  * A non-character {@link BaseGameEntity}. Has the ability to be combinable or consumable.
  */
-public class Item extends BaseGameEntity implements Serializable {
+public class Item extends BaseGameEntity {
 
     private final Combinations combinations;
     private final Effector effector;

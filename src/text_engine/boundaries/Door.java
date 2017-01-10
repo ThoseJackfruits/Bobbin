@@ -1,16 +1,19 @@
 package text_engine.boundaries;
 
-import java.io.Serializable;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.util.Objects;
 import java.util.Random;
 
+import text_engine.characters.PlayerCharacter;
 import text_engine.interaction.ExitToException;
+import text_engine.items.BaseGameEntity;
 import text_engine.items.Key;
 
 /**
  * Represents a door from one {@link Door} to another
  */
-public class Door implements Serializable {
+public class Door extends BaseGameEntity {
 
     public class ExitToDoorException extends ExitToException {
 
@@ -24,11 +27,35 @@ public class Door implements Serializable {
     /**
      * Constructs a {@link Door} between the 2 provided rooms.
      *
+     * @param name        The name of the door
+     * @param description The description of the door
+     * @param locked      whether this {@link Door} is locked
+     * @param room1       the room on one side of the {@link Door}
+     * @param room2       the room on the other side of the {@link Door}
+     */
+    public Door(String name, String description, boolean locked, Room room1, Room room2) {
+        super(name, description);
+        this.locked = locked;
+        lock = new Random().nextLong();
+        Objects.requireNonNull(room1);
+        Objects.requireNonNull(room2);
+
+        this.room1 = room1;
+        this.room2 = room2;
+
+        room1.addDoors(this);
+        room2.addDoors(this);
+    }
+
+    /**
+     * Constructs a {@link Door} between the 2 provided rooms, with no name or description
+     *
      * @param locked whether this {@link Door} is locked
      * @param room1  the room on one side of the {@link Door}
      * @param room2  the room on the other side of the {@link Door}
      */
     public Door(boolean locked, Room room1, Room room2) {
+        super();
         this.locked = locked;
         lock = new Random().nextLong();
         Objects.requireNonNull(room1);
@@ -162,5 +189,20 @@ public class Door implements Serializable {
     public int hashCode() {
         return (room1 != null ? room1.hashCode() : 0)
                + (room2 != null ? room2.hashCode() : 0);
+    }
+
+    @Override
+    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
+                                       BufferedReader reader, PrintWriter writer)
+            throws ExitToException {
+        try {
+            getOtherRoom((Room) from).resetStackAndInteract();
+        }
+        catch (IllegalStateException e) {
+            if (actor.getInventory().hasKeyThatMatches(item -> unlock((Key) item))) {
+                getOtherRoom((Room) from).resetStackAndInteract();
+            }
+        }
+        return GoTo.PARENT;
     }
 }

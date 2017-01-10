@@ -5,10 +5,7 @@ import java.io.PrintWriter;
 
 import text_engine.boundaries.Room;
 import text_engine.constants.Actions;
-import text_engine.constants.Globals;
-import text_engine.interaction.ConsolePrompt;
 import text_engine.interaction.ExitToException;
-import text_engine.interaction.Interactive;
 import text_engine.interaction.actions.ActionList;
 import text_engine.items.BaseGameEntity;
 import text_engine.items.Item;
@@ -30,9 +27,10 @@ public class PlayerCharacter extends GameCharacter {
     }
 
     @Override
-    protected ActionList actions(GameCharacter actor, BaseGameEntity from, BufferedReader reader,
-                                 PrintWriter writer) {
-        ActionList actions = super.actions(actor, from, reader, writer);
+    protected ActionList actions(GameCharacter actor, BaseGameEntity from,
+                                 BufferedReader reader, PrintWriter writer) {
+        ActionList actions = new ActionList();
+        // For now, PlayerCharacter is the root entity, so it can't go "back".
 
         actions.add(Actions.LOOK_AROUND);
         actions.add(Actions.EXIT_GAME);
@@ -52,11 +50,9 @@ public class PlayerCharacter extends GameCharacter {
 
 
     @Override
-    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
-                                       PrintWriter writer) throws ExitToException {
-        Interactive choice = ConsolePrompt.getChoice(
-                reader, writer, actions(actor, from, reader, writer),
-                Globals.messages.getString("Prompts.selectAnAction"));
-        return choice.interact(this, from, reader, writer);
+    protected int
+    respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
+                         BufferedReader reader, PrintWriter writer) throws ExitToException {
+        return super.respondToInteraction(actor, from, reader, writer);
     }
 }

@@ -101,18 +101,36 @@ public class ConsolePrompt {
     }
 
     /**
+     * Prompt the player for input with a generic prompt and get back the raw string that they input.
+     *
+     * @param reader to read response from
+     * @param writer to print prompt to
+     * @return player input
+     */
+    public static String getResponseString(BufferedReader reader, PrintWriter writer) {
+        return getResponseString(reader, writer, null);
+    }
+
+    /**
      * Prompt the player for input and get back the raw string that they input.
      *
      * @param reader to read response from
      * @param writer to print prompt to
-     * @param prompt to present to the user when asking for input
+     * @param prompt to present to the user when asking for input. If {@code null} or {@link
+     *               String#isEmpty()}, will print generic prompt.
      * @return player input
      */
     public static String getResponseString(BufferedReader reader, PrintWriter writer, String prompt) {
         String response = null;
 
         while (response == null) {
-            Printers.printGenericPrompt(writer, prompt);
+            if (prompt == null || prompt.isEmpty()) {
+                Printers.printGenericPrompt(writer);
+            }
+            else {
+                Printers.printNamedPrompt(writer, prompt);
+            }
+
             try {
                 response = reader.readLine();
             }
@@ -178,6 +196,7 @@ public class ConsolePrompt {
      * @param reader to read response from
      * @param writer to print prompt to
      * @param list   for the player to choose from
+     * @param prompt to display to the user
      */
     public static <T extends Interactive> int
     getChoiceIndex(BufferedReader reader, PrintWriter writer, List<T> list, String prompt) {

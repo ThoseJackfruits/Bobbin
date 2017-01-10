@@ -1,10 +1,13 @@
 package text_engine.interaction;
 
+import com.sun.istack.internal.NotNull;
+
 import java.io.PrintWriter;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import text_engine.constants.Globals;
 
@@ -21,7 +24,7 @@ public class Printers {
     protected Printers() {
     }
 
-    private static String format(String messageKey, Object... arguments) {
+    public static String format(String messageKey, Object... arguments) {
         formatter.applyPattern(Globals.messages.getString(messageKey));
         return formatter.format(arguments);
     }
@@ -80,8 +83,14 @@ public class Printers {
     }
 
     public static void print(PrintWriter writer, Interactive gameEntity) {
-        writer.printf(gameEntity.toString()).flush();
+        writer.println(gameEntity.toString());
+        writer.flush();
         gameEntity.setSeen();
+    }
+
+    public static void println(PrintWriter writer) {
+        writer.println();
+        writer.flush();
     }
 
     /**
@@ -109,8 +118,13 @@ public class Printers {
         writer.flush();
     }
 
-    public static void printGenericPrompt(PrintWriter writer, String prompt) {
-        writer.println(format("Prompts.genericPrompt", prompt));
+    public static void printGenericPrompt(PrintWriter writer) {
+        writer.print(Globals.messages.getString("Prompts.genericPrompt"));
+        writer.flush();
+    }
+
+    public static void printNamedPrompt(PrintWriter writer, @NotNull String prompt) {
+        writer.print(format("Prompts.namedPrompt", Objects.requireNonNull(prompt)));
         writer.flush();
     }
 }

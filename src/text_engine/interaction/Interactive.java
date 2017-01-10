@@ -15,8 +15,10 @@ import text_engine.items.GameEntity;
 public abstract class Interactive {
 
     /**
-     * Get the set of actions to present to the player when they {@link #interact(PlayerCharacter, BaseGameEntity, BufferedReader, PrintWriter)} with {@link this}. Depending on needs, the base list
-     * should be fetched by subclasses of {@link Interactive}, which should then add to that list.
+     * Get the set of actions to present to the player when they {@link #interact(PlayerCharacter,
+     * BaseGameEntity, BufferedReader, PrintWriter)} with {@link this}. Depending on
+     * needs, the base list should be fetched by subclasses of {@link Interactive}, which should then
+     * add to that list.
      *
      * @param actor  {@link GameCharacter} interacting with {@link this}
      * @param from   {@link GameEntity} that the {@link GameCharacter} came from
@@ -25,7 +27,8 @@ public abstract class Interactive {
      * @return the base set of player actions
      */
     protected ActionList actions(
-            GameCharacter actor, BaseGameEntity from, BufferedReader reader, PrintWriter writer) {
+            GameCharacter actor, BaseGameEntity from, BufferedReader reader,
+            PrintWriter writer) {
         ActionList actions = new ActionList();
         actions.add(Actions.BACK(from));
         return actions;
@@ -33,7 +36,8 @@ public abstract class Interactive {
 
     /**
      * Should be caught at the highest level possible (e.g. the main game loop) which should, after
-     * catching it, call {@link #then#interact(PlayerCharacter, BaseGameEntity, BufferedReader, PrintWriter)}.
+     * catching it, call {@link #then#interact(PlayerCharacter, BaseGameEntity,
+     * BufferedReader, PrintWriter)}.
      *
      * This will allow for the stack to be reset whenever moving from one {@link Interactive} to
      * another is not necessarily a parent-child jump. For example, when moving between {@link Room}s,
@@ -63,8 +67,11 @@ public abstract class Interactive {
     }
 
     /**
-     * Class of shortcuts for return statements in {@link #interact(PlayerCharacter, BaseGameEntity, BufferedReader, PrintWriter)}, {@link #respondToInteraction(PlayerCharacter, BaseGameEntity, BufferedReader, PrintWriter)}, and the like. Makes the semantics of the return statements in
-     * these methods more reader-friendly.
+     * Class of shortcuts for return statements in {@link #interact(PlayerCharacter,
+     * BaseGameEntity, BufferedReader, PrintWriter)}, {@link
+     * #respondToInteraction(PlayerCharacter, BaseGameEntity, BufferedReader,
+     * PrintWriter)}, and the like. Makes the semantics of the return statements in these methods more
+     * reader-friendly.
      */
     protected class GoTo {
 
@@ -133,10 +140,13 @@ public abstract class Interactive {
      * @param reader to read response from
      * @param writer to print prompt to
      * @return the number of levels to go up from the current stage
-     * @throws IllegalStateException the height returned by {@link #respondToInteraction(PlayerCharacter, BaseGameEntity, BufferedReader, PrintWriter)} is negative
-     * @throws ExitToException       {@link #respondToInteraction(PlayerCharacter, BaseGameEntity, BufferedReader, PrintWriter)} throws an {@link ExitToException}
+     * @throws IllegalStateException the height returned by {@link #respondToInteraction(PlayerCharacter,
+     *                               BaseGameEntity, BufferedReader, PrintWriter)} is negative
+     * @throws ExitToException       {@link #respondToInteraction(PlayerCharacter, BaseGameEntity,
+     *                               BufferedReader, PrintWriter)} throws an {@link ExitToException}
      */
-    public int interact(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
+    public int interact(PlayerCharacter actor, BaseGameEntity from,
+                        BufferedReader reader,
                         PrintWriter writer) throws ExitToException {
         Objects.requireNonNull(actor);
         Objects.requireNonNull(reader);
@@ -170,8 +180,8 @@ public abstract class Interactive {
      * @return the number of levels to go up from the current stage.
      */
     protected abstract int
-    respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
-                         PrintWriter writer) throws ExitToException;
+    respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
+                         BufferedReader reader, PrintWriter writer) throws ExitToException;
 
 
     // This is a holdover until we have a proper exit game confirmation dialogue.
