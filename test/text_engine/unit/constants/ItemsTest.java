@@ -25,7 +25,7 @@ public class ItemsTest extends BaseUnitTest {
     public void consume_copy() {
         assertNotNull(blueberryCopy);
         assertTrue(playerCharacter.getInventory().contains(blueberryCopy));
-        blueberryCopy.consume(playerCharacter);
+        blueberryCopy.consume();
         assertFalse(playerCharacter.getInventory().contains(blueberryCopy));
     }
 }

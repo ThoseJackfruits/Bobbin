@@ -55,17 +55,7 @@ public class Door extends BaseGameEntity {
      * @param room2  the room on the other side of the {@link Door}
      */
     public Door(boolean locked, Room room1, Room room2) {
-        super();
-        this.locked = locked;
-        lock = new Random().nextLong();
-        Objects.requireNonNull(room1);
-        Objects.requireNonNull(room2);
-
-        this.room1 = room1;
-        this.room2 = room2;
-
-        room1.addDoors(this);
-        room2.addDoors(this);
+        this("", "", locked, room1, room2);
     }
 
     public Room getRoom1() {

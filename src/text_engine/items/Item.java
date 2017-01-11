@@ -1,7 +1,7 @@
 package text_engine.items;
 
-import com.sun.istack.internal.NotNull;
-
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,9 +9,12 @@ import java.util.Objects;
 import java.util.Stack;
 
 import text_engine.characters.GameCharacter;
+import text_engine.characters.PlayerCharacter;
+import text_engine.constants.Actions;
 import text_engine.effects.BaseEffect;
 import text_engine.effects.BaseEffector;
-import text_engine.effects.Effector;
+import text_engine.interaction.ExitToException;
+import text_engine.interaction.actions.ActionList;
 import text_engine.items.combinations.Combination;
 import text_engine.items.combinations.Combinations;
 
@@ -21,7 +24,7 @@ import text_engine.items.combinations.Combinations;
 public class Item extends BaseGameEntity {
 
     private final Combinations combinations;
-    private final Effector effector;
+    private final BaseEffector effector;
 
     public Item(String name, String description, List<BaseEffect<? extends GameEntity>> effects) {
         super(name, description);
@@ -103,10 +106,8 @@ public class Item extends BaseGameEntity {
     }
 
     @Override
-    public void consume(@NotNull GameCharacter gameCharacter) {
-        effector.apply(gameCharacter);
-
-        gameCharacter.getInventory().remove(this);
+    public BaseEffector consume() {
+        return effector;
     }
 
     /**
@@ -135,15 +136,15 @@ public class Item extends BaseGameEntity {
         allItems.addAll(Arrays.asList(otherItems));
         allItems.add(this);
 
-        if (!(inventory.containsAll(allItems))) {
-            throw new IllegalArgumentException(
-                    "Both this item and all of the given items must be in the given inventory.");
-        }
-
         Item result = combinations.get(allItems);
 
         if (result == null) {
             throw new IllegalArgumentException(String.format("%s cannot be combined.", allItems));
+        }
+
+        if (!(inventory.containsAll(allItems))) {
+            throw new IllegalArgumentException(
+                    "Both this item and all of the given items must be in the given inventory.");
         }
 
         inventory.removeAll(allItems);
@@ -155,4 +156,25 @@ public class Item extends BaseGameEntity {
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
+    @Override
+    protected ActionList actions(GameCharacter actor, BaseGameEntity from, BufferedReader reader,
+                                 PrintWriter writer) {
+        ActionList actions = super.actions(actor, from, reader, writer);
+
+        if (isConsumable()) {
+            actions.add(Actions.CONSUME(this));
+        }
+
+        return actions;
+    }
+
+    @Override
+    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
+                                       BufferedReader reader, PrintWriter writer)
+            throws ExitToException {
+        return super.respondToInteraction(actor, this, reader, writer);
+    }
+
+
 }
