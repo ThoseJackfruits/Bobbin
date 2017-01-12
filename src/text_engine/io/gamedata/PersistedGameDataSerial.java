@@ -18,7 +18,7 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
     /**
      * Construct a new savegame in the given subdirectory of the main directory.
      *
-     * @param filename filename of the file
+     * @param filename filename of the file, with extension
      * @throws IOException          if the file cannot be written to, for a variety of reasons
      * @throws InterruptedException if the base folder could not be fetched from the OS
      */
@@ -32,16 +32,39 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
         checkDirectory(directory);
     }
 
-    private final File directory;
+    /**
+     * Construct a new savegame in the given subdirectory of the main directory.
+     *
+     * @param filename of the file, without extension
+     * @param extension of the file
+     * @throws IOException          if the file cannot be written to, for a variety of reasons
+     * @throws InterruptedException if the base folder could not be fetched from the OS
+     */
+    public PersistedGameDataSerial(@NotNull String filename, @NotNull String extension)
+            throws IOException, InterruptedException {
+        this(filename + '.' + extension);
+    }
 
-    private File file() {
+    protected final File directory;
+
+    protected File file() {
         return new File(directory, getName());
     }
 
+    /**
+     * Requires both filename and extension to be combined as {@code name}.
+     *
+     * @param name filename + extension
+     */
     @Override
     public void setName(@NotNull String name) {
-        super.setName(name);
-        // TODO change file name (delete old and create new, or move existing)
+        if (getName() == null || file().renameTo(new File(directory, name))) {
+            super.setName(name);
+        }
+    }
+
+    public void setName(@NotNull String filename, @NotNull String extension) {
+        setName(filename + '.' + extension);
     }
 
     protected static void checkDirectory(File directory) throws IOException {
