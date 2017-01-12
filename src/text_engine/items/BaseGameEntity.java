@@ -50,7 +50,6 @@ public class BaseGameEntity extends Interactive implements GameEntity {
      * @param description The description of the object
      */
     public BaseGameEntity(@NotNull String name, @NotNull String description) {
-        super();
         Objects.requireNonNull(name);
         Objects.requireNonNull(description);
 
