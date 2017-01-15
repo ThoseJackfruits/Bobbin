@@ -1,8 +1,6 @@
 package text_engine.io.settings;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Properties;
 
 import text_engine.constants.Globals;
@@ -10,8 +8,14 @@ import text_engine.io.gamedata.PersistedGameDataSerial;
 
 public class Settings extends Properties {
 
-    private final PersistedGameDataSerial gameDataSerial =
+    private final PersistedGameDataSerial gameData =
             new PersistedGameDataSerial(Globals.messages.getString("Persisted.settingsFile"));
+
+    public static class Keys {
+        public static final String CURRENT_SAVE = "currentSave";
+        public static final String LANGUAGE = "language";
+        public static final String COUNTRY = "country";
+    }
 
     public Settings() throws IOException, InterruptedException {
     }
@@ -26,7 +30,7 @@ public class Settings extends Properties {
      * @throws IOException {@link Properties#load(InputStream)} throws an {@link IOException}
      */
     public synchronized void load() throws IOException {
-        super.load(gameDataSerial.getInputStream());
+        super.load(gameData.getInputStream());
     }
 
     /**
@@ -36,7 +40,7 @@ public class Settings extends Properties {
      *                     IOException}
      */
     public void store() throws IOException {
-        super.store(gameDataSerial.getOutputStream(), gameDataSerial.getDescription());
+        super.store(gameData.getOutputStream(), gameData.getDescription());
     }
 
     /**
@@ -49,9 +53,9 @@ public class Settings extends Properties {
     public static Settings defaults() throws IOException, InterruptedException {
         Settings settings = new Settings();
 
-        settings.setProperty("currentSave", "");
-        settings.setProperty("language", Globals.locale.getLanguage());
-        settings.setProperty("country", Globals.locale.getCountry());
+        settings.setProperty(Keys.CURRENT_SAVE, "");
+        settings.setProperty(Keys.LANGUAGE, Globals.locale.getLanguage());
+        settings.setProperty(Keys.COUNTRY, Globals.locale.getCountry());
 
         return settings;
     }
