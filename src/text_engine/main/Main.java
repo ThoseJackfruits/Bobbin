@@ -38,7 +38,7 @@ public class Main {
         }
     }
 
-    private static PlayerCharacter stockGame() {
+    public static PlayerCharacter stockGame() {
         Room startingRoom = new Room("Starting Room", "The room you start in",
                                      Items.getCopiesOf(Items.BLUEBERRY, Items.BED));
         Room otherRoom = new Room("Another Room", "Not the room you start in",

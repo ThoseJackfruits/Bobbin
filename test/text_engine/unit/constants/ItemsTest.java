@@ -7,7 +7,6 @@ import text_engine.items.Item;
 import text_engine.unit.BaseUnitTest;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -19,14 +18,5 @@ public class ItemsTest extends BaseUnitTest {
         assertNotNull(blueberryCopy);
         assertTrue(blueberryCopy != Items.BLUEBERRY);  // Memory addresses should be different,
         assertEquals(blueberryCopy, Items.BLUEBERRY);  // but properties should be the same.
-    }
-
-    @Test
-    public void consume_copy() {
-        // TODO: this should be turned into an integration test that calls interact on the item
-        assertNotNull(blueberryCopy);
-        assertTrue(playerCharacter.getInventory().contains(blueberryCopy));
-        blueberryCopy.consume();
-        // assertFalse(playerCharacter.getInventory().contains(blueberryCopy));
     }
 }
