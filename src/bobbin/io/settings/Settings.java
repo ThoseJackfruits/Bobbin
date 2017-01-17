@@ -9,7 +9,7 @@ import bobbin.io.gamedata.PersistedGameDataSerial;
 public class Settings extends Properties {
 
     private final PersistedGameDataSerial gameData =
-            new PersistedGameDataSerial(Globals.messages.getString("Persisted.settingsFile"));
+            new PersistedGameDataSerial(Globals.SETTINGS_FILE);
 
     public static class Keys {
         public static final String CURRENT_SAVE = "currentSave";

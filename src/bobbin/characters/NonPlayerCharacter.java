@@ -1,8 +1,13 @@
 package bobbin.characters;
 
 import bobbin.boundaries.Room;
+import bobbin.interaction.ExitToException;
+import bobbin.items.BaseGameEntity;
 import bobbin.items.Item;
 import bobbin.situations.SituationRoot;
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 
 /**
  * Represents an NPC (Non GameCharacter GameCharacter)
@@ -27,4 +32,8 @@ public class NonPlayerCharacter extends GameCharacter {
         this(name, description, location, new SituationRoot(), inventory);
     }
 
+    @Override
+    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader, PrintWriter writer) throws ExitToException {
+        return super.respondToInteraction(actor, from, reader, writer);
+    }
 }

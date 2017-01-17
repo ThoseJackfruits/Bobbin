@@ -1,13 +1,12 @@
 package bobbin.interaction.actions;
 
-import com.sun.istack.internal.NotNull;
-
-import java.util.function.Function;
-
 import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.Interactive;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.GameEntity;
+import com.sun.istack.internal.NotNull;
+
+import java.util.function.Function;
 
 public class BaseAction extends BaseGameEntity implements Action {
 
@@ -18,6 +17,7 @@ public class BaseAction extends BaseGameEntity implements Action {
      *
      * @param name        The name of the object
      * @param description The description of the object
+     * @param action      to apply to the {@link PlayerCharacter}
      */
     public BaseAction(@NotNull String name, @NotNull String description,
                       Function<PlayerCharacter, BaseGameEntity> action) {
@@ -25,9 +25,13 @@ public class BaseAction extends BaseGameEntity implements Action {
         this.action = action;
     }
 
+    /**
+     * Constructs a new {@link BaseAction} with no name, description, or report.
+     *
+     * @param action to apply to the {@link PlayerCharacter}
+     */
     public BaseAction(Action action) {
-        super();
-        this.action = action;
+        this("", "", action);
     }
 
     /**
