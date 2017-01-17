@@ -23,6 +23,11 @@ public class SaveGameSerial extends PersistedGameDataSerial<PlayerCharacter> {
     public void saveData(PlayerCharacter data) {
         super.saveData(data);
         Globals.settings.put(Settings.Keys.CURRENT_SAVE, getName());
+        try {
+            Globals.settings.store();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static SaveGameSerial loadActiveSave() {
@@ -35,6 +40,7 @@ public class SaveGameSerial extends PersistedGameDataSerial<PlayerCharacter> {
     }
 
     public static boolean hasActiveSave() {
-        return Globals.settings.containsKey(Settings.Keys.CURRENT_SAVE);
+        String currentSave = (String) Globals.settings.get(Settings.Keys.CURRENT_SAVE);
+        return currentSave != null && !currentSave.isEmpty();
     }
 }

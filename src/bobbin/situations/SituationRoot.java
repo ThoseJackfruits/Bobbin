@@ -2,20 +2,19 @@ package bobbin.situations;
 
 import bobbin.characters.GameCharacter;
 import bobbin.effects.BaseEffect;
-import bobbin.effects.GameCharacterEffect;
+import bobbin.interaction.ExitToException;
+import bobbin.interaction.actions.Action;
 
 public class SituationRoot extends SituationNode {
 
-    public SituationRoot(BaseEffect<GameCharacter> effect) {
-        super(null, effect, NextSituation.EXIT);
+    class ExitToSituationRootException extends ExitToException {
+    }
+
+    public SituationRoot(BaseEffect<GameCharacter> effect, Action action) {
+        super("", "", effect, action);
     }
 
     public SituationRoot() {
-        this(GameCharacterEffect.NULL);
-    }
-
-    @Override
-    public SituationNode root() {
-        return this;
+        this(null, null);
     }
 }
