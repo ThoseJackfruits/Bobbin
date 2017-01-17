@@ -28,7 +28,7 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
         File documents = getDocumentsFolder();
         checkDirectory(documents);
 
-        directory = new File(documents, Globals.messages.getString("Persisted.baseFolder"));
+        directory = new File(documents, Globals.PERSISTED_GAME_DATA_BASE_FOLDER);
         checkDirectory(directory);
     }
 
@@ -47,7 +47,7 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
 
     protected final File directory;
 
-    protected File file() {
+    public File file() {
         return new File(directory, getName());
     }
 

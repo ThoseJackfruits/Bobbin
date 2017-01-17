@@ -9,7 +9,8 @@ import bobbin.items.GameEntity;
 
 /**
  * Provides a way to get the freshest source of a given {@link Interactive} off of a {@link
- * PlayerCharacter}.
+ * PlayerCharacter}. It is meant to modify the runtime tree of the program, but not modify any
+ * properties on {@link GameEntity}s. For modifying properties, use {@link bobbin.effects.Effect}
  */
 public interface Action extends Function<PlayerCharacter, BaseGameEntity>, GameEntity {
 
