@@ -33,7 +33,7 @@ public class SaveGameTest extends BaseUnitTest {
     }
 
     @Test
-    @Ignore
+    @Ignore("Test ignored. SaveGameJSON fails due to circular references.")
     public void saveGameJSON() throws Exception {
         // Circular references somewhere are making Gson unhappy. Have to investigate further.
         saveGameTo(new SaveGameJSON("TestSaveJSON"));
