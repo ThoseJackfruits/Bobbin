@@ -30,7 +30,7 @@ public abstract class Interactive {
             GameCharacter actor, BaseGameEntity from, BufferedReader reader,
             PrintWriter writer) {
         ActionList actions = new ActionList();
-        actions.add(Actions.BACK(from));
+        actions.add(Actions.BACK(from == null ? actor : from));
         return actions;
     }
 

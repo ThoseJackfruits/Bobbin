@@ -173,7 +173,7 @@ public class Item extends BaseGameEntity {
     protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
                                        BufferedReader reader, PrintWriter writer)
             throws ExitToException {
-        return super.respondToInteraction(actor, this, reader, writer);
+        return super.respondToInteraction(actor, from, reader, writer);
     }
 
 

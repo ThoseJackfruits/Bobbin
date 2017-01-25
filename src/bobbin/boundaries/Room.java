@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import bobbin.characters.GameCharacter;
+import bobbin.characters.NonPlayerCharacter;
 import bobbin.characters.PlayerCharacter;
 import bobbin.constants.Actions;
 import bobbin.interaction.ExitToException;
@@ -35,6 +36,7 @@ public class Room extends BaseGameEntity implements Serializable {
 
     private final List<Item> items;
     private final Set<Door> doors;
+    private final Set<NonPlayerCharacter> nonPlayerCharacters = new HashSet<>();
 
     /**
      * Base constructor. Constructs a {@link Room}, with an initial set of items and doors.
@@ -99,6 +101,10 @@ public class Room extends BaseGameEntity implements Serializable {
 
     public Door[] getDoors() {
         return doors.toArray(new Door[doors.size()]);
+    }
+
+    public boolean addNPC(NonPlayerCharacter nonPlayerCharacter) {
+        return nonPlayerCharacters.add(nonPlayerCharacter);
     }
 
     /**
@@ -185,6 +191,10 @@ public class Room extends BaseGameEntity implements Serializable {
             actions.add(Actions.ITEM(item));
         }
 
+        for (NonPlayerCharacter npc : nonPlayerCharacters) {
+            actions.add(Actions.CONVERSE(npc));
+        }
+
         return actions;
     }
 
@@ -192,6 +202,6 @@ public class Room extends BaseGameEntity implements Serializable {
     protected int
     respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
                          BufferedReader reader, PrintWriter writer) throws ExitToException {
-        return super.respondToInteraction(actor, this, reader, writer);
+        return super.respondToInteraction(actor, from, reader, writer);
     }
 }
