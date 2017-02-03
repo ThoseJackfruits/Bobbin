@@ -2,6 +2,7 @@ package bobbin.constants;
 
 import bobbin.boundaries.Door;
 import bobbin.characters.GameCharacter;
+import bobbin.characters.NonPlayerCharacter;
 import bobbin.interaction.Interactive;
 import bobbin.interaction.Printers;
 import bobbin.interaction.actions.BaseAction;
@@ -69,4 +70,10 @@ public class Actions {
             new BaseAction(Globals.messages.getString("Actions.OPEN_INVENTORY.name"),
                            "",
                            GameCharacter::getInventory);
+
+    public static BaseAction CONVERSE(NonPlayerCharacter npc) {
+        return new BaseAction(npc.getName(),
+                              npc.getDescription(),
+                              playerCharacter -> npc);
+    }
 }

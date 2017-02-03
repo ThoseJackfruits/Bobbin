@@ -85,12 +85,7 @@ public class Door extends BaseGameEntity {
             throw new IllegalStateException("Door is locked.");
         }
 
-        if (from.equals(room1)) {
-            return room2;
-        }
-        else {  // from must be room2
-            return room1;
-        }
+        return from.equals(room1) ? room2 : room1;
     }
 
     /**
@@ -189,7 +184,7 @@ public class Door extends BaseGameEntity {
             getOtherRoom((Room) from).resetStackAndInteract();
         }
         catch (IllegalStateException e) {
-            if (actor.getInventory().hasKeyThatMatches(item -> unlock((Key) item))) {
+            if (actor.getInventory().hasKeyThatMatches(item -> !unlock((Key) item))) {
                 getOtherRoom((Room) from).resetStackAndInteract();
             }
         }

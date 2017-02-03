@@ -29,12 +29,13 @@ public class PlayerCharacter extends GameCharacter {
     @Override
     protected ActionList actions(GameCharacter actor, BaseGameEntity from,
                                  BufferedReader reader, PrintWriter writer) {
-        ActionList actions = new ActionList();
         // For now, PlayerCharacter is the root entity, so it can't go "back".
+        // TODO: change once a main menu is implemented
+        ActionList actions = new ActionList();
 
         actions.add(Actions.LOOK_AROUND);
-        actions.add(Actions.EXIT_GAME);
         actions.add(Actions.OPEN_INVENTORY);
+        actions.add(Actions.EXIT_GAME);
 
         return actions;
     }
@@ -53,6 +54,6 @@ public class PlayerCharacter extends GameCharacter {
     protected int
     respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
                          BufferedReader reader, PrintWriter writer) throws ExitToException {
-        return super.respondToInteraction(actor, this, reader, writer);
+        return super.respondToInteraction(actor, from, reader, writer);
     }
 }
