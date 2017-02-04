@@ -5,7 +5,7 @@ import com.sun.istack.internal.NotNull;
 import java.util.function.Function;
 
 import bobbin.characters.PlayerCharacter;
-import bobbin.interaction.BaseInteractive;
+import bobbin.interaction.Interactive;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.GameEntity;
 
@@ -67,13 +67,13 @@ public class BaseAction extends BaseGameEntity implements Action {
     }
 
     /**
-     * Fetch the {@link BaseInteractive} object from this {@link PlayerCharacter}.
+     * Fetch the {@link Interactive} object from this {@link PlayerCharacter}.
      *
      * Should be called when presenting an {@link Action} to the player, in order to get the relevant
-     * {@link BaseInteractive} item to interact with off of the {@link PlayerCharacter}.
+     * {@link Interactive} item to interact with off of the {@link PlayerCharacter}.
      *
      * @param playerCharacter the {@link PlayerCharacter} taking the action
-     * @return the relevant {@link BaseInteractive} item to interact with
+     * @return the relevant {@link Interactive} item to interact with
      */
     @Override
     public BaseGameEntity apply(PlayerCharacter playerCharacter) {

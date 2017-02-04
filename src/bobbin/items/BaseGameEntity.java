@@ -12,13 +12,13 @@ import bobbin.characters.PlayerCharacter;
 import bobbin.effects.BaseEffector;
 import bobbin.interaction.ConsolePrompt;
 import bobbin.interaction.ExitToException;
-import bobbin.interaction.BaseInteractive;
+import bobbin.interaction.Interactive;
 import bobbin.interaction.Printers;
 
 /**
  * Represents a generic in-game object, including characters, interactive items, etc.
  */
-public class BaseGameEntity extends BaseInteractive implements GameEntity {
+public class BaseGameEntity extends Interactive implements GameEntity {
 
     private String name;
     private String description;

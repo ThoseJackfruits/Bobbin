@@ -7,7 +7,7 @@ import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.actions.Action;
 import bobbin.items.BaseGameEntity;
 
-public class Confirmation extends BaseInteractive {
+public class Confirmation extends Interactive {
 
     private final Action action;
     private final String prompt;
@@ -15,7 +15,7 @@ public class Confirmation extends BaseInteractive {
 
     /**
      * Create and show a confirmation to the user with the given prompt. Will run the given {@link
-     * Action} if the player answers in the positive, or return to the given {@link BaseInteractive} if
+     * Action} if the player answers in the positive, or return to the given {@link Interactive} if
      * the player answers in the negative.
      *
      * @param action        {@link Action} to run if the player responds in the positive

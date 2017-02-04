@@ -143,16 +143,16 @@ public class ConsolePrompt {
     }
 
     /**
-     * Get the index of an {@link BaseInteractive} from the given list whose name or description matches
+     * Get the index of an {@link Interactive} from the given list whose name or description matches
      * the player's response.
      *
      * @param list     the {@link List<T>} to choose from
      * @param response the player's response to search for in the list
-     * @param <T>      the type of {@link BaseInteractive} objects in the given list
+     * @param <T>      the type of {@link Interactive} objects in the given list
      * @return the index of the item that matches
      * @throws InvalidSearchFilterException the number of matches found is not equal to 1
      */
-    private static <T extends BaseInteractive> int findChoiceIndexByName(List<T> list, String response)
+    private static <T extends Interactive> int findChoiceIndexByName(List<T> list, String response)
             throws InvalidSearchFilterException {
         String normalisedResponse = response.toLowerCase(Globals.locale);
         ArrayList<Integer> indexesFound = new ArrayList<>(2);
@@ -175,16 +175,16 @@ public class ConsolePrompt {
     }
 
     /**
-     * Get an {@link BaseInteractive} from the given list whose name or description matches the player's
+     * Get an {@link Interactive} from the given list whose name or description matches the player's
      * response.
      *
      * @param list     the {@link List<T>} to choose from
      * @param response the player's response to search for in the list
-     * @param <T>      the type of {@link BaseInteractive} objects in the given list
+     * @param <T>      the type of {@link Interactive} objects in the given list
      * @return the index of the item that matches
      * @throws InvalidSearchFilterException the number of matches found is not equal to 1
      */
-    private static <T extends BaseInteractive> T findChoiceByName(List<T> list, String response)
+    private static <T extends Interactive> T findChoiceByName(List<T> list, String response)
             throws InvalidSearchFilterException {
         return list.get(findChoiceIndexByName(list, response));
     }
@@ -198,7 +198,7 @@ public class ConsolePrompt {
      * @param list   for the player to choose from
      * @param prompt to display to the user
      */
-    public static <T extends BaseInteractive> int
+    public static <T extends Interactive> int
     getChoiceIndex(BufferedReader reader, PrintWriter writer, List<T> list, String prompt) {
         Printers.printOrdered(writer, list);
 
@@ -229,7 +229,7 @@ public class ConsolePrompt {
      * @param writer to print prompt to
      * @param array  for the player to choose from
      */
-    public static <T extends BaseInteractive> int
+    public static <T extends Interactive> int
     getChoiceIndex(BufferedReader reader, PrintWriter writer, T[] array, String prompt) {
         return getChoiceIndex(reader, writer, Arrays.asList(array), prompt);
     }
@@ -241,8 +241,8 @@ public class ConsolePrompt {
      * @param writer to print prompt to
      * @param list   for the player to choose from
      */
-    public static <T extends BaseInteractive> T getChoice(BufferedReader reader, PrintWriter writer,
-                                                          List<T> list, String prompt) {
+    public static <T extends Interactive> T getChoice(BufferedReader reader, PrintWriter writer,
+                                                      List<T> list, String prompt) {
         return list.get(getChoiceIndex(reader, writer, list, prompt));
     }
 
@@ -254,8 +254,8 @@ public class ConsolePrompt {
      * @param writer to print prompt to
      * @param array  for the player to choose from
      */
-    public static <T extends BaseInteractive> T getChoice(BufferedReader reader, PrintWriter writer,
-                                                          T[] array, String prompt) {
+    public static <T extends Interactive> T getChoice(BufferedReader reader, PrintWriter writer,
+                                                      T[] array, String prompt) {
         return getChoice(reader, writer, Arrays.asList(array), prompt);
     }
 }

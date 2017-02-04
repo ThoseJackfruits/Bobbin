@@ -8,7 +8,7 @@ import bobbin.boundaries.Door;
 import bobbin.boundaries.Room;
 import bobbin.characters.PlayerCharacter;
 import bobbin.constants.Items;
-import bobbin.interaction.BaseInteractive;
+import bobbin.interaction.Interactive;
 import bobbin.interaction.ExitToException;
 import bobbin.menus.MainMenu;
 
@@ -25,13 +25,13 @@ public class Main {
                               PlayerCharacter playerCharacter) {
         PlayerCharacter actor = playerCharacter;
         MainMenu mainMenu = new MainMenu();
-        BaseInteractive next = mainMenu;
+        Interactive next = mainMenu;
 
         while (true) {
             try {
                 next.interact(actor, null, reader, writer);
             }
-            catch (BaseInteractive.ResetStackException e) {
+            catch (Interactive.ResetStackException e) {
                 next = e.then;
                 actor = e.actor;
             }

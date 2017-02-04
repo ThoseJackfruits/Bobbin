@@ -7,7 +7,7 @@ import bobbin.boundaries.Door;
 import bobbin.characters.GameCharacter;
 import bobbin.characters.NonPlayerCharacter;
 import bobbin.characters.PlayerCharacter;
-import bobbin.interaction.BaseInteractive;
+import bobbin.interaction.Interactive;
 import bobbin.interaction.ExitToException;
 import bobbin.interaction.Printers;
 import bobbin.interaction.actions.BaseAction;
@@ -20,7 +20,7 @@ import bobbin.menus.MainMenu;
 // I think these will need to be refactored soon. It's fine
 // to have them in one big file right now, but I think that
 // is going to get inconvenient fast. I'm thinking each
-// BaseInteractive object could have a public, static Action
+// Interactive object could have a public, static Action
 // class nested inside it with the relevant Actions used
 // (primarily) by that class. This will allow actions to
 // be accessed globally while still showing who primarily
@@ -75,7 +75,7 @@ public class Actions {
     public static final BaseAction EXIT_GAME =
             new BaseAction(Globals.messages.getString("Actions.EXIT_GAME.name"),
                            "",
-                           BaseInteractive::exitGame);
+                           Interactive::exitGame);
 
     public static BaseAction ITEM(Item item) {
         return new BaseAction(item.getName(),
