@@ -12,7 +12,7 @@ import bobbin.items.GameEntity;
  * PlayerCharacter}. It is meant to modify the runtime tree of the program, but not modify any
  * properties on {@link GameEntity}s. For modifying properties, use {@link bobbin.effects.Effect}
  */
-public interface Action extends Function<PlayerCharacter, BaseGameEntity>, GameEntity {
+public interface Action extends Function<PlayerCharacter, BaseGameEntity> {
 
     /**
      * Fetch the {@link Interactive} object from this {@link PlayerCharacter}.

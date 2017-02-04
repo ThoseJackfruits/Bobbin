@@ -30,6 +30,7 @@ public class Printers {
     }
 
     public static void printMessage(PrintWriter writer, String messageKey, Object... arguments) {
+        writer.print(Globals.messages.getString("Messages.prefix.secondary"));
         String message = (arguments != null && arguments.length > 0)
                          ? format(messageKey, arguments)
                          : Globals.messages.getString(messageKey);
@@ -83,6 +84,7 @@ public class Printers {
     }
 
     public static void print(PrintWriter writer, Interactive gameEntity) {
+        writer.print(Globals.messages.getString("Messages.prefix.primary"));
         writer.println(gameEntity.toString());
         writer.flush();
         gameEntity.setSeen();

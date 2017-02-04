@@ -110,14 +110,14 @@ public class BaseGameEntity extends Interactive implements GameEntity {
     }
 
     @Override
-    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
-                                       BufferedReader reader, PrintWriter writer)
+    public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
+                                    BufferedReader reader, PrintWriter writer)
             throws ExitToException {
         Printers.println(writer);
         Printers.print(writer, this);
         Printers.println(writer);
 
-        return ConsolePrompt.getChoice(reader, writer, actions(actor, from, reader, writer), null)
+        return ConsolePrompt.getChoice(reader, writer, actions(actor, from), null)
                             .apply(actor)
                             .interact(actor, this, reader, writer);
     }

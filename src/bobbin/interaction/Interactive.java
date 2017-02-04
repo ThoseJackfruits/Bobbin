@@ -16,22 +16,39 @@ public abstract class Interactive {
 
     /**
      * Get the set of actions to present to the player when they {@link #interact(PlayerCharacter,
-     * BaseGameEntity, BufferedReader, PrintWriter)} with {@link this}. Depending on
-     * needs, the base list should be fetched by subclasses of {@link Interactive}, which should then
-     * add to that list.
+     * BaseGameEntity, BufferedReader, PrintWriter)} with {@link this}. Depending on needs, the base
+     * list should be fetched by subclasses of {@link Interactive}, which should then add to that
+     * list.
      *
-     * @param actor  {@link GameCharacter} interacting with {@link this}
-     * @param from   {@link GameEntity} that the {@link GameCharacter} came from
-     * @param reader to read response from
-     * @param writer to print prompt to
+     * @param actor {@link GameCharacter} interacting with {@link this}
+     * @param from  {@link GameEntity} that the {@link GameCharacter} came from
      * @return the base set of player actions
      */
-    protected ActionList actions(
-            GameCharacter actor, BaseGameEntity from, BufferedReader reader,
-            PrintWriter writer) {
+    protected ActionList actions(GameCharacter actor, BaseGameEntity from) {
         ActionList actions = new ActionList();
-        actions.add(Actions.BACK(from == null ? actor : from));
+        actions.add(Actions.BACK);
         return actions;
+    }
+
+    /**
+     * Respond to interaction from another {@link GameEntity}.
+     *
+     * @param from   source of the interaction.
+     * @param reader to read response from
+     * @param writer to print prompt to
+     * @return the number of levels to go up from the current stage.
+     */
+    public abstract int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
+                                             BufferedReader reader, PrintWriter writer) throws ExitToException;
+
+    public enum Visibility {
+        FRESH(1000), SEEN(100), VISITED(10), HIDDEN(0);
+
+        final int level;
+
+        Visibility(int level) {
+            this.level = level;
+        }
     }
 
     /**
@@ -48,21 +65,12 @@ public abstract class Interactive {
      */
     public class ResetStackException extends ExitToException {
 
+        public final PlayerCharacter actor;
         public final Interactive then;
 
-        public ResetStackException(Interactive then) {
+        public ResetStackException(PlayerCharacter actor, Interactive then) {
+            this.actor = actor;
             this.then = then;
-        }
-
-    }
-
-    public enum Visibility {
-        FRESH(1000), SEEN(100), VISITED(10), HIDDEN(0);
-
-        final int level;
-
-        Visibility(int level) {
-            this.level = level;
         }
     }
 
@@ -82,69 +90,34 @@ public abstract class Interactive {
 
     private Visibility visibility = Visibility.FRESH;
 
-    /**
-     * Get the player-facing {@link Visibility} of {@link this}.
-     *
-     * @return player-facing {@link Visibility} of {@link this}.
-     */
-
     public Visibility getVisibility() {
         return visibility;
     }
 
-    /**
-     * Confirm that the player has seen {@link this}.
-     */
     public void setSeen() {
         setVisibilityDownTo(Visibility.SEEN);
     }
 
-    /**
-     * Confirm that the player has seen {@link this}.
-     */
     public void setHidden() {
         setVisibilityDownTo(Visibility.HIDDEN);
     }
 
-    /**
-     * Confirm that the player has visited {@link this}.
-     */
     public void setVisited() {
         setVisibilityDownTo(Visibility.VISITED);
     }
 
     /**
      * Brings the visibility of {@link this} down to the given {@link Visibility}. Will not change the
-     * {@link Visibility} if the current value is already lower than {@code v}.
+     * {@link Visibility} if the current value is already lower than {@code visibility}.
      *
-     * @param v the new {@link Visibility}
+     * @param visibility the new {@link Visibility}
      */
-    private void setVisibilityDownTo(Visibility v) {
-        if (visibility.level > v.level) {
-            visibility = v;
+    private void setVisibilityDownTo(Visibility visibility) {
+        if (this.visibility.level > visibility.level) {
+            this.visibility = visibility;
         }
     }
 
-    /**
-     * Interact with the given object, implying that that object takes over the console and all
-     * interaction with the player.
-     *
-     * The default implementation will work for both single-action pop-in-and-out {@link
-     * #respondToInteraction(PlayerCharacter, BaseGameEntity, BufferedReader, PrintWriter)}
-     * implementations, which would require that they return a {@code 1} or greater. A {@code 0}
-     * return value from that method would imply that this should continue to call it until a non-zero
-     * return value is found
-     *
-     * @param actor  {@link PlayerCharacter} interacting with {@link this}
-     * @param from   {@link GameEntity} that the {@link GameCharacter} came from
-     * @param reader to read response from
-     * @param writer to print prompt to
-     * @return the number of levels to go up from the current stage
-     * @throws IllegalStateException the height returned by {@link #respondToInteraction(PlayerCharacter,
-     *                               BaseGameEntity, BufferedReader, PrintWriter)} is negative
-     * @throws ExitToException       {@link #respondToInteraction(PlayerCharacter, BaseGameEntity,
-     *                               BufferedReader, PrintWriter)} throws an {@link ExitToException}
-     */
     public int interact(PlayerCharacter actor, BaseGameEntity from,
                         BufferedReader reader,
                         PrintWriter writer) throws ExitToException {
@@ -156,8 +129,7 @@ public abstract class Interactive {
 
         int height;
         do {
-            height = respondToInteraction(actor, from, reader, writer
-                                         );
+            height = respondToInteraction(actor, from, reader, writer);
         } while (height == GoTo.THIS);
 
         if (height < 0) {
@@ -167,22 +139,9 @@ public abstract class Interactive {
         return height - 1;
     }
 
-    public void resetStackAndInteract() throws ResetStackException {
-        throw new ResetStackException(this);
+    public void resetStackAndInteract(PlayerCharacter actor) throws ResetStackException {
+        throw new ResetStackException(actor, this);
     }
-
-    /**
-     * Respond to interaction from another {@link GameEntity}.
-     *
-     * @param from   source of the interaction.
-     * @param reader to read response from
-     * @param writer to print prompt to
-     * @return the number of levels to go up from the current stage.
-     */
-    protected abstract int
-    respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
-                         BufferedReader reader, PrintWriter writer) throws ExitToException;
-
 
     // This is a holdover until we have a proper exit game confirmation dialogue.
     @Deprecated

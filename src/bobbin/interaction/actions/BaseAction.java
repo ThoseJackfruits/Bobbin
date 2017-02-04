@@ -1,12 +1,13 @@
 package bobbin.interaction.actions;
 
+import com.sun.istack.internal.NotNull;
+
+import java.util.function.Function;
+
 import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.Interactive;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.GameEntity;
-import com.sun.istack.internal.NotNull;
-
-import java.util.function.Function;
 
 public class BaseAction extends BaseGameEntity implements Action {
 

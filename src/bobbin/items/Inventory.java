@@ -1,7 +1,5 @@
 package bobbin.items;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,9 +29,8 @@ public class Inventory extends BaseGameEntity implements List<Item> {
     }
 
     @Override
-    protected ActionList actions(GameCharacter actor, BaseGameEntity from, BufferedReader reader,
-                                 PrintWriter writer) {
-        ActionList actions = super.actions(actor, from, reader, writer);
+    protected ActionList actions(GameCharacter actor, BaseGameEntity from) {
+        ActionList actions = super.actions(actor, from);
 
         for (Item item : items) {
             actions.add(Actions.ITEM(item));

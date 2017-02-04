@@ -177,15 +177,15 @@ public class Door extends BaseGameEntity {
     }
 
     @Override
-    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
-                                       BufferedReader reader, PrintWriter writer)
+    public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
+                                    BufferedReader reader, PrintWriter writer)
             throws ExitToException {
         try {
-            getOtherRoom((Room) from).resetStackAndInteract();
+            getOtherRoom((Room) from).resetStackAndInteract(actor);
         }
         catch (IllegalStateException e) {
             if (actor.getInventory().hasKeyThatMatches(item -> !unlock((Key) item))) {
-                getOtherRoom((Room) from).resetStackAndInteract();
+                getOtherRoom((Room) from).resetStackAndInteract(actor);
             }
         }
         return GoTo.PARENT;

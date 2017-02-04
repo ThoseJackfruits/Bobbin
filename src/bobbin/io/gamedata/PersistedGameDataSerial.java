@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -67,7 +68,7 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
         setName(filename + '.' + extension);
     }
 
-    protected static void checkDirectory(File directory) throws IOException {
+    public static void checkDirectory(File directory) throws IOException {
         if (directory.exists()) {
             if (directory.isDirectory()) {
                 if (!directory.canWrite() || !directory.canRead()) { // permissions issue
@@ -116,7 +117,7 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
             return new File(myDocuments);
         }
         else {
-            // TODO i18n "Documents"? Does that change by language?
+            // TODO internationalise "Documents"? Does that change by language?
             return new File(System.getProperty("user.home"), "Documents");
         }
     }
@@ -135,8 +136,13 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
             checkDirectory(directory);
             ObjectInputStream in = new ObjectInputStream(getInputStream());
 
-            //noinspection unchecked
-            T object = (T) in.readObject();
+            T object = null;
+            try {
+                //noinspection unchecked
+                object = (T) in.readObject();
+            } catch (InvalidClassException e) {
+                throw new IllegalStateException("Old savegame format detected.");
+            }
             in.close();
             return object;
         }
