@@ -1,26 +1,49 @@
 package bobbin.constants;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+
 import bobbin.boundaries.Door;
 import bobbin.characters.GameCharacter;
 import bobbin.characters.NonPlayerCharacter;
-import bobbin.interaction.Interactive;
+import bobbin.characters.PlayerCharacter;
+import bobbin.interaction.BaseInteractive;
+import bobbin.interaction.ExitToException;
 import bobbin.interaction.Printers;
 import bobbin.interaction.actions.BaseAction;
 import bobbin.io.gamedata.SaveGameSerial;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.Item;
 import bobbin.main.Main;
+import bobbin.menus.MainMenu;
 
 // I think these will need to be refactored soon. It's fine
 // to have them in one big file right now, but I think that
 // is going to get inconvenient fast. I'm thinking each
-// Interactive object could have a public, static Action
+// BaseInteractive object could have a public, static Action
 // class nested inside it with the relevant Actions used
 // (primarily) by that class. This will allow actions to
 // be accessed globally while still showing who primarily
 // uses them. It seems like most actions are only used by
 // a single class anyways, so I think that would be fine.
 public class Actions {
+
+    /**
+     * For providing a {@link BaseGameEntity} that simply returns 1 to return to the parent object.
+     */
+    public static final BaseAction BACK =  // See comment on MAIN_MENU below
+            new BaseAction(Globals.messages.getString("Actions.BACK.name"),
+                           "",
+                           playerCharacter -> new BaseGameEntity() {
+                               @Override
+                               public int respondToInteraction(PlayerCharacter actor,
+                                                               BaseGameEntity from,
+                                                               BufferedReader reader,
+                                                               PrintWriter writer)
+                                       throws ExitToException {
+                                   return GoTo.GRANDPARENT;
+                               }
+                           });
 
     public static BaseAction BACK(BaseGameEntity from) {
         return new BaseAction(Globals.messages.getString("Actions.BACK.name"),
@@ -34,15 +57,25 @@ public class Actions {
                               playerCharacter -> item.consume());
     }
 
+    /**
+     * Only offer if {@link SaveGameSerial#hasActiveSave()} is {@code true}.
+     */
+    @SuppressWarnings("ConstantConditions")
     public static BaseAction CONTINUE =
-        new BaseAction(Globals.messages.getString("Actions.CONTINUE.name"),
-                       "",
-                       playerCharacter -> SaveGameSerial.loadActiveSave());
+            new BaseAction(Globals.messages.getString("Actions.CONTINUE.name"),
+                           "",
+                           playerCharacter -> SaveGameSerial.loadActiveSave().loadData());
+
+    public static BaseAction CONVERSE(NonPlayerCharacter npc) {
+        return new BaseAction(npc.getName(),
+                              npc.getDescription(),
+                              playerCharacter -> npc);
+    }
 
     public static final BaseAction EXIT_GAME =
             new BaseAction(Globals.messages.getString("Actions.EXIT_GAME.name"),
                            "",
-                           Interactive::exitGame);
+                           BaseInteractive::exitGame);
 
     public static BaseAction ITEM(Item item) {
         return new BaseAction(item.getName(),
@@ -54,6 +87,27 @@ public class Actions {
             new BaseAction(Globals.messages.getString("Actions.LOOK_AROUND.name"),
                            Globals.messages.getString("Actions.LOOK_AROUND.description"),
                            GameCharacter::getLocation);
+
+    /*
+     * This is real ugly. It works, and it's not problematic from a resource perspective (it only
+     * gets generated once and uses the same instance everywhere) but it's ugly. I'm open to finding
+     * a better way to set this kind of thing up (things that fit into the Action framework and can
+     * simply return a value or throw an exception). Unfortunately, we can't use a lambda to simplify
+     * this because exceptions cannot be thrown from lambdas.
+     */
+    public static final BaseAction MAIN_MENU =
+            new BaseAction(Globals.messages.getString("MainMenu.name"),
+                           "",
+                           playerCharacter -> new BaseGameEntity() {
+                               @Override
+                               public int respondToInteraction(PlayerCharacter actor,
+                                                               BaseGameEntity from,
+                                                               BufferedReader reader,
+                                                               PrintWriter writer)
+                                       throws ExitToException {
+                                   throw new MainMenu.ExitToMainMenuException(playerCharacter);
+                               }
+                           });
 
     public static final BaseAction NEW_GAME =
             new BaseAction(Globals.messages.getString("Actions.NEW_GAME.name"),
@@ -71,9 +125,17 @@ public class Actions {
                            "",
                            GameCharacter::getInventory);
 
-    public static BaseAction CONVERSE(NonPlayerCharacter npc) {
-        return new BaseAction(npc.getName(),
-                              npc.getDescription(),
-                              playerCharacter -> npc);
-    }
+    public static final BaseAction PICK_UP =
+            new BaseAction(Globals.messages.getString("Actions.PICK_UP.name"),
+                           "",
+                           playerCharacter -> new BaseGameEntity() {
+                               @Override
+                               public int respondToInteraction(PlayerCharacter actor,
+                                                               BaseGameEntity from,
+                                                               BufferedReader reader,
+                                                               PrintWriter writer)
+                                       throws ExitToException {
+                                   return GoTo.GRANDPARENT;
+                               }
+                           });
 }

@@ -30,6 +30,7 @@ public class Printers {
     }
 
     public static void printMessage(PrintWriter writer, String messageKey, Object... arguments) {
+        writer.print(Globals.messages.getString("Messages.prefix.secondary"));
         String message = (arguments != null && arguments.length > 0)
                          ? format(messageKey, arguments)
                          : Globals.messages.getString(messageKey);
@@ -46,8 +47,8 @@ public class Printers {
      * @param writer     to print prompt to
      * @param collection for the player to choose from
      */
-    public static void printUnordered(PrintWriter writer, Collection<Interactive> collection) {
-        for (Interactive gameEntity : collection) {
+    public static void printUnordered(PrintWriter writer, Collection<BaseInteractive> collection) {
+        for (BaseInteractive gameEntity : collection) {
             writer.println(format("Prompts.unorderedList", gameEntity));
 
             gameEntity.setSeen();
@@ -61,9 +62,9 @@ public class Printers {
      * @param writer to print prompt to
      * @param list   for the player to choose from
      */
-    public static <T extends Interactive> void printOrdered(PrintWriter writer, List<T> list) {
+    public static <T extends BaseInteractive> void printOrdered(PrintWriter writer, List<T> list) {
         int i = 1;
-        for (Interactive gameEntity : list) {
+        for (BaseInteractive gameEntity : list) {
             writer.println(format("Prompts.orderedList", i, gameEntity));
 
             ++i;
@@ -78,11 +79,12 @@ public class Printers {
      * @param writer to print prompt to
      * @param array  for the player to choose from
      */
-    public static void printOrdered(PrintWriter writer, Interactive[] array) {
+    public static void printOrdered(PrintWriter writer, BaseInteractive[] array) {
         printOrdered(writer, Arrays.asList(array));
     }
 
-    public static void print(PrintWriter writer, Interactive gameEntity) {
+    public static void print(PrintWriter writer, BaseInteractive gameEntity) {
+        writer.print(Globals.messages.getString("Messages.prefix.primary"));
         writer.println(gameEntity.toString());
         writer.flush();
         gameEntity.setSeen();

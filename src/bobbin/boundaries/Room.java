@@ -141,6 +141,24 @@ public class Room extends BaseGameEntity implements Serializable {
     }
 
     /**
+     * Removes an {@link Item} from this room.
+     *
+     * @param item {@link Item} to be taken
+     **/
+    public Item takeItem(Item item) {
+        if (!this.items.contains(item)) {
+            throw new IllegalArgumentException(String.format("%s was not found in %s", item, this));
+        }
+
+        if (!this.items.remove(item)) {
+            throw new IllegalArgumentException(String.format("%s could not be removed from %s",
+                                                             item, this));
+        }
+
+        return item;
+    }
+
+    /**
      * Check if free travel is permitted between this {@link Room} and the given {@link Room}.
      *
      * @param other The {@link Room} to check
@@ -179,9 +197,9 @@ public class Room extends BaseGameEntity implements Serializable {
     }
 
     @Override
-    protected ActionList actions(GameCharacter actor, BaseGameEntity from, BufferedReader reader,
-                                 PrintWriter writer) {
-        ActionList actions = super.actions(actor, from, reader, writer);
+    protected ActionList actions(GameCharacter actor, BaseGameEntity from) {
+        ActionList actions = new ActionList();
+        actions.add(Actions.BACK(actor));
 
         for (Door door : doors) {
             actions.add(Actions.OPEN_DOOR(door));
@@ -199,7 +217,7 @@ public class Room extends BaseGameEntity implements Serializable {
     }
 
     @Override
-    protected int
+    public int
     respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
                          BufferedReader reader, PrintWriter writer) throws ExitToException {
         return super.respondToInteraction(actor, from, reader, writer);

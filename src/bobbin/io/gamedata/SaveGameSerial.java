@@ -11,7 +11,7 @@ import bobbin.io.settings.Settings;
 public class SaveGameSerial extends PersistedGameDataSerial<PlayerCharacter> {
 
     public SaveGameSerial(@NotNull String filename) throws IOException, InterruptedException {
-        super(filename, "bbn");
+        super(filename);
     }
 
     public SaveGameSerial(@NotNull String filename, @NotNull String extension)

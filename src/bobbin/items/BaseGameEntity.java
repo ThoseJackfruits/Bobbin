@@ -12,13 +12,13 @@ import bobbin.characters.PlayerCharacter;
 import bobbin.effects.BaseEffector;
 import bobbin.interaction.ConsolePrompt;
 import bobbin.interaction.ExitToException;
-import bobbin.interaction.Interactive;
+import bobbin.interaction.BaseInteractive;
 import bobbin.interaction.Printers;
 
 /**
  * Represents a generic in-game object, including characters, interactive items, etc.
  */
-public class BaseGameEntity extends Interactive implements GameEntity {
+public class BaseGameEntity extends BaseInteractive implements GameEntity {
 
     private String name;
     private String description;
@@ -110,14 +110,14 @@ public class BaseGameEntity extends Interactive implements GameEntity {
     }
 
     @Override
-    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
-                                       BufferedReader reader, PrintWriter writer)
+    public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
+                                    BufferedReader reader, PrintWriter writer)
             throws ExitToException {
         Printers.println(writer);
         Printers.print(writer, this);
         Printers.println(writer);
 
-        return ConsolePrompt.getChoice(reader, writer, actions(actor, from, reader, writer), null)
+        return ConsolePrompt.getChoice(reader, writer, actions(actor, from), null)
                             .apply(actor)
                             .interact(actor, this, reader, writer);
     }

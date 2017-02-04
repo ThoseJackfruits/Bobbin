@@ -34,7 +34,8 @@ public class NonPlayerCharacter extends GameCharacter {
     }
 
     @Override
-    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader, PrintWriter writer) throws ExitToException {
+    public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
+                                    PrintWriter writer) throws ExitToException {
         return conversation.interact(actor, from, reader, writer);
     }
 }

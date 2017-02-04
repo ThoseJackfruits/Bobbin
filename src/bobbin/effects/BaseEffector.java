@@ -4,11 +4,15 @@ import com.sun.istack.internal.NotNull;
 
 import sun.plugin.dom.exception.InvalidStateException;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import bobbin.characters.GameCharacter;
+import bobbin.characters.PlayerCharacter;
+import bobbin.interaction.ExitToException;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.GameEntity;
 
@@ -67,5 +71,12 @@ public class BaseEffector extends BaseGameEntity implements Effector {
     @Override
     public List<BaseEffect<? extends GameEntity>> getEffects() {
         return new ArrayList<>(effects);
+    }
+
+    @Override
+    public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
+                                    PrintWriter writer) throws ExitToException {
+
+        return GoTo.GRANDPARENT;
     }
 }

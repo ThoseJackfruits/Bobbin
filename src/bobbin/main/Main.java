@@ -8,8 +8,9 @@ import bobbin.boundaries.Door;
 import bobbin.boundaries.Room;
 import bobbin.characters.PlayerCharacter;
 import bobbin.constants.Items;
+import bobbin.interaction.BaseInteractive;
 import bobbin.interaction.ExitToException;
-import bobbin.interaction.Interactive;
+import bobbin.menus.MainMenu;
 
 public class Main {
 
@@ -17,19 +18,26 @@ public class Main {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         PrintWriter writer = new PrintWriter(System.out);
 
-        start(reader, writer, stockGame());
+        start(reader, writer, MainMenu.dummyPlayerCharacter());
     }
 
     private static void start(BufferedReader reader, PrintWriter writer,
                               PlayerCharacter playerCharacter) {
-        Interactive next = playerCharacter;
+        PlayerCharacter actor = playerCharacter;
+        MainMenu mainMenu = new MainMenu();
+        BaseInteractive next = mainMenu;
 
         while (true) {
             try {
-                next.interact(playerCharacter, null, reader, writer);
+                next.interact(actor, null, reader, writer);
             }
-            catch (Interactive.ResetStackException e) {
+            catch (BaseInteractive.ResetStackException e) {
                 next = e.then;
+                actor = e.actor;
+            }
+            catch (MainMenu.ExitToMainMenuException e) {
+                mainMenu.saveGame(writer, playerCharacter);
+                next = mainMenu;
             }
             catch (ExitToException e) {
                 System.out.print("Exiting.");
@@ -48,7 +56,8 @@ public class Main {
                              startingRoom, otherRoom);
 
         return new PlayerCharacter("The Mighty Whitey", "It's you.", startingRoom,
-                                    Items.getCopyOf(Items.WATER),
-                                    door.makeKey("Key to a door", "Might open something"));
+                                   Items.getCopyOf(Items.WATER),
+                                   Items.getCopyOf(Items.FLOUR),
+                                   door.makeKey("Key to a door", "Might open something"));
     }
 }

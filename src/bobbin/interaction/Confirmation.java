@@ -7,7 +7,7 @@ import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.actions.Action;
 import bobbin.items.BaseGameEntity;
 
-public class Confirmation extends Interactive {
+public class Confirmation extends BaseInteractive {
 
     private final Action action;
     private final String prompt;
@@ -15,7 +15,7 @@ public class Confirmation extends Interactive {
 
     /**
      * Create and show a confirmation to the user with the given prompt. Will run the given {@link
-     * Action} if the player answers in the positive, or return to the given {@link Interactive} if
+     * Action} if the player answers in the positive, or return to the given {@link BaseInteractive} if
      * the player answers in the negative.
      *
      * @param action        {@link Action} to run if the player responds in the positive
@@ -30,8 +30,8 @@ public class Confirmation extends Interactive {
     }
 
     @Override
-    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
-                                       PrintWriter writer) throws ExitToException {
+    public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
+                                    PrintWriter writer) throws ExitToException {
         if (ConsolePrompt.getChoiceBoolean(reader, writer, prompt, defaultChoice)) {
             action.apply(actor);
         }

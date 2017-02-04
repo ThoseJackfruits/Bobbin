@@ -1,6 +1,8 @@
 package bobbin.io.settings;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
 
 import bobbin.constants.Globals;
@@ -9,7 +11,7 @@ import bobbin.io.gamedata.PersistedGameDataSerial;
 public class Settings extends Properties {
 
     private final PersistedGameDataSerial gameData =
-            new PersistedGameDataSerial(Globals.SETTINGS_FILE);
+            new PersistedGameDataSerial(Globals.SETTINGS_FILE_NAME);
 
     public static class Keys {
         public static final String CURRENT_SAVE = "currentSave";
@@ -74,6 +76,7 @@ public class Settings extends Properties {
             return settings;
         }
         catch (InterruptedException | IOException ignored) {
+
         }
 
         try {
@@ -81,7 +84,8 @@ public class Settings extends Properties {
             defaultSettings.store();
             return defaults();
         }
-        catch (IOException | InterruptedException ignored) {
+        catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
 
         return null;

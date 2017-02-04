@@ -13,7 +13,10 @@ import bobbin.characters.PlayerCharacter;
 import bobbin.constants.Actions;
 import bobbin.effects.BaseEffect;
 import bobbin.effects.BaseEffector;
+import bobbin.interaction.ConsolePrompt;
 import bobbin.interaction.ExitToException;
+import bobbin.interaction.Printers;
+import bobbin.interaction.actions.Action;
 import bobbin.interaction.actions.ActionList;
 import bobbin.items.combinations.Combination;
 import bobbin.items.combinations.Combinations;
@@ -158,23 +161,38 @@ public class Item extends BaseGameEntity {
     }
 
     @Override
-    protected ActionList actions(GameCharacter actor, BaseGameEntity from, BufferedReader reader,
-                                 PrintWriter writer) {
-        ActionList actions = super.actions(actor, from, reader, writer);
+    protected ActionList actions(GameCharacter actor, BaseGameEntity from) {
+        ActionList actions = super.actions(actor, from);
 
         if (isConsumable()) {
             actions.add(Actions.CONSUME(this));
         }
 
+        actions.add(Actions.PICK_UP);
+
         return actions;
     }
 
     @Override
-    protected int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
-                                       BufferedReader reader, PrintWriter writer)
+    public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
+                                    BufferedReader reader, PrintWriter writer)
             throws ExitToException {
-        return super.respondToInteraction(actor, from, reader, writer);
+        Printers.println(writer);
+        Printers.print(writer, this);
+        Printers.println(writer);
+
+        Action action = ConsolePrompt.getChoice(reader, writer, actions(actor, from), null);
+
+        if (action.equals(Actions.PICK_UP)) {
+            actor.getInventory().add(this);
+            try {
+                actor.getLocation().takeItem(this);
+            } catch (IllegalArgumentException e) {
+                Printers.printMessage(writer, "Error.gameplay.item.alreadyInInventory",
+                                      this.getName());
+            }
+        }
+
+        return action.apply(actor).interact(actor, this, reader, writer);
     }
-
-
 }
