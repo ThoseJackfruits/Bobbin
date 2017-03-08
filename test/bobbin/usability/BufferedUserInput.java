@@ -17,13 +17,14 @@ public class BufferedUserInput {
      */
     public BufferedUserInput(String s) {
         sb = new StringBuilder(Objects.requireNonNull(s));
+        newLine();
     }
 
     /**
      * Initialise a new {@link BufferedUserInput} with no input.
      */
     public BufferedUserInput() {
-        this("");
+        sb = new StringBuilder();
     }
 
     /**

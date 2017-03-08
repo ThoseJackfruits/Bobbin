@@ -69,7 +69,8 @@ public class PrintersTest extends BaseUnitTest {
         Printers.print(writer, item);
 
         final String response = new String(stream.toByteArray());
-        assertEquals(item.toString() + System.lineSeparator(), response);
+        assertEquals(Globals.messages.getString("Messages.prefix.primary") + item.toString()
+                     + System.lineSeparator(), response);
     }
 
     @Test
