@@ -6,11 +6,17 @@ import java.io.PrintWriter;
 
 import bobbin.boundaries.Door;
 import bobbin.boundaries.Room;
+import bobbin.characters.NonPlayerCharacter;
 import bobbin.characters.PlayerCharacter;
 import bobbin.constants.Items;
-import bobbin.interaction.Interactive;
+import bobbin.effects.GameCharacterEffect;
 import bobbin.interaction.ExitToException;
+import bobbin.interaction.Interactive;
+import bobbin.interaction.actions.Action;
+import bobbin.interaction.actions.BaseAction;
 import bobbin.menus.MainMenu;
+import bobbin.situations.SituationNode;
+import bobbin.situations.SituationRoot;
 
 public class Main {
 
@@ -55,9 +61,24 @@ public class Main {
         Door door = new Door("A door", "Door between starting room and other room", true,
                              startingRoom, otherRoom);
 
+        NonPlayerCharacter nonPlayerCharacter = new NonPlayerCharacter(
+                "Non Player Character",
+                "An NPC, initially in Room 2.",
+                otherRoom,
+                new SituationRoot()
+                        .addChildNode(
+                                new SituationNode("Greetings, stranger.", "(no response)",
+                                                  GameCharacterEffect.NULL,
+                                                  new BaseAction("Okay...", "[growling]", Action.NULL)))
+                        .addChildNode(
+                                new SituationNode("You are mean.", "Yes. Yes I am.",
+                                                  GameCharacterEffect.CLEAR_INVENTORY, Action.NULL)),
+                Items.getCopyOf(Items.WATER));
+
         return new PlayerCharacter("The Mighty Whitey", "It's you.", startingRoom,
                                    Items.getCopyOf(Items.WATER),
                                    Items.getCopyOf(Items.FLOUR),
                                    door.makeKey("Key to a door", "Might open something"));
     }
+
 }

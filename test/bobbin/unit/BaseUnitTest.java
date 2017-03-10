@@ -35,4 +35,5 @@ public class BaseUnitTest {
                                 "A generic GameCharacter, initially in Room 2.",
                                 room2,
                                 Items.getCopyOf(Items.WATER));
+
 }
