@@ -16,5 +16,4 @@ public class BaseConsoleTest extends BaseUnitTest {
         final String consoleOutput = new String(baos.toByteArray());
         assertTrue(consoleOutput.contains(prompt));
     }
-
 }
