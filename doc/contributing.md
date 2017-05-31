@@ -1,8 +1,8 @@
-###Main Authors
+### Main Authors
 - [Jack Davis](https://github.com/dackJavies)
 - [Logan Moore](https://github.com/ThoseGrapefruits)
 
-##Branches
+## Branches
 > __Syntax__  
 > `devname` = first name of the developer  
 > `issuenumber` = the number of the issue that the branch is completing.  
@@ -18,7 +18,7 @@ Branch name formatting should be as follows:
   `devname`/`short-description`  
   _e.g._ `logan/readme-updates`
 
-##Pull Requests & Issues
+## Pull Requests & Issues
 - If a PR directly closes one or more issues, those issues should be listed in
 the description with one of the auto-closing prefixes as described
 [here](https://help.github.com/articles/closing-issues-via-commit-messages/).  
