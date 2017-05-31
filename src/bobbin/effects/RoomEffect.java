@@ -1,5 +1,7 @@
 package bobbin.effects;
 
+import java.util.Objects;
+
 import bobbin.boundaries.Room;
 import bobbin.characters.GameCharacter;
 
@@ -18,6 +20,6 @@ public class RoomEffect extends BaseEffect<Room> {
      */
     @Override
     public void accept(GameCharacter gameCharacter) {
-        this.consumer.accept(gameCharacter.getLocation());
+        this.consumer.accept(Objects.requireNonNull(gameCharacter).getLocation());
     }
 }

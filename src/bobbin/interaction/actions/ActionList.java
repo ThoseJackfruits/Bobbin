@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.Interactive;
+import bobbin.items.BaseGameEntity;
 
 /**
  * Problems this is solving:
@@ -22,5 +23,24 @@ public class ActionList extends ArrayList<BaseAction> {
      */
     public List<Interactive> build(PlayerCharacter playerCharacter) {
         return stream().map((action -> action.apply(playerCharacter))).collect(Collectors.toList());
+    }
+
+    /**
+     * Adds actions for all of the given {@link BaseGameEntity}s, wrapping them in lambdas.
+     *
+     * @param gameEntities to be added
+     * @param <T> the actual type of the {@link BaseGameEntity} subclass
+     *
+     * @return whether anything was added
+     */
+    public <T extends BaseGameEntity> boolean addAll(List<T> gameEntities) {
+        ensureCapacity(size() + gameEntities.size());
+
+        for (BaseGameEntity gameEntity : gameEntities) {
+            add(new BaseAction(gameEntity.getName(), gameEntity.getDescription(),
+                               playerCharacter -> gameEntity));
+        }
+
+        return gameEntities.size() != 0;
     }
 }

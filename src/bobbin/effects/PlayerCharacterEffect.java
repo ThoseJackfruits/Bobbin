@@ -1,5 +1,7 @@
 package bobbin.effects;
 
+import java.util.Objects;
+
 import bobbin.characters.GameCharacter;
 import bobbin.characters.PlayerCharacter;
 
@@ -18,6 +20,7 @@ public class PlayerCharacterEffect extends BaseEffect<PlayerCharacter> {
      */
     @Override
     public void accept(GameCharacter gameCharacter) {
+        Objects.requireNonNull(gameCharacter);
         if (!(gameCharacter instanceof PlayerCharacter)) {
             throw new IllegalArgumentException(
                     String.format("Cannot apply PlayerCharacterEffect to %s.",

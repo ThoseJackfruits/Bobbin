@@ -29,4 +29,15 @@ public class GameCharacterEffect extends BaseEffect<GameCharacter> {
                     "Clears your inventory. Yikes!",
                     "Your inventory has been cleared.",
                     (gameCharacter) -> gameCharacter.getInventory().clear());
+
+    public static GameCharacterEffect STEAL_INVENTORY(GameCharacter thief) {
+        return new GameCharacterEffect(
+                "Steal Inventory",
+                "Everything you were carrying, stolen!",
+                "Your inventory has been stolen!",
+                (gameCharacter) -> {
+                    thief.getInventory().addAll(gameCharacter.getInventory());
+                    gameCharacter.getInventory().clear();
+                });
+    }
 }

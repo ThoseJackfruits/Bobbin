@@ -79,5 +79,4 @@ public class BaseAction extends BaseGameEntity implements Action {
     public BaseGameEntity apply(PlayerCharacter playerCharacter) {
         return action.apply(playerCharacter);
     }
-
 }

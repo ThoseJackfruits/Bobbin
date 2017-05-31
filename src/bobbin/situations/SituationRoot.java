@@ -1,20 +1,41 @@
 package bobbin.situations;
 
+import com.sun.istack.internal.NotNull;
+
+import java.util.Objects;
+
 import bobbin.characters.GameCharacter;
 import bobbin.effects.BaseEffect;
+import bobbin.effects.GameCharacterEffect;
 import bobbin.interaction.ExitToException;
 import bobbin.interaction.actions.Action;
 
+/**
+ * The root of a Situation tree, which can include things like dialogue or action sequences.
+ */
 public class SituationRoot extends SituationNode {
 
     class ExitToSituationRootException extends ExitToException {
     }
 
     public SituationRoot(BaseEffect<GameCharacter> effect, Action action) {
-        super("", "", effect, action);
+        super("", "", Objects.requireNonNull(effect), action);
     }
 
     public SituationRoot() {
-        this(null, null);
+        this(GameCharacterEffect.NULL, Action.NULL);
+    }
+
+    @Override
+    public SituationRoot addChildNode(@NotNull String prompt, @NotNull String response,
+                                      BaseEffect<GameCharacter> effect, Action next) {
+        super.addChildNode(prompt, response, effect, next);
+        return this;
+    }
+
+    @Override
+    public SituationRoot addChildNode(SituationNode node) {
+        super.addChildNode(node);
+        return this;
     }
 }

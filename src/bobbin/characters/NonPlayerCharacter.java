@@ -22,14 +22,13 @@ public class NonPlayerCharacter extends GameCharacter {
      * @param inventory The list of items in the NPC's possession
      * @param location  The room the NPC is in
      */
-    NonPlayerCharacter(String name, String description, Room location, SituationRoot conversation, Item... inventory) {
+    public NonPlayerCharacter(String name, String description, Room location, SituationRoot conversation, Item... inventory) {
         super(name, description, location, inventory);
         location.addNPC(this);
         this.conversation = conversation;
     }
 
-    NonPlayerCharacter(String name, String description, Room location, Item... inventory)
-    {
+    public NonPlayerCharacter(String name, String description, Room location, Item... inventory) {
         this(name, description, location, new SituationRoot(), inventory);
     }
 
