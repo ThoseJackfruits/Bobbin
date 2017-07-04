@@ -10,6 +10,7 @@ import bobbin.characters.NonPlayerCharacter;
 import bobbin.characters.PlayerCharacter;
 import bobbin.constants.Items;
 import bobbin.effects.GameCharacterEffect;
+import bobbin.interaction.ConsolePrompt;
 import bobbin.interaction.ExitToException;
 import bobbin.interaction.Interactive;
 import bobbin.interaction.actions.Action;
@@ -52,7 +53,20 @@ public class Main {
         }
     }
 
-    public static PlayerCharacter stockGame() {
+    /**
+     * Build a room, allowing the player to configure their character.
+     *
+     * @return {@link PlayerCharacter} in the new game.
+     */
+    public static PlayerCharacter buildNewGame(BufferedReader reader, PrintWriter writer) {
+        Room startingRoom = new Room("Starting Room", "A Whole New Room");
+        return new PlayerCharacter(
+                ConsolePrompt.getResponseString(reader, writer, "Character Name"),
+                ConsolePrompt.getResponseString(reader, writer, "Character Tagline"),
+                startingRoom);
+    }
+
+    public static PlayerCharacter buildStockGame() {
         Room startingRoom = new Room("Starting Room", "The room you start in",
                                      Items.getCopiesOf(Items.BLUEBERRY, Items.BED));
         Room otherRoom = new Room("Another Room", "Not the room you start in",

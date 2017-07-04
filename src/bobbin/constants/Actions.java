@@ -112,7 +112,7 @@ public class Actions {
     public static final BaseAction NEW_GAME =
             new BaseAction(Globals.messages.getString("Actions.NEW_GAME.name"),
                            "",
-                           gameCharacter -> Main.stockGame());
+                           gameCharacter -> Main.buildStockGame());
 
     public static BaseAction OPEN_DOOR(Door door) {
         return new BaseAction(Printers.format("Actions.OPEN_DOOR", door.getName()),
