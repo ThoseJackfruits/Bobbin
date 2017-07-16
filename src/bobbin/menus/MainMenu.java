@@ -23,6 +23,12 @@ import bobbin.main.Main;
 
 public class MainMenu extends Menu {
 
+    class DummyPlayerCharacter extends PlayerCharacter {
+        public DummyPlayerCharacter(String name, String description, Room location) {
+            super(name, description, location);
+        }
+    }
+
     public static PlayerCharacter dummyPlayerCharacter() {
         Room fakeRoom = new Room("Fake Room", "For dummy character to exist in");
         return new PlayerCharacter("A Dummy Character", "To be used in the main menu", fakeRoom);
@@ -31,8 +37,8 @@ public class MainMenu extends Menu {
     public void saveGame(PrintWriter writer, PlayerCharacter playerCharacter) {
         try {
             new SaveGameSerial(playerCharacter.getName()
-                                                .replace(' ', '_')
-                                                .replace(File.separatorChar, '.'))
+                                              .replace(' ', '_')
+                                              .replace(File.separatorChar, '.'))
                     .saveData(playerCharacter);
             Printers.printMessage(writer, "MainMenu.gameSaved");
         }
@@ -59,7 +65,11 @@ public class MainMenu extends Menu {
         ActionList actions = new ActionList();
 
         if (SaveGameSerial.hasActiveSave()) {
-            actions.add(Actions.CONTINUE);
+            SaveGameSerial activeSave = SaveGameSerial.loadActiveSave();
+            if (activeSave != null && !(activeSave.loadData() instanceof DummyPlayerCharacter)) {
+                // Only allow continue if the current player isn't a dummy
+                actions.add(Actions.CONTINUE);
+            }
         }
 
         actions.add(Actions.NEW_GAME);
@@ -88,7 +98,7 @@ public class MainMenu extends Menu {
         }
 
         if (next.equals(Actions.NEW_GAME)) {
-            PlayerCharacter playerCharacter = Main.stockGame();
+            PlayerCharacter playerCharacter = Main.buildNewGame(reader, writer);
             return playerCharacter.interact(playerCharacter, this, reader, writer);
         }
 
