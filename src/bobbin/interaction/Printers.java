@@ -1,6 +1,6 @@
 package bobbin.interaction;
 
-import com.sun.istack.internal.NotNull;
+import javax.validation.constraints.NotNull;
 
 import java.io.PrintWriter;
 import java.text.MessageFormat;
@@ -51,7 +51,7 @@ public class Printers {
         for (Interactive gameEntity : collection) {
             writer.println(format("Prompts.unorderedList", gameEntity));
 
-            gameEntity.setSeen();
+            gameEntity.markSeen();
         }
         writer.flush();
     }
@@ -68,7 +68,7 @@ public class Printers {
             writer.println(format("Prompts.orderedList", i, gameEntity));
 
             ++i;
-            gameEntity.setSeen();
+            gameEntity.markSeen();
         }
         writer.flush();
     }
@@ -87,7 +87,7 @@ public class Printers {
         writer.print(Globals.messages.getString("Messages.prefix.primary"));
         writer.println(gameEntity.toString());
         writer.flush();
-        gameEntity.setSeen();
+        gameEntity.markSeen();
     }
 
     public static void println(PrintWriter writer) {

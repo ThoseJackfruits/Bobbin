@@ -1,10 +1,8 @@
 package bobbin.unit.io.savegames;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import bobbin.characters.PlayerCharacter;
-import bobbin.io.gamedata.SaveGameJSON;
 import bobbin.io.gamedata.SaveGameSerial;
 import bobbin.unit.BaseUnitTest;
 
@@ -30,12 +28,5 @@ public class SaveGameTest extends BaseUnitTest {
     @Test
     public void saveGameSerial() throws Exception {
         saveGameTo(new SaveGameSerial("TestSaveSerial"));
-    }
-
-    @Test
-    @Ignore("Test Ignored: SaveGameJSON fails due to circular references.")
-    public void saveGameJSON() throws Exception {
-        // Circular references somewhere are making Gson unhappy. Have to investigate further.
-        saveGameTo(new SaveGameJSON("TestSaveJSON"));
     }
 }

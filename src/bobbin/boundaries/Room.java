@@ -1,7 +1,5 @@
 package bobbin.boundaries;
 
-import com.sun.istack.internal.NotNull;
-
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -13,6 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.validation.constraints.NotNull;
 
 import bobbin.characters.GameCharacter;
 import bobbin.characters.NonPlayerCharacter;

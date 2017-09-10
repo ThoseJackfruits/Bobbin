@@ -1,6 +1,6 @@
 package bobbin.situations;
 
-import com.sun.istack.internal.NotNull;
+import javax.validation.constraints.NotNull;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;

@@ -1,14 +1,12 @@
 package bobbin.effects;
 
-import com.sun.istack.internal.NotNull;
-
-import sun.plugin.dom.exception.InvalidStateException;
-
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
 
 import bobbin.characters.GameCharacter;
 import bobbin.characters.PlayerCharacter;
@@ -37,7 +35,7 @@ public class BaseEffector extends BaseGameEntity implements Effector {
     public void apply(@NotNull GameCharacter gameCharacter) {
         Objects.requireNonNull(gameCharacter);
         if (!(hasEffects())) {
-            throw new InvalidStateException(String.format("%s has no effects.", this.getName()));
+            throw new IllegalStateException(String.format("%s has no effects.", this.getName()));
         }
 
         while (!effects.isEmpty()) {
