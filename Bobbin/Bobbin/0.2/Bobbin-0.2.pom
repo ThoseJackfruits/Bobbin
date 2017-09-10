@@ -9,6 +9,7 @@
   <version>0.2</version>
   <modelVersion>4.0.0</modelVersion>
   <url>https://github.com/dackJavies/Bobbin</url>
+  <description>A game engine for creating Java-based text games</description>
 
   <properties>
     <github.global.server>github</github.global.server>
