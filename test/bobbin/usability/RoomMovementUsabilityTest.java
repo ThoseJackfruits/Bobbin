@@ -1,21 +1,21 @@
 package bobbin.usability;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.BufferedReader;
-
-import static org.junit.Assert.assertEquals;
 
 public class RoomMovementUsabilityTest extends BaseUsabilityTest {
 
     @Test(timeout = 1000)
     public void moveToAnotherRoomAndLookAround() throws Exception {
-        final BufferedReader reader = new BufferedUserInput("look")
+        final BufferedReader reader = new BufferedUserInput("new")
+                .appendLine("look")
                 .appendLine("open")
                 .appendLine("back")
                 .appendLine("main menu").build();
         run(reader);
-        assertEquals(room2, gameCharacter.getLocation());
+        Assert.assertEquals(room2, gameCharacter.getLocation());
 
         // Need to find out a way to properly mock out user input. This will be fine for now, but it
         // is limiting. This only allows us to give a set of user actions, apply them, then check the

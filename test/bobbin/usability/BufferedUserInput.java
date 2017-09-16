@@ -78,6 +78,13 @@ public class BufferedUserInput {
         return append(i).newLine();
     }
 
+
+    /**
+     * Append a {@link Collection<String>} of user inputs.
+     *
+     * @param list user inputs to append
+     * @return {@link this}
+     */
     public BufferedUserInput appendAllOnNewLines(Collection<String> list) {
         for (String s : list) {
             appendLine(s);
@@ -85,6 +92,12 @@ public class BufferedUserInput {
         return this;
     }
 
+    /**
+     * Append an array of user inputs.
+     *
+     * @param list user inputs to append
+     * @return {@link this}
+     */
     public BufferedUserInput appendAllOnNewLines(String... list) {
         return appendAllOnNewLines(Arrays.asList(list));
     }

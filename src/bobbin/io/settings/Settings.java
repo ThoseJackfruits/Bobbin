@@ -3,15 +3,32 @@ package bobbin.io.settings;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
-import bobbin.constants.Globals;
 import bobbin.io.gamedata.PersistedGameDataSerial;
 
 public class Settings extends Properties {
 
+    private static Settings settings;
+    public static Settings getSettings() {
+        if (settings == null) {
+            settings = Settings.loadOrDefaults();
+        }
+        return settings;
+    }
+
+    public static final Locale LOCALE = Locale.getDefault();
+    public static final ResourceBundle
+            MESSAGES_BUNDLE = ResourceBundle.getBundle("MessagesBundle", LOCALE);
+
+    public static final String DIALOGUE_SEPARATOR = ":s:";
+    public static final String PERSISTED_GAME_DATA_BASE_FOLDER = "BobbinSaves";
+    private static final String SETTINGS_FILE_NAME = "settings.bbn";
+
     private final PersistedGameDataSerial gameData =
-            new PersistedGameDataSerial(Globals.SETTINGS_FILE_NAME);
+            new PersistedGameDataSerial(SETTINGS_FILE_NAME);
 
     public static class Keys {
         public static final String CURRENT_SAVE = "currentSave";
@@ -56,8 +73,8 @@ public class Settings extends Properties {
         Settings settings = new Settings();
 
         settings.setProperty(Keys.CURRENT_SAVE, "");
-        settings.setProperty(Keys.LANGUAGE, Globals.locale.getLanguage());
-        settings.setProperty(Keys.COUNTRY, Globals.locale.getCountry());
+        settings.setProperty(Keys.LANGUAGE, LOCALE.getLanguage());
+        settings.setProperty(Keys.COUNTRY, LOCALE.getCountry());
 
         return settings;
     }

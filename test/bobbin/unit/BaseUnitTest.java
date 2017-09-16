@@ -20,8 +20,8 @@ public class BaseUnitTest {
     protected final Door door1Room1Room2Unlocked = new Door(false, room1, room2);
     protected final Door door2Room2Room3Locked = new Door(true, room2, room3);
 
-    protected final Key keyDoor1 = door1Room1Room2Unlocked.makeKey("D1 Key", "Door 1 Key");
-    protected final Key keyDoor2 = door2Room2Room3Locked.makeKey("D2 Key", "Door 2 Key");
+    protected final Key keyToDoor1 = door1Room1Room2Unlocked.makeKey("D1 Key", "Door 1 Key");
+    protected final Key keyToDoor2 = door2Room2Room3Locked.makeKey("D2 Key", "Door 2 Key");
 
     protected final PlayerCharacter playerCharacter
             = new PlayerCharacter("Player Character",

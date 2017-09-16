@@ -9,13 +9,13 @@ import bobbin.boundaries.Room;
 import bobbin.characters.GameCharacter;
 import bobbin.characters.PlayerCharacter;
 import bobbin.constants.Actions;
-import bobbin.constants.Globals;
 import bobbin.interaction.ConsolePrompt;
 import bobbin.interaction.ExitToException;
 import bobbin.interaction.Printers;
 import bobbin.interaction.actions.ActionList;
 import bobbin.interaction.actions.BaseAction;
 import bobbin.io.gamedata.SaveGameSerial;
+import bobbin.io.settings.Settings;
 import bobbin.items.BaseGameEntity;
 import bobbin.main.Main;
 
@@ -46,7 +46,7 @@ public class MainMenu extends Menu {
     }
 
     public MainMenu() {
-        super(Globals.messages.getString("MainMenu.name"), "");
+        super(Settings.MESSAGES_BUNDLE.getString("MainMenu.name"), "");
     }
 
     public static class ExitToMainMenuException extends ExitToException {

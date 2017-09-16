@@ -1,5 +1,6 @@
 package bobbin.unit.interaction;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -7,15 +8,11 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 
-import bobbin.constants.Globals;
 import bobbin.interaction.Printers;
+import bobbin.io.settings.Settings;
 import bobbin.items.Inventory;
 import bobbin.items.Item;
 import bobbin.unit.BaseUnitTest;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class PrintersTest extends BaseUnitTest {
 
@@ -23,20 +20,21 @@ public class PrintersTest extends BaseUnitTest {
     private final PrintWriter writer = new PrintWriter(stream);
 
     private void commonListAssertions(List list, String response, boolean ordered) {
-        assertTrue("should have first item", response.contains(list.get(0).toString()));
-        assertTrue("should have last item", response.contains(list.get(list.size() - 1).toString()));
+        Assert.assertTrue("should have first item", response.contains(list.get(0).toString()));
+        Assert.assertTrue("should have last item",
+                          response.contains(list.get(list.size() - 1).toString()));
 
         if (ordered) {
-            assertTrue("should not have number prefixes", response.contains("1. "));
-            assertFalse("should have dash prefixes", response.startsWith("- "));
+            Assert.assertTrue("should not have number prefixes", response.contains("1. "));
+            Assert.assertFalse("should have dash prefixes", response.startsWith("- "));
         } else {
-            assertFalse("should not have number prefixes", response.contains("1. "));
-            assertTrue("should have dash prefixes", response.startsWith("- "));
+            Assert.assertFalse("should not have number prefixes", response.contains("1. "));
+            Assert.assertTrue("should have dash prefixes", response.startsWith("- "));
         }
     }
 
     @Test
-    public void printUnordered_list() {
+    public void testPrintUnordered_list() {
         List inventory = playerCharacter.getInventory();
         //noinspection unchecked
         Printers.printUnordered(writer, inventory);
@@ -46,7 +44,7 @@ public class PrintersTest extends BaseUnitTest {
     }
 
     @Test
-    public void printOrdered_list() {
+    public void testPrintOrdered_list() {
         Inventory list = playerCharacter.getInventory();
         Printers.printOrdered(writer, list);
         final String response = new String(stream.toByteArray());
@@ -55,7 +53,7 @@ public class PrintersTest extends BaseUnitTest {
     }
 
     @Test
-    public void printOrdered_array() {
+    public void testPrintOrdered_array() {
         Item[] array = playerCharacter.getInventory().toArray();
         Printers.printOrdered(writer, array);
         final String response = new String(stream.toByteArray());
@@ -64,29 +62,29 @@ public class PrintersTest extends BaseUnitTest {
     }
 
     @Test
-    public void print() {
+    public void testPrint() {
         Item item = playerCharacter.getInventory().get(0);
         Printers.print(writer, item);
 
         final String response = new String(stream.toByteArray());
-        assertEquals(Globals.messages.getString("Messages.prefix.primary") + item.toString()
-                     + System.lineSeparator(), response);
+        Assert.assertEquals(Settings.MESSAGES_BUNDLE.getString("Messages.prefix.primary") + item.toString()
+                            + System.lineSeparator(), response);
     }
 
     @Test
-    public void printBooleanPrompt() {
+    public void testPrintBooleanPrompt() {
         Boolean[] defaultResponses = new Boolean[] {null, false, true};
         String[] expectedOptions = new String[] {
-                Globals.messages.getString("Prompts.booleanOptions"),
-                Globals.messages.getString("Prompts.booleanOptions_noDefault"),
-                Globals.messages.getString("Prompts.booleanOptions_yesDefault")};
+                Settings.MESSAGES_BUNDLE.getString("Prompts.booleanOptions"),
+                Settings.MESSAGES_BUNDLE.getString("Prompts.booleanOptions_noDefault"),
+                Settings.MESSAGES_BUNDLE.getString("Prompts.booleanOptions_yesDefault")};
         String prompt = "yes or no?";
 
         for (int i = 0; i < defaultResponses.length; i++) {
             Printers.printBooleanPrompt(writer, prompt, defaultResponses[i]);
             final String response = new String(stream.toByteArray());
-            assertTrue(response.contains(prompt));
-            assertTrue(response.contains(expectedOptions[i]));
+            Assert.assertTrue(response.contains(prompt));
+            Assert.assertTrue(response.contains(expectedOptions[i]));
         }
     }
 }

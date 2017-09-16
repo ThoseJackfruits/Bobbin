@@ -1,12 +1,10 @@
 package bobbin.unit.items;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import bobbin.items.Key;
 import bobbin.unit.BaseUnitTest;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for {@link Key}s.
@@ -19,32 +17,32 @@ public class KeyTest extends BaseUnitTest {
 
     @Test
     public void equals() {
-        assertFalse(randomKey.equals(door2Key));
-        assertFalse(door1Key1.equals(door2Key));
-        assertTrue(door1Key1.equals(door1Key2));
+        Assert.assertFalse(randomKey.equals(door2Key));
+        Assert.assertFalse(door1Key1.equals(door2Key));
+        Assert.assertTrue(door1Key1.equals(door1Key2));
     }
 
     @Test
     public void fits() {
-        assertFalse(randomKey.fits(door1Room1Room2Unlocked));
-        assertFalse(randomKey.fits(door2Room2Room3Locked));
+        Assert.assertFalse(randomKey.fits(door1Room1Room2Unlocked));
+        Assert.assertFalse(randomKey.fits(door2Room2Room3Locked));
 
-        assertTrue(door1Key1.fits(door1Room1Room2Unlocked));
-        assertTrue(door1Key2.fits(door1Room1Room2Unlocked));
+        Assert.assertTrue(door1Key1.fits(door1Room1Room2Unlocked));
+        Assert.assertTrue(door1Key2.fits(door1Room1Room2Unlocked));
 
-        assertFalse(door2Key.fits(door1Room1Room2Unlocked));
-        assertTrue(door2Key.fits(door2Room2Room3Locked));
+        Assert.assertFalse(door2Key.fits(door1Room1Room2Unlocked));
+        Assert.assertTrue(door2Key.fits(door2Room2Room3Locked));
     }
 
     @Test
     public void unlock() {
         // Try to unlock locked door with bad key...
-        assertTrue(door2Room2Room3Locked.isLocked());
-        assertTrue(keyDoor1.unlock(door2Room2Room3Locked));
-        assertTrue(door2Room2Room3Locked.isLocked());
+        Assert.assertTrue(door2Room2Room3Locked.isLocked());
+        Assert.assertTrue(keyToDoor1.unlock(door2Room2Room3Locked));
+        Assert.assertTrue(door2Room2Room3Locked.isLocked());
 
         // then correct key.
-        assertFalse(keyDoor2.unlock(door2Room2Room3Locked));
-        assertFalse(door2Room2Room3Locked.isLocked());
+        Assert.assertFalse(keyToDoor2.unlock(door2Room2Room3Locked));
+        Assert.assertFalse(door2Room2Room3Locked.isLocked());
     }
 }
