@@ -1,6 +1,7 @@
 package bobbin.menus;
 
-import com.sun.istack.internal.NotNull;
+
+import javax.validation.constraints.NotNull;
 
 import bobbin.items.BaseGameEntity;
 

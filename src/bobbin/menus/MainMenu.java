@@ -1,7 +1,5 @@
 package bobbin.menus;
 
-import sun.plugin.dom.exception.InvalidStateException;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -90,7 +88,7 @@ public class MainMenu extends Menu {
         if (next.equals(Actions.CONTINUE)) {
             SaveGameSerial saveGame = SaveGameSerial.loadActiveSave();
             if (saveGame == null) {
-                throw new InvalidStateException("SaveGame is null");
+                throw new IllegalStateException("SaveGame is null");
             }
             PlayerCharacter playerCharacter;
             playerCharacter = saveGame.loadData();

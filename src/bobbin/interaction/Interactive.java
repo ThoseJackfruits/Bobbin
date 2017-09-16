@@ -41,13 +41,55 @@ public abstract class Interactive {
     public abstract int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
                                              BufferedReader reader, PrintWriter writer) throws ExitToException;
 
+    /**
+     * The visibility of an {@link Interactive} item to the player.
+     */
     public enum Visibility {
-        FRESH(1000), SEEN(100), VISITED(10), HIDDEN(0);
+        /**
+         * The player has never seen the {@link Interactive}.
+         */
+        FRESH(1000),
 
+        /**
+         * The player has seen the {@link Interactive}, but not visited it.
+         */
+        SEEN(100),
+
+        /**
+         * The player has visited the {@link Interactive}, but the {@link Interactive} can be
+         * revisited by the player.
+         */
+        VISITED(10),
+
+        /**
+         * The {@link Interactive} is hidden to the player, either because it only allows a single
+         * visit, or because the game logic has hidden it for another reason.
+         */
+        HIDDEN(0);
+
+        /**
+         * The "visibility level" of the {@link Interactive}. Higher numbers imply more visibility
+         * or relevance to the player, lower levels imply less visibility or relevance to the player.
+         * Numerical values serve only to establish a hierarchy, and have no other significance.
+         */
         final int level;
 
         Visibility(int level) {
             this.level = level;
+        }
+
+        public Visibility min(Visibility visibility1, Visibility visibility2) {
+            return visibility1.level < visibility2.level ? visibility1 : visibility2;
+        }
+
+        /**
+         * Return the lowest {@link Visibility} between {@link this} and the given {@link Visibility}.
+         *
+         * @param otherVisibility the other {@link Visibility} to compare
+         * @return the lowest {@link Visibility}
+         */
+        public Visibility min(Visibility otherVisibility) {
+            return min(this, otherVisibility);
         }
     }
 
@@ -83,39 +125,55 @@ public abstract class Interactive {
      */
     protected class GoTo {
 
+        /**
+         * When execution ends, return to the current {@link Interactive} (looping interaction).
+         */
         public static final int THIS = 0;
+
+        /**
+         * When execution ends, return to the parent {@link Interactive}.
+         */
         public static final int PARENT = 1;
+
+        /**
+         * When interaction ends, return to the grandparent {@link Interactive}.
+         */
         public static final int GRANDPARENT = 2;
     }
 
+    /**
+     * Every {@link Interactive} starts off with {@link Visibility#FRESH}, as it has not been seen by
+     * the player yet.
+     */
     private Visibility visibility = Visibility.FRESH;
 
+    /**
+     * @return visibility of {@link this}.
+     * @see Visibility
+     */
     public Visibility getVisibility() {
         return visibility;
     }
 
-    public void setSeen() {
-        setVisibilityDownTo(Visibility.SEEN);
-    }
-
-    public void setHidden() {
-        setVisibilityDownTo(Visibility.HIDDEN);
-    }
-
-    public void setVisited() {
-        setVisibilityDownTo(Visibility.VISITED);
+    /**
+     * Mark {@link this} as being seen by the {@link PlayerCharacter}.
+     */
+    public void markSeen() {
+        this.visibility = this.visibility.min(Visibility.SEEN);
     }
 
     /**
-     * Brings the visibility of {@link this} down to the given {@link Visibility}. Will not change the
-     * {@link Visibility} if the current value is already lower than {@code visibility}.
-     *
-     * @param visibility the new {@link Visibility}
+     * Mark {@link this} as being hidden from the {@link PlayerCharacter}.
      */
-    private void setVisibilityDownTo(Visibility visibility) {
-        if (this.visibility.level > visibility.level) {
-            this.visibility = visibility;
-        }
+    public void markHidden() {
+        this.visibility = this.visibility.min(Visibility.HIDDEN);
+    }
+
+    /**
+     * Mark {@link this} as being visited by the {@link PlayerCharacter}.
+     */
+    public void markVisited() {
+        this.visibility = this.visibility.min(Visibility.VISITED);
     }
 
     public int interact(PlayerCharacter actor, BaseGameEntity from,
@@ -125,7 +183,7 @@ public abstract class Interactive {
         Objects.requireNonNull(reader);
         Objects.requireNonNull(writer);
 
-        setVisibilityDownTo(Visibility.VISITED);
+        markVisited();
 
         int height;
         do {

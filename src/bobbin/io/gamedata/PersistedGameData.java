@@ -1,6 +1,6 @@
 package bobbin.io.gamedata;
 
-import com.sun.istack.internal.NotNull;
+import javax.validation.constraints.NotNull;
 
 import java.util.Date;
 
