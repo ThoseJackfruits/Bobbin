@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.naming.directory.InvalidSearchFilterException;
 
-import bobbin.constants.Globals;
+import bobbin.io.settings.Settings;
 
 /**
  * The primary method of interacting with the player console.
@@ -154,11 +154,11 @@ public class ConsolePrompt {
      */
     private static <T extends Interactive> int findChoiceIndexByName(List<T> list, String response)
             throws InvalidSearchFilterException {
-        String normalisedResponse = response.toLowerCase(Globals.locale);
+        String normalisedResponse = response.toLowerCase(Settings.LOCALE);
         ArrayList<Integer> indexesFound = new ArrayList<>(2);
 
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).toString().toLowerCase(Globals.locale).contains(normalisedResponse)) {
+            if (list.get(i).toString().toLowerCase(Settings.LOCALE).contains(normalisedResponse)) {
                 indexesFound.add(i);
             }
 

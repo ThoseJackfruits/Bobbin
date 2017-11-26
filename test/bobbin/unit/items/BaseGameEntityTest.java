@@ -1,5 +1,6 @@
 package bobbin.unit.items;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -7,19 +8,21 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import bobbin.items.BaseGameEntity;
 import bobbin.unit.BaseUnitTest;
 
-import static org.junit.Assert.assertFalse;
-
 public class BaseGameEntityTest extends BaseUnitTest {
     private final BaseGameEntity bge = new BaseGameEntity("bge", "Generic game entity");
 
     @Test
-    public void isCompatible() {
-        assertFalse(bge.isCompatible());
+    public void testIsCompatible() {
+        Assert.assertFalse(bge.isCompatible());
     }
 
     @Test(expected = NotImplementedException.class)
-    public void consume() {
+    public void testConsume() {
         bge.consume();
     }
 
+    @Test()
+    public void testEquals() {
+        Assert.assertNotEquals(bge, new Object());
+    }
 }

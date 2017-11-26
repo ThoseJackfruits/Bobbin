@@ -1,14 +1,11 @@
 package bobbin.unit.items;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import bobbin.effects.GameCharacterEffect;
 import bobbin.items.Item;
 import bobbin.unit.BaseUnitTest;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class ItemTest extends BaseUnitTest {
 
@@ -21,13 +18,13 @@ public class ItemTest extends BaseUnitTest {
 
     private static void assertAreCombinable(boolean expect, Item... items) {
         for (Item item : items) {
-            assertEquals(expect, item.isCombinable());
+            Assert.assertEquals(expect, item.isCombinable());
         }
     }
 
     private static void assertAreCompatible(boolean expect, Item... items) {
         for (Item item : items) {
-            assertEquals(expect, item.isCompatible(items)); // Filters out duplicate of item
+            Assert.assertEquals(expect, item.isCompatible(items)); // Filters out duplicate of item
         }
     }
 
@@ -40,7 +37,7 @@ public class ItemTest extends BaseUnitTest {
 
         assertAreCompatible(true, item1, item2, item3);
         assertAreCombinable(true, item1, item2, item3);
-        assertFalse(item4.isCombinable());
+        Assert.assertFalse(item4.isCombinable());
     }
 
     private void setupForCombine() {
@@ -55,38 +52,38 @@ public class ItemTest extends BaseUnitTest {
     @Test
     public void combine() {
         setupForCombine();
-        assertEquals(combinationResult, item3.combine(gameCharacter, item1, item2));
+        Assert.assertEquals(combinationResult, item3.combine(gameCharacter, item1, item2));
     }
 
     @Test
     public void combine_includeSelf() {
         // Including the base object (item3) in the arguments (same behaviour as above).
         setupForCombine();
-        assertEquals(combinationResult, item3.combine(gameCharacter, item1, item2, item3));
+        Assert.assertEquals(combinationResult, item3.combine(gameCharacter, item1, item2, item3));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void combine_noArgs() {
         setupForCombine();
-        assertEquals(combinationResult, item3.combine(gameCharacter));
+        Assert.assertEquals(combinationResult, item3.combine(gameCharacter));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void combine_missingItemsInInventory() {
         setupForCombine();
-        assertEquals(combinationResult, item3.combine(playerCharacter, item1, item2));
+        Assert.assertEquals(combinationResult, item3.combine(playerCharacter, item1, item2));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void combine_missingItemsInCall() {
         setupForCombine();
-        assertEquals(combinationResult, item3.combine(gameCharacter, item1));
+        Assert.assertEquals(combinationResult, item3.combine(gameCharacter, item1));
     }
 
     @Test
     public void consumable() {
-        assertFalse(item3.isConsumable());
-        assertTrue(item4.isConsumable());
+        Assert.assertFalse(item3.isConsumable());
+        Assert.assertTrue(item4.isConsumable());
     }
 }

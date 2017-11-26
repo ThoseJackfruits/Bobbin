@@ -19,6 +19,12 @@ public class Door extends BaseGameEntity {
 
     }
 
+    public class DoorLockedException extends IllegalStateException {
+        private DoorLockedException(String s) {
+            super(s);
+        }
+    }
+
     private final long lock;
     private final Room room1;
     private final Room room2;
@@ -71,10 +77,10 @@ public class Door extends BaseGameEntity {
      *
      * @param from the room you're coming from
      * @return the room on the other side
-     * @throws IllegalStateException    door is locked
+     * @throws DoorLockedException    door is locked
      * @throws IllegalArgumentException given room is not connected to this door
      */
-    public Room getOtherRoom(Room from) throws IllegalArgumentException, IllegalStateException {
+    public Room getOtherRoom(Room from) throws IllegalArgumentException, DoorLockedException {
         Objects.requireNonNull(from);
 
         if (from != room1 && from != room2) {
@@ -82,7 +88,7 @@ public class Door extends BaseGameEntity {
         }
 
         if (locked) {
-            throw new IllegalStateException("Door is locked.");
+            throw new DoorLockedException("Door is locked.");
         }
 
         return from.equals(room1) ? room2 : room1;

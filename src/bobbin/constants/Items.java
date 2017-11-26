@@ -4,22 +4,23 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import bobbin.effects.GameCharacterEffect;
+import bobbin.io.settings.Settings;
 import bobbin.items.Item;
 
 public class Items {
-    public static final Item BED = new Item(Globals.messages.getString("Items.BED.name"),
-                                            Globals.messages.getString("Items.BED.description"));
+    public static final Item BED = new Item(Settings.MESSAGES_BUNDLE.getString("Items.BED.name"),
+                                            Settings.MESSAGES_BUNDLE.getString("Items.BED.description"));
 
     public static final Item BLUEBERRY =
-            new Item(Globals.messages.getString("Items.BLUEBERRY.name"),
-                     Globals.messages.getString("Items.BLUEBERRY.description"))
+            new Item(Settings.MESSAGES_BUNDLE.getString("Items.BLUEBERRY.name"),
+                     Settings.MESSAGES_BUNDLE.getString("Items.BLUEBERRY.description"))
             .addEffect(GameCharacterEffect.NULL);
 
-    public static final Item FLOUR = new Item(Globals.messages.getString("Items.FLOUR.name"),
-                                              Globals.messages.getString("Items.FLOUR.description"));
+    public static final Item FLOUR = new Item(Settings.MESSAGES_BUNDLE.getString("Items.FLOUR.name"),
+                                              Settings.MESSAGES_BUNDLE.getString("Items.FLOUR.description"));
 
-    public static final Item WATER = new Item(Globals.messages.getString("Items.WATER.name"),
-                                              Globals.messages.getString("Items.WATER.description"));
+    public static final Item WATER = new Item(Settings.MESSAGES_BUNDLE.getString("Items.WATER.name"),
+                                              Settings.MESSAGES_BUNDLE.getString("Items.WATER.description"));
 
     /**
      * Get a copy of the given {@link Item}.

@@ -87,7 +87,7 @@ public class Main {
                         .addChildNode(
                                 new SituationNode("You are mean.", "Yes. Yes I am.",
                                                   GameCharacterEffect.CLEAR_INVENTORY, Action.NULL)),
-                Items.getCopyOf(Items.WATER));
+                Items.getCopyOf(Items.WATER), door.makeKey("Mysterious Key", "Must fit something."));
 
         return new PlayerCharacter("The Mighty Whitey", "It's you.", startingRoom,
                                    Items.getCopyOf(Items.WATER),

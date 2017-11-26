@@ -1,11 +1,10 @@
 package bobbin.io.gamedata;
 
-import javax.validation.constraints.NotNull;
-
 import java.io.IOException;
 
+import javax.validation.constraints.NotNull;
+
 import bobbin.characters.PlayerCharacter;
-import bobbin.constants.Globals;
 import bobbin.io.settings.Settings;
 
 public class SaveGameSerial extends PersistedGameDataSerial<PlayerCharacter> {
@@ -22,9 +21,9 @@ public class SaveGameSerial extends PersistedGameDataSerial<PlayerCharacter> {
     @Override
     public void saveData(PlayerCharacter data) {
         super.saveData(data);
-        Globals.settings.put(Settings.Keys.CURRENT_SAVE, getName());
+        Settings.getSettings().put(Settings.Keys.CURRENT_SAVE, getName());
         try {
-            Globals.settings.store();
+            Settings.getSettings().store();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -32,7 +31,7 @@ public class SaveGameSerial extends PersistedGameDataSerial<PlayerCharacter> {
 
     public static SaveGameSerial loadActiveSave() {
         try {
-            return new SaveGameSerial((String) Globals.settings.get(Settings.Keys.CURRENT_SAVE));
+            return new SaveGameSerial((String) Settings.getSettings().get(Settings.Keys.CURRENT_SAVE));
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return null;
@@ -40,7 +39,7 @@ public class SaveGameSerial extends PersistedGameDataSerial<PlayerCharacter> {
     }
 
     public static boolean hasActiveSave() {
-        String currentSave = (String) Globals.settings.get(Settings.Keys.CURRENT_SAVE);
+        String currentSave = (String) Settings.getSettings().get(Settings.Keys.CURRENT_SAVE);
         return currentSave != null && !currentSave.isEmpty();
     }
 }

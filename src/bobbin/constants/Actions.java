@@ -7,11 +7,12 @@ import bobbin.boundaries.Door;
 import bobbin.characters.GameCharacter;
 import bobbin.characters.NonPlayerCharacter;
 import bobbin.characters.PlayerCharacter;
-import bobbin.interaction.Interactive;
 import bobbin.interaction.ExitToException;
+import bobbin.interaction.Interactive;
 import bobbin.interaction.Printers;
 import bobbin.interaction.actions.BaseAction;
 import bobbin.io.gamedata.SaveGameSerial;
+import bobbin.io.settings.Settings;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.Item;
 import bobbin.main.Main;
@@ -32,7 +33,7 @@ public class Actions {
      * For providing a {@link BaseGameEntity} that simply returns 1 to return to the parent object.
      */
     public static final BaseAction BACK =  // See comment on MAIN_MENU below
-            new BaseAction(Globals.messages.getString("Actions.BACK.name"),
+            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.BACK.name"),
                            "",
                            playerCharacter -> new BaseGameEntity() {
                                @Override
@@ -46,13 +47,13 @@ public class Actions {
                            });
 
     public static BaseAction BACK(BaseGameEntity from) {
-        return new BaseAction(Globals.messages.getString("Actions.BACK.name"),
+        return new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.BACK.name"),
                               "",
                               playerCharacter -> from);
     }
 
     public static BaseAction CONSUME(Item item) {
-        return new BaseAction(Globals.messages.getString("Actions.CONSUME.name"),
+        return new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.CONSUME.name"),
                               "",
                               playerCharacter -> item.consume());
     }
@@ -62,7 +63,7 @@ public class Actions {
      */
     @SuppressWarnings("ConstantConditions")
     public static BaseAction CONTINUE =
-            new BaseAction(Globals.messages.getString("Actions.CONTINUE.name"),
+            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.CONTINUE.name"),
                            "",
                            playerCharacter -> SaveGameSerial.loadActiveSave().loadData());
 
@@ -73,7 +74,7 @@ public class Actions {
     }
 
     public static final BaseAction EXIT_GAME =
-            new BaseAction(Globals.messages.getString("Actions.EXIT_GAME.name"),
+            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.EXIT_GAME.name"),
                            "",
                            Interactive::exitGame);
 
@@ -84,8 +85,8 @@ public class Actions {
     }
 
     public static final BaseAction LOOK_AROUND =
-            new BaseAction(Globals.messages.getString("Actions.LOOK_AROUND.name"),
-                           Globals.messages.getString("Actions.LOOK_AROUND.description"),
+            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.LOOK_AROUND.name"),
+                           Settings.MESSAGES_BUNDLE.getString("Actions.LOOK_AROUND.description"),
                            GameCharacter::getLocation);
 
     /*
@@ -96,7 +97,7 @@ public class Actions {
      * this because exceptions cannot be thrown from lambdas.
      */
     public static final BaseAction MAIN_MENU =
-            new BaseAction(Globals.messages.getString("MainMenu.name"),
+            new BaseAction(Settings.MESSAGES_BUNDLE.getString("MainMenu.name"),
                            "",
                            playerCharacter -> new BaseGameEntity() {
                                @Override
@@ -110,7 +111,7 @@ public class Actions {
                            });
 
     public static final BaseAction NEW_GAME =
-            new BaseAction(Globals.messages.getString("Actions.NEW_GAME.name"),
+            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.NEW_GAME.name"),
                            "",
                            gameCharacter -> Main.buildStockGame());
 
@@ -121,12 +122,12 @@ public class Actions {
     }
 
     public static final BaseAction OPEN_INVENTORY =
-            new BaseAction(Globals.messages.getString("Actions.OPEN_INVENTORY.name"),
+            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.OPEN_INVENTORY.name"),
                            "",
                            GameCharacter::getInventory);
 
     public static final BaseAction PICK_UP =
-            new BaseAction(Globals.messages.getString("Actions.PICK_UP.name"),
+            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.PICK_UP.name"),
                            "",
                            playerCharacter -> new BaseGameEntity() {
                                @Override

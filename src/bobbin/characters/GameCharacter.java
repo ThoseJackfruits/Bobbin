@@ -83,12 +83,12 @@ public class GameCharacter extends BaseGameEntity implements Cloneable {
         try {
             room = door.getOtherRoom(this.getLocation());
         }
-        catch (IllegalStateException exc) {  // door is locked
+        catch (Door.DoorLockedException e) {  // door is locked
             if (getInventory().hasKeyThatMatches((key) -> !door.unlock((Key) key))) {
                 room = door.getOtherRoom(this.getLocation());
             }
             else {
-                throw exc;
+                throw e;
             }
         }
         moveTo(room);

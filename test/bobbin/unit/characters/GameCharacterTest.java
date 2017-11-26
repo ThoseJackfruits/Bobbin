@@ -1,26 +1,25 @@
 package bobbin.unit.characters;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import bobbin.unit.BaseUnitTest;
 
-import static org.junit.Assert.assertEquals;
-
 public class GameCharacterTest extends BaseUnitTest {
 
     @Test
-    public void moveTo() {
+    public void testMoveTo() {
         gameCharacter.moveTo(room2);
-        assertEquals(room2, gameCharacter.getLocation());
+        Assert.assertEquals(room2, gameCharacter.getLocation());
         gameCharacter.moveTo(room1);
-        assertEquals(room1, gameCharacter.getLocation());
+        Assert.assertEquals(room1, gameCharacter.getLocation());
     }
 
     @Test
-    public void moveThroughDoor() {
+    public void testMoveThroughDoor() {
         gameCharacter.moveThroughDoor(door1Room1Room2Unlocked);
-        assertEquals(room1, gameCharacter.getLocation());
+        Assert.assertEquals(room1, gameCharacter.getLocation());
         gameCharacter.moveThroughDoor(door1Room1Room2Unlocked);
-        assertEquals(room2, gameCharacter.getLocation());
+        Assert.assertEquals(room2, gameCharacter.getLocation());
     }
 }

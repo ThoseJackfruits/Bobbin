@@ -19,35 +19,35 @@ public class DoorTest extends BaseUnitTest {
 
     @Test
     public void testFits() {
-        assertTrue(door1Room1Room2Unlocked.fits(keyDoor1));
-        assertFalse(door2Room2Room3Locked.fits(keyDoor1));
+        assertTrue(door1Room1Room2Unlocked.fits(keyToDoor1));
+        assertFalse(door2Room2Room3Locked.fits(keyToDoor1));
 
-        assertTrue(door2Room2Room3Locked.fits(keyDoor2));
-        assertFalse(door1Room1Room2Unlocked.fits(keyDoor2));
+        assertTrue(door2Room2Room3Locked.fits(keyToDoor2));
+        assertFalse(door1Room1Room2Unlocked.fits(keyToDoor2));
     }
 
     @Test
     public void testUnlock() {
         // Try to unlock already unlocked door with multiple keys. Nothing should change.
         assertFalse(door1Room1Room2Unlocked.isLocked());
-        assertFalse(door1Room1Room2Unlocked.unlock(keyDoor1));
-        assertFalse(door1Room1Room2Unlocked.unlock(keyDoor2));
+        assertFalse(door1Room1Room2Unlocked.unlock(keyToDoor1));
+        assertFalse(door1Room1Room2Unlocked.unlock(keyToDoor2));
         assertFalse(door1Room1Room2Unlocked.isLocked());
 
         // Try to unlock locked door with bad key...
         assertTrue(door2Room2Room3Locked.isLocked());
-        assertTrue(door2Room2Room3Locked.unlock(keyDoor1));
+        assertTrue(door2Room2Room3Locked.unlock(keyToDoor1));
         assertTrue(door2Room2Room3Locked.isLocked());
 
         // then correct key.
-        assertFalse(door2Room2Room3Locked.unlock(keyDoor2));
+        assertFalse(door2Room2Room3Locked.unlock(keyToDoor2));
         assertFalse(door2Room2Room3Locked.isLocked());
     }
 
     @Test
     public void testLock() {
         assertFalse(door1Room1Room2Unlocked.isLocked());
-        assertTrue(door1Room1Room2Unlocked.lock(keyDoor1));
+        assertTrue(door1Room1Room2Unlocked.lock(keyToDoor1));
         assertTrue(door1Room1Room2Unlocked.isLocked());
     }
 
@@ -65,7 +65,7 @@ public class DoorTest extends BaseUnitTest {
 
     @Test
     public void testGetOtherRoom() {
-        door2Room2Room3Locked.unlock(keyDoor2);
+        door2Room2Room3Locked.unlock(keyToDoor2);
         // Get opposite room from Room 2 through the [Room 2 <-> Room 3] door.
         final Room otherRoomFromRoom2 = door2Room2Room3Locked.getOtherRoom(room2);
         assertEquals(room3, otherRoomFromRoom2);

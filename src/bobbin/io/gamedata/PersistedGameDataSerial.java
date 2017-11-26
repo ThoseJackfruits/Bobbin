@@ -1,7 +1,5 @@
 package bobbin.io.gamedata;
 
-import javax.validation.constraints.NotNull;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,7 +10,9 @@ import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import bobbin.constants.Globals;
+import javax.validation.constraints.NotNull;
+
+import bobbin.io.settings.Settings;
 
 public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
 
@@ -29,7 +29,7 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
         File documents = getDocumentsFolder();
         checkDirectory(documents);
 
-        directory = new File(documents, Globals.PERSISTED_GAME_DATA_BASE_FOLDER);
+        directory = new File(documents, Settings.PERSISTED_GAME_DATA_BASE_FOLDER);
         checkDirectory(directory);
     }
 

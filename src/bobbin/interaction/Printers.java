@@ -1,7 +1,5 @@
 package bobbin.interaction;
 
-import javax.validation.constraints.NotNull;
-
 import java.io.PrintWriter;
 import java.text.MessageFormat;
 import java.util.Arrays;
@@ -9,14 +7,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import bobbin.constants.Globals;
+import javax.validation.constraints.NotNull;
+
+import bobbin.io.settings.Settings;
 
 /**
  * Primary method of printing to the player console.
  */
 public class Printers {
 
-    private static final MessageFormat formatter = new MessageFormat("", Globals.locale);
+    private static final MessageFormat formatter = new MessageFormat("", Settings.LOCALE);
 
     /**
      * Protect constructor, since it is a static only class
@@ -25,15 +25,15 @@ public class Printers {
     }
 
     public static String format(String messageKey, Object... arguments) {
-        formatter.applyPattern(Globals.messages.getString(messageKey));
+        formatter.applyPattern(Settings.MESSAGES_BUNDLE.getString(messageKey));
         return formatter.format(arguments);
     }
 
     public static void printMessage(PrintWriter writer, String messageKey, Object... arguments) {
-        writer.print(Globals.messages.getString("Messages.prefix.secondary"));
+        writer.print(Settings.MESSAGES_BUNDLE.getString("Messages.prefix.secondary"));
         String message = (arguments != null && arguments.length > 0)
                          ? format(messageKey, arguments)
-                         : Globals.messages.getString(messageKey);
+                         : Settings.MESSAGES_BUNDLE.getString(messageKey);
         writer.println(message);
         writer.flush();
     }
@@ -84,7 +84,7 @@ public class Printers {
     }
 
     public static void print(PrintWriter writer, Interactive gameEntity) {
-        writer.print(Globals.messages.getString("Messages.prefix.primary"));
+        writer.print(Settings.MESSAGES_BUNDLE.getString("Messages.prefix.primary"));
         writer.println(gameEntity.toString());
         writer.flush();
         gameEntity.markSeen();
@@ -107,13 +107,13 @@ public class Printers {
         String options;
 
         if (defaultChoice == null) {
-            options = Globals.messages.getString("Prompts.booleanOptions");
+            options = Settings.MESSAGES_BUNDLE.getString("Prompts.booleanOptions");
         }
         else if (defaultChoice) {
-            options = Globals.messages.getString("Prompts.booleanOptions_yesDefault");
+            options = Settings.MESSAGES_BUNDLE.getString("Prompts.booleanOptions_yesDefault");
         }
         else {
-            options = Globals.messages.getString("Prompts.booleanOptions_noDefault");
+            options = Settings.MESSAGES_BUNDLE.getString("Prompts.booleanOptions_noDefault");
         }
 
         writer.println(format("Prompts.booleanPrompt", prompt, options));
@@ -121,7 +121,7 @@ public class Printers {
     }
 
     public static void printGenericPrompt(PrintWriter writer) {
-        writer.print(Globals.messages.getString("Prompts.genericPrompt"));
+        writer.print(Settings.MESSAGES_BUNDLE.getString("Prompts.genericPrompt"));
         writer.flush();
     }
 

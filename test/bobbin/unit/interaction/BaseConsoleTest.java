@@ -1,19 +1,22 @@
 package bobbin.unit.interaction;
 
+import org.junit.Assert;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 
+import bobbin.menus.MainMenu;
 import bobbin.unit.BaseUnitTest;
-
-import static org.junit.Assert.assertTrue;
 
 public class BaseConsoleTest extends BaseUnitTest {
 
     protected final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     protected final PrintWriter writer = new PrintWriter(baos);
 
+    MainMenu mainMenu = new MainMenu();
+
     void assertPromptOutput(String prompt) {
         final String consoleOutput = new String(baos.toByteArray());
-        assertTrue(consoleOutput.contains(prompt));
+        Assert.assertTrue(consoleOutput.contains(prompt));
     }
 }
