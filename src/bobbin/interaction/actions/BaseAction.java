@@ -11,7 +11,7 @@ import bobbin.items.GameEntity;
 
 public class BaseAction extends BaseGameEntity implements Action {
 
-    private Function<PlayerCharacter, BaseGameEntity> action;
+    private final Function<PlayerCharacter, BaseGameEntity> action;
 
     /**
      * Constructs a new item {@link BaseGameEntity}.

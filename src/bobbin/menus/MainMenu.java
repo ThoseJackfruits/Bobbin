@@ -9,6 +9,7 @@ import bobbin.boundaries.Room;
 import bobbin.characters.GameCharacter;
 import bobbin.characters.PlayerCharacter;
 import bobbin.constants.Actions;
+import bobbin.constants.Items;
 import bobbin.interaction.ConsolePrompt;
 import bobbin.interaction.ExitToException;
 import bobbin.interaction.Printers;
@@ -29,7 +30,8 @@ public class MainMenu extends Menu {
 
     public static PlayerCharacter dummyPlayerCharacter() {
         Room fakeRoom = new Room("Fake Room", "For dummy character to exist in");
-        return new PlayerCharacter("A Dummy Character", "To be used in the main menu", fakeRoom);
+        return new PlayerCharacter("A Dummy Character", "To be used in the main menu", fakeRoom,
+                Items.getCopiesOf(Items.BLUEBERRY, Items.FLOUR));
     }
 
     public void saveGame(PrintWriter writer, PlayerCharacter playerCharacter) {
@@ -92,11 +94,6 @@ public class MainMenu extends Menu {
             }
             PlayerCharacter playerCharacter;
             playerCharacter = saveGame.loadData();
-            return playerCharacter.interact(playerCharacter, this, reader, writer);
-        }
-
-        if (next.equals(Actions.NEW_GAME)) {
-            PlayerCharacter playerCharacter = Main.buildNewGame(reader, writer);
             return playerCharacter.interact(playerCharacter, this, reader, writer);
         }
 

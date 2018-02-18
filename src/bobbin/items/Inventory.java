@@ -10,12 +10,14 @@ import java.util.function.Predicate;
 
 import bobbin.characters.GameCharacter;
 import bobbin.constants.Actions;
+import bobbin.interaction.Printers;
 import bobbin.interaction.actions.ActionList;
 
 public class Inventory extends BaseGameEntity implements List<Item> {
     private final List<Item> items;
 
     public Inventory(List<Item> items) {
+        setName(Printers.format("Inventory"));
         this.items = new ArrayList<>(items);
     }
 
@@ -165,5 +167,4 @@ public class Inventory extends BaseGameEntity implements List<Item> {
     public List<Item> subList(int fromIndex, int toIndex) {
         return items.subList(fromIndex, toIndex);
     }
-
 }

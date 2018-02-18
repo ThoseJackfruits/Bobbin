@@ -38,4 +38,10 @@ public class SituationRoot extends SituationNode {
         super.addChildNode(node);
         return this;
     }
+
+    @Override
+    public SituationRoot addChildNodes(SituationNode... nodes) {
+        super.addChildNodes(nodes);
+        return this;
+    }
 }

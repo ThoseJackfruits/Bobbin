@@ -1,6 +1,7 @@
 package bobbin.characters;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import bobbin.boundaries.Door;
 import bobbin.boundaries.Room;

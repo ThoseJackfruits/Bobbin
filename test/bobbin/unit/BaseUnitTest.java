@@ -30,10 +30,11 @@ public class BaseUnitTest {
                                   Items.getCopiesOf(Items.BLUEBERRY, Items.FLOUR,
                                                     Items.WATER, Items.BED));
 
+    @SuppressWarnings("ConstantConditions")
     protected final GameCharacter gameCharacter
             = new GameCharacter("Generic Game Character",
                                 "A generic GameCharacter, initially in Room 2.",
                                 room2,
-                                Items.getCopyOf(Items.WATER));
+                                Items.getCopyOf(Items.WATER).get());
 
 }
