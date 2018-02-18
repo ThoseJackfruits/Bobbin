@@ -8,7 +8,8 @@ import bobbin.items.Item;
 import bobbin.unit.BaseUnitTest;
 
 public class ItemsTest extends BaseUnitTest {
-    private final Item blueberryCopy = Items.getCopyOf(Items.BLUEBERRY);
+    @SuppressWarnings("ConstantConditions")
+    private final Item blueberryCopy = Items.getCopyOf(Items.BLUEBERRY).get();
 
     @Test
     public void getCopyOf() {

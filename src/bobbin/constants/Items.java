@@ -2,6 +2,7 @@ package bobbin.constants;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 import bobbin.effects.GameCharacterEffect;
 import bobbin.io.settings.Settings;
@@ -32,13 +33,13 @@ public class Items {
      * @param item the {@link Item} to get a copy of.
      * @return copy of {@code item}.
      */
-    public static Item getCopyOf(Item item) {
+    public static Optional<Item> getCopyOf(Item item) {
         try {
-            return (Item)item.clone();
+            return Optional.of((Item)item.clone());
         }
         catch (CloneNotSupportedException e) {
             e.printStackTrace();
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -54,8 +55,10 @@ public class Items {
      * @return list of copies of {@code item}.
      */
     public static Item[] getCopiesOf(Item... items) {
-        return Arrays.stream(items).map(Items::getCopyOf)
-                     .filter(Objects::nonNull)
-                     .toArray(Item[]::new);
+        return Arrays.stream(items)
+                .map(Items::getCopyOf)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toArray(Item[]::new);
     }
 }

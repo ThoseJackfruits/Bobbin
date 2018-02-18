@@ -1,4 +1,4 @@
-package bobbin.usability;
+package bobbin.usability.util;
 
 import java.io.BufferedReader;
 

@@ -2,10 +2,9 @@ package bobbin.items;
 
 import javax.validation.constraints.NotNull;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.Objects;
 
 import bobbin.characters.PlayerCharacter;
@@ -82,7 +81,7 @@ public class BaseGameEntity extends Interactive implements GameEntity {
 
     @Override
     public BaseEffector consume() {
-        throw new NotImplementedException();
+        return new BaseEffector(Collections.emptyList());
     }
 
     @Override

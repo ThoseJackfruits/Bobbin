@@ -39,6 +39,13 @@ public class SituationNode extends BaseGameEntity {
         return this;
     }
 
+    public SituationNode addChildNodes(SituationNode... nodes) {
+        for (SituationNode n : nodes) {
+            addChildNode(n);
+        }
+        return this;
+    }
+
     public boolean isLeaf() {
         return childNodes.isEmpty();
     }

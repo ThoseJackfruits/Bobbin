@@ -62,7 +62,7 @@ public class Actions {
      * Only offer if {@link SaveGameSerial#hasActiveSave()} is {@code true}.
      */
     @SuppressWarnings("ConstantConditions")
-    public static BaseAction CONTINUE =
+    public static final BaseAction CONTINUE =
             new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.CONTINUE.name"),
                            "",
                            playerCharacter -> SaveGameSerial.loadActiveSave().loadData());
