@@ -1,14 +1,13 @@
 package bobbin.situations;
 
-import javax.validation.constraints.NotNull;
-
-import java.util.Objects;
-
 import bobbin.characters.GameCharacter;
 import bobbin.effects.BaseEffect;
 import bobbin.effects.GameCharacterEffect;
 import bobbin.interaction.ExitToException;
 import bobbin.interaction.actions.Action;
+
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * The root of a Situation tree, which can include things like dialogue or action sequences.
@@ -27,8 +26,9 @@ public class SituationRoot extends SituationNode {
     }
 
     @Override
-    public SituationRoot addChildNode(@NotNull String prompt, @NotNull String response,
-                                      BaseEffect<GameCharacter> effect, Action next) {
+    public SituationRoot addChildNode(
+            @NotNull String prompt, @NotNull String response,
+            BaseEffect<GameCharacter> effect, Action next) {
         super.addChildNode(prompt, response, effect, next);
         return this;
     }

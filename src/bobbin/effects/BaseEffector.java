@@ -1,18 +1,17 @@
 package bobbin.effects;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import javax.validation.constraints.NotNull;
-
 import bobbin.characters.GameCharacter;
 import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.ExitToException;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.GameEntity;
+
+import javax.validation.constraints.NotNull;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * All {@link BaseGameEntity}'s which apply some kind of {@link BaseEffect} should implement {@link
@@ -72,8 +71,9 @@ public class BaseEffector extends BaseGameEntity implements Effector {
     }
 
     @Override
-    public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
-                                    PrintWriter writer) throws ExitToException {
+    public int respondToInteraction(
+            PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
+            PrintWriter writer) throws ExitToException {
 
         return GoTo.GRANDPARENT;
     }

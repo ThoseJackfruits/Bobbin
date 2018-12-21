@@ -1,14 +1,14 @@
 package bobbin.characters;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-
 import bobbin.boundaries.Room;
 import bobbin.constants.Actions;
 import bobbin.interaction.ExitToException;
 import bobbin.interaction.actions.ActionList;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.Item;
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 
 public class PlayerCharacter extends GameCharacter {
 
@@ -46,11 +46,11 @@ public class PlayerCharacter extends GameCharacter {
         super(name, description, location);
     }
 
-
     @Override
     public int
-    respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
-                         BufferedReader reader, PrintWriter writer) throws ExitToException {
+    respondToInteraction(
+            PlayerCharacter actor, BaseGameEntity from,
+            BufferedReader reader, PrintWriter writer) throws ExitToException {
         return super.respondToInteraction(actor, from, reader, writer);
     }
 }

@@ -1,14 +1,15 @@
 package bobbin.effects;
 
-import java.util.Objects;
-
 import bobbin.boundaries.Room;
 import bobbin.characters.GameCharacter;
 
+import java.util.Objects;
+
 public class RoomEffect extends BaseEffect<Room> {
 
-    public RoomEffect(String name, String description, String report,
-                                 Effect<Room> consumer) {
+    public RoomEffect(
+            String name, String description, String report,
+            Effect<Room> consumer) {
         super(name, description, report, consumer);
     }
 

@@ -1,9 +1,8 @@
 package bobbin.unit.characters;
 
+import bobbin.unit.BaseUnitTest;
 import org.junit.Assert;
 import org.junit.Test;
-
-import bobbin.unit.BaseUnitTest;
 
 public class GameCharacterTest extends BaseUnitTest {
 

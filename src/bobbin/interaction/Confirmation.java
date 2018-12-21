@@ -1,11 +1,11 @@
 package bobbin.interaction;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-
 import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.actions.Action;
 import bobbin.items.BaseGameEntity;
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 
 public class Confirmation extends Interactive {
 
@@ -30,8 +30,9 @@ public class Confirmation extends Interactive {
     }
 
     @Override
-    public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
-                                    PrintWriter writer) throws ExitToException {
+    public int respondToInteraction(
+            PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
+            PrintWriter writer) throws ExitToException {
         if (ConsolePrompt.getChoiceBoolean(reader, writer, prompt, defaultChoice)) {
             action.apply(actor);
         }

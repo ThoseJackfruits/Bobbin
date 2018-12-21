@@ -1,14 +1,14 @@
 package bobbin.boundaries;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.util.Objects;
-import java.util.Random;
-
 import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.ExitToException;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.Key;
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.util.Objects;
+import java.util.Random;
 
 /**
  * Represents a door from one {@link Door} to another
@@ -77,7 +77,7 @@ public class Door extends BaseGameEntity {
      *
      * @param from the room you're coming from
      * @return the room on the other side
-     * @throws DoorLockedException    door is locked
+     * @throws DoorLockedException      door is locked
      * @throws IllegalArgumentException given room is not connected to this door
      */
     public Room getOtherRoom(Room from) throws IllegalArgumentException, DoorLockedException {
@@ -113,7 +113,6 @@ public class Door extends BaseGameEntity {
 
         return result.toString();
     }
-
 
     /**
      * Tries to unlock this {@link Door} with the given {@link Key}.
@@ -173,18 +172,19 @@ public class Door extends BaseGameEntity {
         // Basing equality on hashCode(), which is a little dirty, but it's the
         // comparison to make in this situation.
         return (this == obj) || (obj != null && getClass() == obj.getClass()
-                                 && hashCode() == obj.hashCode());
+                && hashCode() == obj.hashCode());
     }
 
     @Override
     public int hashCode() {
         return (room1 != null ? room1.hashCode() : 0)
-               + (room2 != null ? room2.hashCode() : 0);
+                + (room2 != null ? room2.hashCode() : 0);
     }
 
     @Override
-    public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
-                                    BufferedReader reader, PrintWriter writer)
+    public int respondToInteraction(
+            PlayerCharacter actor, BaseGameEntity from,
+            BufferedReader reader, PrintWriter writer)
             throws ExitToException {
         try {
             getOtherRoom((Room) from).resetStackAndInteract(actor);

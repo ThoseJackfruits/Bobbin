@@ -1,5 +1,7 @@
 package bobbin.io.settings;
 
+import bobbin.io.gamedata.PersistedGameDataSerial;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,11 +9,10 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import bobbin.io.gamedata.PersistedGameDataSerial;
-
 public class Settings extends Properties {
 
     private static Settings settings;
+
     public static Settings getSettings() {
         if (settings == null) {
             settings = Settings.loadOrDefaults();

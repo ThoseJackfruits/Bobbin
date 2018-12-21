@@ -1,8 +1,8 @@
 package bobbin.items;
 
-import java.util.Random;
-
 import bobbin.boundaries.Door;
+
+import java.util.Random;
 
 /**
  * Represents a key to one or more doors
@@ -36,7 +36,6 @@ public class Key extends Item {
 
         this.id = id;
     }
-
 
     /**
      * Can this {@link Key} unlock the given {@link Door}?

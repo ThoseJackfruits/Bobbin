@@ -1,15 +1,14 @@
 package bobbin.interaction;
 
+import bobbin.io.settings.Settings;
+
+import javax.validation.constraints.NotNull;
 import java.io.PrintWriter;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-
-import javax.validation.constraints.NotNull;
-
-import bobbin.io.settings.Settings;
 
 /**
  * Primary method of printing to the player console.
@@ -32,15 +31,15 @@ public class Printers {
     public static void printMessage(PrintWriter writer, String messageKey, Object... arguments) {
         writer.print(Settings.MESSAGES_BUNDLE.getString("Messages.prefix.secondary"));
         String message = (arguments != null && arguments.length > 0)
-                         ? format(messageKey, arguments)
-                         : Settings.MESSAGES_BUNDLE.getString(messageKey);
+                ? format(messageKey, arguments)
+                : Settings.MESSAGES_BUNDLE.getString(messageKey);
         writer.println(message);
         writer.flush();
     }
 
     /**
      * Standard method of printing multiple items where order is not important.
-     *
+     * <p>
      * Should <i>not</i> be used when the player needs to make a selection from the list. Use {@link
      * #printOrdered(PrintWriter, List)} instead.
      *
@@ -103,7 +102,10 @@ public class Printers {
      * @param defaultChoice the default response of the player, if the player submits empty input. If
      *                      {@code null}, there is no default hinted.
      */
-    public static void printBooleanPrompt(PrintWriter writer, String prompt, Boolean defaultChoice) {
+    public static void printBooleanPrompt(
+            PrintWriter writer,
+            String prompt,
+            Boolean defaultChoice) {
         String options;
 
         if (defaultChoice == null) {

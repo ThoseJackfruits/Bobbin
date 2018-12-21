@@ -24,17 +24,19 @@ public class BaseUnitTest {
     protected final Key keyToDoor2 = door2Room2Room3Locked.makeKey("D2 Key", "Door 2 Key");
 
     protected final PlayerCharacter playerCharacter
-            = new PlayerCharacter("Player Character",
-                                  "The main Player Character, initially in Room 1.",
-                                  room1,
-                                  Items.getCopiesOf(Items.BLUEBERRY, Items.FLOUR,
-                                                    Items.WATER, Items.BED));
+            = new PlayerCharacter(
+            "Player Character",
+            "The main Player Character, initially in Room 1.",
+            room1,
+            Items.getCopiesOf(Items.BLUEBERRY, Items.FLOUR,
+                              Items.WATER, Items.BED));
 
     @SuppressWarnings("ConstantConditions")
     protected final GameCharacter gameCharacter
-            = new GameCharacter("Generic Game Character",
-                                "A generic GameCharacter, initially in Room 2.",
-                                room2,
-                                Items.getCopyOf(Items.WATER).get());
+            = new GameCharacter(
+            "Generic Game Character",
+            "A generic GameCharacter, initially in Room 2.",
+            room2,
+            Items.getCopyOf(Items.WATER).get());
 
 }

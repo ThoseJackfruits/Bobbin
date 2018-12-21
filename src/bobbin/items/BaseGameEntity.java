@@ -1,18 +1,17 @@
 package bobbin.items;
 
-import javax.validation.constraints.NotNull;
-
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.Objects;
-
 import bobbin.characters.PlayerCharacter;
 import bobbin.effects.BaseEffector;
 import bobbin.interaction.ConsolePrompt;
 import bobbin.interaction.ExitToException;
 import bobbin.interaction.Interactive;
 import bobbin.interaction.Printers;
+
+import javax.validation.constraints.NotNull;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.util.Collections;
+import java.util.Objects;
 
 /**
  * Represents a generic in-game object, including characters, interactive items, etc.
@@ -87,8 +86,8 @@ public class BaseGameEntity extends Interactive implements GameEntity {
     @Override
     public String toString() {
         return this.getDescription().isEmpty()
-               ? this.getName()
-               : this.getName() + ": " + this.getDescription();
+                ? this.getName()
+                : this.getName() + ": " + this.getDescription();
     }
 
     @Override
@@ -109,15 +108,17 @@ public class BaseGameEntity extends Interactive implements GameEntity {
     }
 
     @Override
-    public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
-                                    BufferedReader reader, PrintWriter writer)
+    public int respondToInteraction(
+            PlayerCharacter actor, BaseGameEntity from,
+            BufferedReader reader, PrintWriter writer)
             throws ExitToException {
         Printers.println(writer);
         Printers.print(writer, this);
         Printers.println(writer);
 
-        return ConsolePrompt.getChoice(reader, writer, actions(actor, from), null)
-                            .apply(actor)
-                            .interact(actor, this, reader, writer);
+        return ConsolePrompt
+                .getChoice(reader, writer, actions(actor, from), null)
+                .apply(actor)
+                .interact(actor, this, reader, writer);
     }
 }

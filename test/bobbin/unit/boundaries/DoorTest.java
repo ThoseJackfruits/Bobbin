@@ -1,15 +1,11 @@
 package bobbin.unit.boundaries;
 
-import org.junit.Test;
-
 import bobbin.boundaries.Door;
 import bobbin.boundaries.Room;
 import bobbin.unit.BaseUnitTest;
+import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for {@link Door}s.

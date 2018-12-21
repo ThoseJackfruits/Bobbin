@@ -7,8 +7,9 @@ import bobbin.characters.GameCharacter;
  */
 public class GameCharacterEffect extends BaseEffect<GameCharacter> {
 
-    private GameCharacterEffect(String name, String description, String report,
-                                Effect<GameCharacter> consumer) {
+    private GameCharacterEffect(
+            String name, String description, String report,
+            Effect<GameCharacter> consumer) {
         super(name, description, report, consumer);
     }
 
@@ -21,7 +22,8 @@ public class GameCharacterEffect extends BaseEffect<GameCharacter> {
             "No effect.",
             "",
             "",
-            (gameCharacter) -> { });
+            (gameCharacter) -> {
+            });
 
     public static final GameCharacterEffect CLEAR_INVENTORY =
             new GameCharacterEffect(

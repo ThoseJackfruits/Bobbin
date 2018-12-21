@@ -1,12 +1,12 @@
 package bobbin.interaction.actions;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.Interactive;
 import bobbin.items.BaseGameEntity;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Problems this is solving:
@@ -29,8 +29,7 @@ public class ActionList extends ArrayList<BaseAction> {
      * Adds actions for all of the given {@link BaseGameEntity}s, wrapping them in lambdas.
      *
      * @param gameEntities to be added
-     * @param <T> the actual type of the {@link BaseGameEntity} subclass
-     *
+     * @param <T>          the actual type of the {@link BaseGameEntity} subclass
      * @return whether anything was added
      */
     public <T extends BaseGameEntity> boolean addAll(List<T> gameEntities) {

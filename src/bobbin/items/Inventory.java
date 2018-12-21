@@ -1,17 +1,12 @@
 package bobbin.items;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.function.Predicate;
-
 import bobbin.characters.GameCharacter;
 import bobbin.constants.Actions;
 import bobbin.interaction.Printers;
 import bobbin.interaction.actions.ActionList;
+
+import java.util.*;
+import java.util.function.Predicate;
 
 public class Inventory extends BaseGameEntity implements List<Item> {
     private final List<Item> items;
@@ -44,7 +39,7 @@ public class Inventory extends BaseGameEntity implements List<Item> {
     // List Methods
 
     public Item[] toArray() {
-        return toArray(new Item[size()]);
+        return toArray(new Item[ size() ]);
     }
 
     @Override

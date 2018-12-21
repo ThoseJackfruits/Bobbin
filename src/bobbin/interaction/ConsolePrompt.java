@@ -1,5 +1,8 @@
 package bobbin.interaction;
 
+import bobbin.io.settings.Settings;
+
+import javax.naming.directory.InvalidSearchFilterException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,10 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.List;
-
-import javax.naming.directory.InvalidSearchFilterException;
-
-import bobbin.io.settings.Settings;
 
 /**
  * The primary method of interacting with the player console.
@@ -58,8 +57,9 @@ public class ConsolePrompt {
      *                      {@code null}, an explicit response is required.
      * @return the player's response
      */
-    public static boolean getChoiceBoolean(BufferedReader reader, PrintWriter writer,
-                                           String prompt, Boolean defaultChoice) {
+    public static boolean getChoiceBoolean(
+            BufferedReader reader, PrintWriter writer,
+            String prompt, Boolean defaultChoice) {
         boolean choice;
         while (true) {
             Printers.printBooleanPrompt(writer, prompt, defaultChoice);
@@ -120,7 +120,10 @@ public class ConsolePrompt {
      *               String#isEmpty()}, will print generic prompt.
      * @return player input
      */
-    public static String getResponseString(BufferedReader reader, PrintWriter writer, String prompt) {
+    public static String getResponseString(
+            BufferedReader reader,
+            PrintWriter writer,
+            String prompt) {
         String response = null;
 
         while (response == null) {
@@ -241,8 +244,9 @@ public class ConsolePrompt {
      * @param writer to print prompt to
      * @param list   for the player to choose from
      */
-    public static <T extends Interactive> T getChoice(BufferedReader reader, PrintWriter writer,
-                                                      List<T> list, String prompt) {
+    public static <T extends Interactive> T getChoice(
+            BufferedReader reader, PrintWriter writer,
+            List<T> list, String prompt) {
         return list.get(getChoiceIndex(reader, writer, list, prompt));
     }
 
@@ -254,8 +258,9 @@ public class ConsolePrompt {
      * @param writer to print prompt to
      * @param array  for the player to choose from
      */
-    public static <T extends Interactive> T getChoice(BufferedReader reader, PrintWriter writer,
-                                                      T[] array, String prompt) {
+    public static <T extends Interactive> T getChoice(
+            BufferedReader reader, PrintWriter writer,
+            T[] array, String prompt) {
         return getChoice(reader, writer, Arrays.asList(array), prompt);
     }
 }

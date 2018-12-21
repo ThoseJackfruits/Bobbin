@@ -1,9 +1,5 @@
 package bobbin.main;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-
 import bobbin.boundaries.Door;
 import bobbin.boundaries.Room;
 import bobbin.characters.NonPlayerCharacter;
@@ -20,6 +16,10 @@ import bobbin.menus.MainMenu;
 import bobbin.situations.SituationNode;
 import bobbin.situations.SituationRoot;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -29,8 +29,9 @@ public class Main {
         start(reader, writer, MainMenu.dummyPlayerCharacter());
     }
 
-    private static void start(BufferedReader reader, PrintWriter writer,
-                              PlayerCharacter playerCharacter) {
+    private static void start(
+            BufferedReader reader, PrintWriter writer,
+            PlayerCharacter playerCharacter) {
         PlayerCharacter actor = playerCharacter;
         MainMenu mainMenu = new MainMenu();
         Interactive next = mainMenu;
@@ -83,11 +84,12 @@ public class Main {
                 otherRoom,
                 new SituationRoot().addChildNodes(
                         new SituationNode("Greetings, stranger.", "(no response)",
-                                GameCharacterEffect.NULL,
-                                new BaseAction("Okay...", "[growling]", Action.NULL)),
+                                          GameCharacterEffect.NULL,
+                                          new BaseAction("Okay...", "[growling]", Action.NULL)),
                         new SituationNode("You are mean.", "Yes. Yes I am.",
-                                GameCharacterEffect.CLEAR_INVENTORY, Action.NULL)),
-                Items.getCopyOf(Items.WATER).get(), door.makeKey("Mysterious Key", "Must fit something."));
+                                          GameCharacterEffect.CLEAR_INVENTORY, Action.NULL)),
+                Items.getCopyOf(Items.WATER).get(),
+                door.makeKey("Mysterious Key", "Must fit something."));
 
         final PlayerCharacter pc = new PlayerCharacter(
                 "The Mighty Whitey", "It's you.", startingRoom,
@@ -97,8 +99,9 @@ public class Main {
 
         return new BaseGameEntity() {
             @Override
-            public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
-                                            BufferedReader reader, PrintWriter writer)
+            public int respondToInteraction(
+                    PlayerCharacter actor, BaseGameEntity from,
+                    BufferedReader reader, PrintWriter writer)
                     throws ExitToException {
                 throw new ResetStackException(pc, pc);
             }

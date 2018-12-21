@@ -1,9 +1,8 @@
 package bobbin.menus;
 
+import bobbin.items.BaseGameEntity;
 
 import javax.validation.constraints.NotNull;
-
-import bobbin.items.BaseGameEntity;
 
 public class Menu extends BaseGameEntity {
 

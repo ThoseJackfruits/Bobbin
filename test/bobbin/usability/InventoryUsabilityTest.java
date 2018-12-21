@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 public class InventoryUsabilityTest extends BaseUsabilityTest {
 
     @Test(timeout = 1000)
-    public void openInventoryAndInteractWithItem() throws Exception {
+    public void openInventoryAndInteractWithItem() {
         final BufferedReader reader = new BufferedUserInput()
                 .appendLine("new")
                 .appendLine("inventory")

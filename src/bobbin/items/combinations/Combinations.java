@@ -1,9 +1,9 @@
 package bobbin.items.combinations;
 
+import bobbin.items.Item;
+
 import java.util.Collection;
 import java.util.HashMap;
-
-import bobbin.items.Item;
 
 public class Combinations extends HashMap<Combination, Item> {
     public Item get(Item... items) {

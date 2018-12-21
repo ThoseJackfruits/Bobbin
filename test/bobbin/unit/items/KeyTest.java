@@ -1,10 +1,9 @@
 package bobbin.unit.items;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import bobbin.items.Key;
 import bobbin.unit.BaseUnitTest;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Unit tests for {@link Key}s.

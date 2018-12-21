@@ -1,10 +1,5 @@
 package bobbin.menus;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import bobbin.boundaries.Room;
 import bobbin.characters.GameCharacter;
 import bobbin.characters.PlayerCharacter;
@@ -18,7 +13,11 @@ import bobbin.interaction.actions.BaseAction;
 import bobbin.io.gamedata.SaveGameSerial;
 import bobbin.io.settings.Settings;
 import bobbin.items.BaseGameEntity;
-import bobbin.main.Main;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class MainMenu extends Menu {
 
@@ -31,7 +30,7 @@ public class MainMenu extends Menu {
     public static PlayerCharacter dummyPlayerCharacter() {
         Room fakeRoom = new Room("Fake Room", "For dummy character to exist in");
         return new PlayerCharacter("A Dummy Character", "To be used in the main menu", fakeRoom,
-                Items.getCopiesOf(Items.BLUEBERRY, Items.FLOUR));
+                                   Items.getCopiesOf(Items.BLUEBERRY, Items.FLOUR));
     }
 
     public void saveGame(PrintWriter writer, PlayerCharacter playerCharacter) {
@@ -79,8 +78,9 @@ public class MainMenu extends Menu {
     }
 
     @Override
-    public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
-                                    PrintWriter writer) throws ExitToException {
+    public int respondToInteraction(
+            PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
+            PrintWriter writer) throws ExitToException {
         Printers.println(writer);
         Printers.print(writer, this);
         Printers.println(writer);
