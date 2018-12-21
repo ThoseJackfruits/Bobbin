@@ -1,12 +1,11 @@
 package bobbin.effects;
 
-import javax.validation.constraints.NotNull;
-
-import java.util.Collection;
-import java.util.List;
-
 import bobbin.characters.GameCharacter;
 import bobbin.items.GameEntity;
+
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.List;
 
 public interface Effector extends GameEntity {
 

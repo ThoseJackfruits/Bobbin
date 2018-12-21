@@ -1,11 +1,10 @@
 package bobbin.io.gamedata;
 
-import java.io.IOException;
-
-import javax.validation.constraints.NotNull;
-
 import bobbin.characters.PlayerCharacter;
 import bobbin.io.settings.Settings;
+
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
 
 public class SaveGameSerial extends PersistedGameDataSerial<PlayerCharacter> {
 
@@ -24,15 +23,19 @@ public class SaveGameSerial extends PersistedGameDataSerial<PlayerCharacter> {
         Settings.getSettings().put(Settings.Keys.CURRENT_SAVE, getName());
         try {
             Settings.getSettings().store();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static SaveGameSerial loadActiveSave() {
         try {
-            return new SaveGameSerial((String) Settings.getSettings().get(Settings.Keys.CURRENT_SAVE));
-        } catch (IOException | InterruptedException e) {
+            return new SaveGameSerial((String) Settings
+                    .getSettings()
+                    .get(Settings.Keys.CURRENT_SAVE));
+        }
+        catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return null;
         }

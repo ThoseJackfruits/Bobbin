@@ -1,10 +1,9 @@
 package bobbin.unit.items;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import bobbin.items.BaseGameEntity;
 import bobbin.unit.BaseUnitTest;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class BaseGameEntityTest extends BaseUnitTest {
     private final BaseGameEntity bge = new BaseGameEntity("bge", "Generic game entity");

@@ -1,16 +1,13 @@
 package bobbin.unit.boundaries;
 
-import org.junit.Test;
-
 import bobbin.boundaries.Door;
 import bobbin.boundaries.Room;
 import bobbin.constants.Items;
 import bobbin.items.Item;
 import bobbin.unit.BaseUnitTest;
+import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class RoomTest extends BaseUnitTest {
 

@@ -1,14 +1,14 @@
 package bobbin.effects;
 
-import java.util.function.Consumer;
-
 import bobbin.characters.GameCharacter;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.GameEntity;
 
+import java.util.function.Consumer;
+
 /**
  * Represents something that changes the state of the game.
- *
+ * <p>
  * Will always take in a {@link GameCharacter}, and each implementation of {@link BaseEffect} needs to get
  * the relevant subclass of {@link GameEntity} from the {@link GameCharacter}.
  */

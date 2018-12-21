@@ -1,11 +1,10 @@
 package bobbin.unit.effects;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import bobbin.characters.GameCharacter;
 import bobbin.effects.GameCharacterEffect;
 import bobbin.unit.BaseUnitTest;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class GameCharacterEffectTest extends BaseUnitTest {
 

@@ -71,7 +71,6 @@ public class BufferedUserInput {
         return append(i).newLine();
     }
 
-
     /**
      * Append a {@link Collection<String>} of user inputs.
      *
@@ -101,7 +100,7 @@ public class BufferedUserInput {
      * input will never be run. This is considered acceptable because at that
      * point, control has been given back to whatever function is running the
      * tests, where the desired test actions can be performed.
-     *
+     * <p>
      * This allows for testing of program output during individual steps of
      * mocked user input, which makes for much easier and more powerful
      * testing, as well as better insight into why a particular usability test

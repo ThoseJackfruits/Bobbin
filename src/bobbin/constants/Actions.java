@@ -1,8 +1,5 @@
 package bobbin.constants;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-
 import bobbin.boundaries.Door;
 import bobbin.characters.GameCharacter;
 import bobbin.characters.NonPlayerCharacter;
@@ -17,6 +14,9 @@ import bobbin.items.BaseGameEntity;
 import bobbin.items.Item;
 import bobbin.main.Main;
 import bobbin.menus.MainMenu;
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 
 // I think these will need to be refactored soon. It's fine
 // to have them in one big file right now, but I think that
@@ -33,29 +33,33 @@ public class Actions {
      * For providing a {@link BaseGameEntity} that simply returns 1 to return to the parent object.
      */
     public static final BaseAction BACK =  // See comment on MAIN_MENU below
-            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.BACK.name"),
-                           "",
-                           playerCharacter -> new BaseGameEntity() {
-                               @Override
-                               public int respondToInteraction(PlayerCharacter actor,
-                                                               BaseGameEntity from,
-                                                               BufferedReader reader,
-                                                               PrintWriter writer)
-                                       throws ExitToException {
-                                   return GoTo.GRANDPARENT;
-                               }
-                           });
+            new BaseAction(
+                    Settings.MESSAGES_BUNDLE.getString("Actions.BACK.name"),
+                    "",
+                    playerCharacter -> new BaseGameEntity() {
+                        @Override
+                        public int respondToInteraction(
+                                PlayerCharacter actor,
+                                BaseGameEntity from,
+                                BufferedReader reader,
+                                PrintWriter writer)
+                                throws ExitToException {
+                            return GoTo.GRANDPARENT;
+                        }
+                    });
 
     public static BaseAction BACK(BaseGameEntity from) {
-        return new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.BACK.name"),
-                              "",
-                              playerCharacter -> from);
+        return new BaseAction(
+                Settings.MESSAGES_BUNDLE.getString("Actions.BACK.name"),
+                "",
+                playerCharacter -> from);
     }
 
     public static BaseAction CONSUME(Item item) {
-        return new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.CONSUME.name"),
-                              "",
-                              playerCharacter -> item.consume());
+        return new BaseAction(
+                Settings.MESSAGES_BUNDLE.getString("Actions.CONSUME.name"),
+                "",
+                playerCharacter -> item.consume());
     }
 
     /**
@@ -63,31 +67,36 @@ public class Actions {
      */
     @SuppressWarnings("ConstantConditions")
     public static final BaseAction CONTINUE =
-            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.CONTINUE.name"),
-                           "",
-                           playerCharacter -> SaveGameSerial.loadActiveSave().loadData());
+            new BaseAction(
+                    Settings.MESSAGES_BUNDLE.getString("Actions.CONTINUE.name"),
+                    "",
+                    playerCharacter -> SaveGameSerial.loadActiveSave().loadData());
 
     public static BaseAction CONVERSE(NonPlayerCharacter npc) {
-        return new BaseAction(npc.getName(),
-                              npc.getDescription(),
-                              playerCharacter -> npc);
+        return new BaseAction(
+                npc.getName(),
+                npc.getDescription(),
+                playerCharacter -> npc);
     }
 
     public static final BaseAction EXIT_GAME =
-            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.EXIT_GAME.name"),
-                           "",
-                           Interactive::exitGame);
+            new BaseAction(
+                    Settings.MESSAGES_BUNDLE.getString("Actions.EXIT_GAME.name"),
+                    "",
+                    Interactive::exitGame);
 
     public static BaseAction ITEM(Item item) {
-        return new BaseAction(item.getName(),
-                              item.getDescription(),
-                              playerCharacter -> item);
+        return new BaseAction(
+                item.getName(),
+                item.getDescription(),
+                playerCharacter -> item);
     }
 
     public static final BaseAction LOOK_AROUND =
-            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.LOOK_AROUND.name"),
-                           Settings.MESSAGES_BUNDLE.getString("Actions.LOOK_AROUND.description"),
-                           GameCharacter::getLocation);
+            new BaseAction(
+                    Settings.MESSAGES_BUNDLE.getString("Actions.LOOK_AROUND.name"),
+                    Settings.MESSAGES_BUNDLE.getString("Actions.LOOK_AROUND.description"),
+                    GameCharacter::getLocation);
 
     /*
      * This is real ugly. It works, and it's not problematic from a resource perspective (it only
@@ -97,46 +106,53 @@ public class Actions {
      * this because exceptions cannot be thrown from lambdas.
      */
     public static final BaseAction MAIN_MENU =
-            new BaseAction(Settings.MESSAGES_BUNDLE.getString("MainMenu.name"),
-                           "",
-                           playerCharacter -> new BaseGameEntity() {
-                               @Override
-                               public int respondToInteraction(PlayerCharacter actor,
-                                                               BaseGameEntity from,
-                                                               BufferedReader reader,
-                                                               PrintWriter writer)
-                                       throws ExitToException {
-                                   throw new MainMenu.ExitToMainMenuException(playerCharacter);
-                               }
-                           });
+            new BaseAction(
+                    Settings.MESSAGES_BUNDLE.getString("MainMenu.name"),
+                    "",
+                    playerCharacter -> new BaseGameEntity() {
+                        @Override
+                        public int respondToInteraction(
+                                PlayerCharacter actor,
+                                BaseGameEntity from,
+                                BufferedReader reader,
+                                PrintWriter writer)
+                                throws ExitToException {
+                            throw new MainMenu.ExitToMainMenuException(playerCharacter);
+                        }
+                    });
 
     public static final BaseAction NEW_GAME =
-            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.NEW_GAME.name"),
-                           "",
-                           gameCharacter -> Main.buildStockGame());
+            new BaseAction(
+                    Settings.MESSAGES_BUNDLE.getString("Actions.NEW_GAME.name"),
+                    "",
+                    gameCharacter -> Main.buildStockGame());
 
     public static BaseAction OPEN_DOOR(Door door) {
-        return new BaseAction(Printers.format("Actions.OPEN_DOOR", door.getName()),
-                              door.getDescription(),
-                              playerCharacter -> door);
+        return new BaseAction(
+                Printers.format("Actions.OPEN_DOOR", door.getName()),
+                door.getDescription(),
+                playerCharacter -> door);
     }
 
     public static final BaseAction OPEN_INVENTORY =
-            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.OPEN_INVENTORY.name"),
-                           "",
-                           GameCharacter::getInventory);
+            new BaseAction(
+                    Settings.MESSAGES_BUNDLE.getString("Actions.OPEN_INVENTORY.name"),
+                    "",
+                    GameCharacter::getInventory);
 
     public static final BaseAction PICK_UP =
-            new BaseAction(Settings.MESSAGES_BUNDLE.getString("Actions.PICK_UP.name"),
-                           "",
-                           playerCharacter -> new BaseGameEntity() {
-                               @Override
-                               public int respondToInteraction(PlayerCharacter actor,
-                                                               BaseGameEntity from,
-                                                               BufferedReader reader,
-                                                               PrintWriter writer)
-                                       throws ExitToException {
-                                   return GoTo.GRANDPARENT;
-                               }
-                           });
+            new BaseAction(
+                    Settings.MESSAGES_BUNDLE.getString("Actions.PICK_UP.name"),
+                    "",
+                    playerCharacter -> new BaseGameEntity() {
+                        @Override
+                        public int respondToInteraction(
+                                PlayerCharacter actor,
+                                BaseGameEntity from,
+                                BufferedReader reader,
+                                PrintWriter writer)
+                                throws ExitToException {
+                            return GoTo.GRANDPARENT;
+                        }
+                    });
 }

@@ -1,13 +1,12 @@
 package bobbin.interaction.actions;
 
-import javax.validation.constraints.NotNull;
-
-import java.util.function.Function;
-
 import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.Interactive;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.GameEntity;
+
+import javax.validation.constraints.NotNull;
+import java.util.function.Function;
 
 public class BaseAction extends BaseGameEntity implements Action {
 
@@ -20,8 +19,9 @@ public class BaseAction extends BaseGameEntity implements Action {
      * @param description The description of the object
      * @param action      to apply to the {@link PlayerCharacter}
      */
-    public BaseAction(@NotNull String name, @NotNull String description,
-                      Function<PlayerCharacter, BaseGameEntity> action) {
+    public BaseAction(
+            @NotNull String name, @NotNull String description,
+            Function<PlayerCharacter, BaseGameEntity> action) {
         super(name, description);
         this.action = action;
     }
@@ -68,7 +68,7 @@ public class BaseAction extends BaseGameEntity implements Action {
 
     /**
      * Fetch the {@link Interactive} object from this {@link PlayerCharacter}.
-     *
+     * <p>
      * Should be called when presenting an {@link Action} to the player, in order to get the relevant
      * {@link Interactive} item to interact with off of the {@link PlayerCharacter}.
      *

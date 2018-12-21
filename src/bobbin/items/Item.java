@@ -1,13 +1,5 @@
 package bobbin.items;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Stack;
-
 import bobbin.characters.GameCharacter;
 import bobbin.characters.PlayerCharacter;
 import bobbin.constants.Actions;
@@ -20,6 +12,10 @@ import bobbin.interaction.actions.Action;
 import bobbin.interaction.actions.ActionList;
 import bobbin.items.combinations.Combination;
 import bobbin.items.combinations.Combinations;
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.util.*;
 
 /**
  * A non-character {@link BaseGameEntity}. Has the ability to be combinable or consumable.
@@ -48,7 +44,7 @@ public class Item extends BaseGameEntity {
     @Override
     public boolean isCompatible(Item... otherItems) {
         Item[] toCombine = Arrays.copyOf(otherItems, otherItems.length + 1);
-        toCombine[toCombine.length - 1] = this; // Add this item to the combination to check for
+        toCombine[ toCombine.length - 1 ] = this; // Add this item to the combination to check for
         return combinations.get(toCombine) != null;
     }
 
@@ -71,7 +67,7 @@ public class Item extends BaseGameEntity {
     /**
      * Adds the given list of {@link Item}s as a new {@link Combination} to the {@link Combinations}
      * of both {@link this} and all of the other given {@link Item}s.
-     *
+     * <p>
      * Returns {@link this} so it can be used in a pseudo-builder style.
      *
      * @param items  {@link Item}s to be added to the new {@link Combination}
@@ -174,8 +170,9 @@ public class Item extends BaseGameEntity {
     }
 
     @Override
-    public int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
-                                    BufferedReader reader, PrintWriter writer)
+    public int respondToInteraction(
+            PlayerCharacter actor, BaseGameEntity from,
+            BufferedReader reader, PrintWriter writer)
             throws ExitToException {
         Printers.println(writer);
         Printers.print(writer, this);
@@ -187,7 +184,8 @@ public class Item extends BaseGameEntity {
             actor.getInventory().add(this);
             try {
                 actor.getLocation().takeItem(this);
-            } catch (IllegalArgumentException e) {
+            }
+            catch (IllegalArgumentException e) {
                 Printers.printMessage(writer, "Error.gameplay.item.alreadyInInventory",
                                       this.getName());
             }

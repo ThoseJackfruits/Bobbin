@@ -1,19 +1,5 @@
 package bobbin.boundaries;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.validation.constraints.NotNull;
-
 import bobbin.characters.GameCharacter;
 import bobbin.characters.NonPlayerCharacter;
 import bobbin.characters.PlayerCharacter;
@@ -22,6 +8,12 @@ import bobbin.interaction.ExitToException;
 import bobbin.interaction.actions.ActionList;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.Item;
+
+import javax.validation.constraints.NotNull;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Represents a room.
@@ -46,8 +38,9 @@ public class Room extends BaseGameEntity implements Serializable {
      * @param items       The initial items in the room
      * @param doors       The initial doors for the room
      */
-    public Room(@NotNull String name, @NotNull String description,
-                @NotNull Collection<Item> items, @NotNull Collection<Door> doors)
+    public Room(
+            @NotNull String name, @NotNull String description,
+            @NotNull Collection<Item> items, @NotNull Collection<Door> doors)
             throws IllegalArgumentException {
         super(name, description);
 
@@ -100,7 +93,7 @@ public class Room extends BaseGameEntity implements Serializable {
     }
 
     public Door[] getDoors() {
-        return doors.toArray(new Door[doors.size()]);
+        return doors.toArray(new Door[ doors.size() ]);
     }
 
     public boolean addNPC(NonPlayerCharacter nonPlayerCharacter) {
@@ -218,8 +211,9 @@ public class Room extends BaseGameEntity implements Serializable {
 
     @Override
     public int
-    respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
-                         BufferedReader reader, PrintWriter writer) throws ExitToException {
+    respondToInteraction(
+            PlayerCharacter actor, BaseGameEntity from,
+            BufferedReader reader, PrintWriter writer) throws ExitToException {
         return super.respondToInteraction(actor, from, reader, writer);
     }
 }

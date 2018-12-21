@@ -14,7 +14,6 @@ public class RoomMovementUsabilityTest extends BaseUsabilityTest {
         final BufferedReader reader = new BufferedUserInput()
                 .appendLine("new")
                 .appendLine("look")
-                .addTestAction(System.out::println)
                 .appendLine("open")
                 .appendLine("back")
                 .appendLine("main menu")

@@ -1,10 +1,10 @@
 package bobbin.items.combinations;
 
+import bobbin.items.Item;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-
-import bobbin.items.Item;
 
 public class Combination extends HashSet<Item> {
 

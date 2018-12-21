@@ -1,10 +1,9 @@
 package bobbin.io.gamedata;
 
-import javax.validation.constraints.NotNull;
-
-import java.util.Date;
-
 import bobbin.items.BaseGameEntity;
+
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 public abstract class PersistedGameData<T> extends BaseGameEntity {
 

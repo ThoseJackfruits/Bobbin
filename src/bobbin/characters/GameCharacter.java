@@ -1,8 +1,5 @@
 package bobbin.characters;
 
-import java.util.Objects;
-import java.util.Optional;
-
 import bobbin.boundaries.Door;
 import bobbin.boundaries.Room;
 import bobbin.interaction.ExitToException;
@@ -10,6 +7,8 @@ import bobbin.items.BaseGameEntity;
 import bobbin.items.Inventory;
 import bobbin.items.Item;
 import bobbin.items.Key;
+
+import java.util.Objects;
 
 /**
  * Represents an in-game character, including both the player character and NPCs.
@@ -44,7 +43,7 @@ public class GameCharacter extends BaseGameEntity implements Cloneable {
      * @param location The room the {@link GameCharacter} is in
      */
     public GameCharacter(String name, String description, Room location) {
-        this(name, description, location, new Item[0]);
+        this(name, description, location, new Item[ 0 ]);
     }
 
     /**

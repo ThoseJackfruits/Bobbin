@@ -1,11 +1,10 @@
 package bobbin.items;
 
-import javax.validation.constraints.NotNull;
-
-import java.io.Serializable;
-
 import bobbin.effects.BaseEffector;
 import bobbin.effects.Effector;
+
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 public interface GameEntity extends Serializable, Cloneable {
 

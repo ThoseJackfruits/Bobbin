@@ -1,11 +1,10 @@
 package bobbin.unit.items;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import bobbin.effects.GameCharacterEffect;
 import bobbin.items.Item;
 import bobbin.unit.BaseUnitTest;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class ItemTest extends BaseUnitTest {
 
@@ -61,7 +60,6 @@ public class ItemTest extends BaseUnitTest {
         setupForCombine();
         Assert.assertEquals(combinationResult, item3.combine(gameCharacter, item1, item2, item3));
     }
-
 
     @Test(expected = IllegalArgumentException.class)
     public void combine_noArgs() {

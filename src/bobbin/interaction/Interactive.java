@@ -1,9 +1,5 @@
 package bobbin.interaction;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.util.Objects;
-
 import bobbin.boundaries.Room;
 import bobbin.characters.GameCharacter;
 import bobbin.characters.PlayerCharacter;
@@ -11,6 +7,10 @@ import bobbin.constants.Actions;
 import bobbin.interaction.actions.ActionList;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.GameEntity;
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.util.Objects;
 
 public abstract class Interactive {
 
@@ -38,8 +38,9 @@ public abstract class Interactive {
      * @param writer to print prompt to
      * @return the number of levels to go up from the current stage.
      */
-    public abstract int respondToInteraction(PlayerCharacter actor, BaseGameEntity from,
-                                             BufferedReader reader, PrintWriter writer) throws ExitToException;
+    public abstract int respondToInteraction(
+            PlayerCharacter actor, BaseGameEntity from,
+            BufferedReader reader, PrintWriter writer) throws ExitToException;
 
     /**
      * The visibility of an {@link Interactive} item to the player.
@@ -97,11 +98,11 @@ public abstract class Interactive {
      * Should be caught at the highest level possible (e.g. the main game loop) which should, after
      * catching it, call {@link #then#interact(PlayerCharacter, BaseGameEntity,
      * BufferedReader, PrintWriter)}.
-     *
+     * <p>
      * This will allow for the stack to be reset whenever moving from one {@link Interactive} to
      * another is not necessarily a parent-child jump. For example, when moving between {@link Room}s,
      * one {@link Room} wouldn't be considered the parent or the child of the other.
-     *
+     * <p>
      * This is to allow for continuous use of Java's stack as a method of "tree" traversal and state
      * management without the risk of exceeding the recursion limit.
      */
@@ -155,30 +156,35 @@ public abstract class Interactive {
         return visibility;
     }
 
+    private void mark(Visibility visibility) {
+        this.visibility = this.visibility.min(visibility);
+    }
+
     /**
      * Mark {@link this} as being seen by the {@link PlayerCharacter}.
      */
     public void markSeen() {
-        this.visibility = this.visibility.min(Visibility.SEEN);
+        mark(Visibility.SEEN);
     }
 
     /**
      * Mark {@link this} as being hidden from the {@link PlayerCharacter}.
      */
     public void markHidden() {
-        this.visibility = this.visibility.min(Visibility.HIDDEN);
+        mark(Visibility.HIDDEN);
     }
 
     /**
      * Mark {@link this} as being visited by the {@link PlayerCharacter}.
      */
     public void markVisited() {
-        this.visibility = this.visibility.min(Visibility.VISITED);
+        mark(Visibility.VISITED);
     }
 
-    public int interact(PlayerCharacter actor, BaseGameEntity from,
-                        BufferedReader reader,
-                        PrintWriter writer) throws ExitToException {
+    public int interact(
+            PlayerCharacter actor, BaseGameEntity from,
+            BufferedReader reader,
+            PrintWriter writer) throws ExitToException {
         Objects.requireNonNull(actor);
         Objects.requireNonNull(reader);
         Objects.requireNonNull(writer);
@@ -188,7 +194,8 @@ public abstract class Interactive {
         int height;
         do {
             height = respondToInteraction(actor, from, reader, writer);
-        } while (height == GoTo.THIS);
+        }
+        while (height == GoTo.THIS);
 
         if (height < 0) {
             throw new IllegalStateException(String.format("negative height (%d) found", height));

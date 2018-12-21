@@ -1,12 +1,11 @@
 package bobbin.unit.interaction;
 
+import bobbin.menus.MainMenu;
+import bobbin.unit.BaseUnitTest;
 import org.junit.Assert;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
-
-import bobbin.menus.MainMenu;
-import bobbin.unit.BaseUnitTest;
 
 public class BaseConsoleTest extends BaseUnitTest {
 

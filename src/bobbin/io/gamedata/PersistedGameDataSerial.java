@@ -1,18 +1,9 @@
 package bobbin.io.gamedata;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import bobbin.io.settings.Settings;
 
 import javax.validation.constraints.NotNull;
-
-import bobbin.io.settings.Settings;
+import java.io.*;
 
 public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
 
@@ -36,7 +27,7 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
     /**
      * Construct a new savegame in the given subdirectory of the main directory.
      *
-     * @param filename of the file, without extension
+     * @param filename  of the file, without extension
      * @param extension of the file
      * @throws IOException          if the file cannot be written to, for a variety of reasons
      * @throws InterruptedException if the base folder could not be fetched from the OS
@@ -80,8 +71,9 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
             }
         }
         else if (!directory.mkdir()) { // create save directory
-            throw new IOException(String.format("Could not create directory %s\n(mkdir failed)\n",
-                                                directory.toString()));
+            throw new IOException(String.format(
+                    "Could not create directory %s\n(mkdir failed)\n",
+                    directory.toString()));
         }
     }
 
@@ -105,15 +97,15 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
 
             Process p = Runtime.getRuntime()
                                .exec("reg query \"HKCU\\Software\\Microsoft\\Windows"
-                                     + "\\CurrentVersion\\Explorer\\Shell Folders\" /v personal");
+                                             + "\\CurrentVersion\\Explorer\\Shell Folders\" /v personal");
             p.waitFor();
 
             InputStream in = p.getInputStream();
-            byte[] b = new byte[in.available()];
+            byte[] b = new byte[ in.available() ];
             in.read(b);
             in.close();
 
-            String myDocuments = new String(b).split("\\s\\s+")[4];
+            String myDocuments = new String(b).split("\\s\\s+")[ 4 ];
             return new File(myDocuments);
         }
         else {
@@ -140,7 +132,8 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
             try {
                 //noinspection unchecked
                 object = (T) in.readObject();
-            } catch (InvalidClassException e) {
+            }
+            catch (InvalidClassException e) {
                 throw new IllegalStateException("Old savegame format detected.");
             }
             in.close();

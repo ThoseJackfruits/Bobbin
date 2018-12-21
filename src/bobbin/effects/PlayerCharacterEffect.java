@@ -1,14 +1,15 @@
 package bobbin.effects;
 
-import java.util.Objects;
-
 import bobbin.characters.GameCharacter;
 import bobbin.characters.PlayerCharacter;
 
+import java.util.Objects;
+
 public class PlayerCharacterEffect extends BaseEffect<PlayerCharacter> {
 
-    public PlayerCharacterEffect(String name, String description, String report,
-                                 Effect<PlayerCharacter> consumer) {
+    public PlayerCharacterEffect(
+            String name, String description, String report,
+            Effect<PlayerCharacter> consumer) {
         super(name, description, report, consumer);
     }
 
@@ -23,8 +24,9 @@ public class PlayerCharacterEffect extends BaseEffect<PlayerCharacter> {
         Objects.requireNonNull(gameCharacter);
         if (!(gameCharacter instanceof PlayerCharacter)) {
             throw new IllegalArgumentException(
-                    String.format("Cannot apply PlayerCharacterEffect to %s.",
-                                  gameCharacter.getClass()));
+                    String.format(
+                            "Cannot apply PlayerCharacterEffect to %s.",
+                            gameCharacter.getClass()));
         }
         this.consumer.accept((PlayerCharacter) gameCharacter);
     }
