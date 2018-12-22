@@ -24,7 +24,7 @@ public class BufferedUserInput {
      * Append a string to the user input.
      *
      * @param s {@link String} to be appended
-     * @return {@link this}
+     * @return {@code this}
      */
     private BufferedUserInput append(String s) {
         inputs.add(inputs.isEmpty() ? s : inputs.removeLast().concat(s));
@@ -35,7 +35,7 @@ public class BufferedUserInput {
      * Append an {@code int} to the user input.
      *
      * @param i {@code int} to be appended
-     * @return {@link this}
+     * @return {@code this}
      */
     private BufferedUserInput append(int i) {
         return append(Integer.toString(i));
@@ -44,7 +44,7 @@ public class BufferedUserInput {
     /**
      * Append a platform-dependent newline character sequence to the user input.
      *
-     * @return {@link this}
+     * @return {@code this}
      */
     public BufferedUserInput newLine() {
         inputs.add("");
@@ -55,7 +55,7 @@ public class BufferedUserInput {
      * Append a string followed by a platform-dependent newline character sequence.
      *
      * @param s {@link String} to be appended
-     * @return {@link this}
+     * @return {@code this}
      */
     public BufferedUserInput appendLine(String s) {
         return append(s).newLine();
@@ -65,17 +65,17 @@ public class BufferedUserInput {
      * Append an {@code int} followed by a platform-dependent newline character sequence.
      *
      * @param i {@code int} to be appended
-     * @return {@link this}
+     * @return {@code this}
      */
     public BufferedUserInput appendLine(int i) {
         return append(i).newLine();
     }
 
     /**
-     * Append a {@link Collection<String>} of user inputs.
+     * Append a {@link Collection} of user inputs.
      *
      * @param list user inputs to append
-     * @return {@link this}
+     * @return {@code this}
      */
     public BufferedUserInput appendAllOnNewLines(Collection<String> list) {
         for (String s : list) {
@@ -88,7 +88,7 @@ public class BufferedUserInput {
      * Append an array of user inputs.
      *
      * @param list user inputs to append
-     * @return {@link this}
+     * @return {@code this}
      */
     public BufferedUserInput appendAllOnNewLines(String... list) {
         return appendAllOnNewLines(Arrays.asList(list));
@@ -108,7 +108,7 @@ public class BufferedUserInput {
      * print all of the output up to that point.
      *
      * @param outputConsumer a consumer for running tests on the output of the program
-     * @return {@link this}
+     * @return {@code this}
      */
     public BufferedUserInput addTestAction(Consumer<String> outputConsumer) {
         int key = inputs.size() - 1;
@@ -118,9 +118,12 @@ public class BufferedUserInput {
     }
 
     /**
-     * Build a {@link BufferedReader} from {@link this}.
+     * Build a {@link BufferedReader} from {@code this}.
      *
-     * @return {@link BufferedReader} whose contents include what has been added to {@link this}
+     * @param baos output stream to write to
+     * @param writer to pass into the test run
+     *
+     * @return {@link BufferedReader} whose contents include what has been added to {@code this}
      */
     public BufferedReader build(ByteArrayOutputStream baos, PrintWriter writer) {
         final String newLine = System.lineSeparator();

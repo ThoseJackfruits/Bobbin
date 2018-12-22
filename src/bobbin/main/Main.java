@@ -58,6 +58,9 @@ public class Main {
     /**
      * Build a room, allowing the player to configure their character.
      *
+     * @param reader player input
+     * @param writer player output
+     *
      * @return {@link PlayerCharacter} in the new game.
      */
     public static PlayerCharacter buildNewGame(BufferedReader reader, PrintWriter writer) {

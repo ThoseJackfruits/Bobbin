@@ -29,7 +29,7 @@ public interface Effector extends GameEntity {
      * Add the given effect to the effector.
      *
      * @param effect to add
-     * @return {@link this}
+     * @return {@code this}
      */
     Effector addEffect(BaseEffect<? extends GameEntity> effect);
 
