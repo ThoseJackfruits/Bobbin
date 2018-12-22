@@ -72,7 +72,7 @@ public class Item extends BaseGameEntity {
      *
      * @param items  {@link Item}s to be added to the new {@link Combination}
      * @param result result of the {@link Combination}
-     * @return {@link this}
+     * @return {@code this}
      */
     public Item addCombination(Item result, Item... items) {
         Combination combination = new Combination(items);
@@ -92,7 +92,7 @@ public class Item extends BaseGameEntity {
      *
      * @param combination {@link Combination} to add
      * @param result      result of the {@link Combination}
-     * @return {@link this}
+     * @return {@code this}
      */
     private Item addCombination(Combination combination, Item result) {
         combinations.put(combination, result);

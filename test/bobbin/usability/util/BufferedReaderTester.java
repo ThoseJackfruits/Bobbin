@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class BufferedReaderTester extends BufferedReader {
@@ -25,9 +26,8 @@ public class BufferedReaderTester extends BufferedReader {
     }
 
     @Override
-    public String readLine() throws IOException {
-        testActions.getOrDefault(lineNumber, Collections.singletonList(s -> {
-        }))
+    public String readLine() {
+        testActions.getOrDefault(lineNumber, Collections.singletonList(s -> {}))
                    .forEach(stringConsumer -> stringConsumer.accept(baos.toString()));
 
         // Include inputs in the program outputs to make the output look like

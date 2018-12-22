@@ -2,6 +2,7 @@
 settings.xml
 
 # Java output directory
+doc/
 out/
 target/
 

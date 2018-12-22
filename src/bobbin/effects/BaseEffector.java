@@ -26,7 +26,7 @@ public class BaseEffector extends BaseGameEntity implements Effector {
     }
 
     /**
-     * Apply {@link this} object's {@link BaseEffect}s to the given {@link GameCharacter}.
+     * Apply {@link #effects} to the given {@link GameCharacter}.
      *
      * @param gameCharacter the {@link GameCharacter} to apply {@link BaseEffect}s to.
      */
@@ -54,7 +54,7 @@ public class BaseEffector extends BaseGameEntity implements Effector {
      * Add the given effect to the effector.
      *
      * @param effect to add
-     * @return {@link this}
+     * @return {@code this}
      */
     @Override
     public Effector addEffect(BaseEffect<? extends GameEntity> effect) {

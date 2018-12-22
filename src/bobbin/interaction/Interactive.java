@@ -16,7 +16,7 @@ public abstract class Interactive {
 
     /**
      * Get the set of actions to present to the player when they {@link #interact(PlayerCharacter,
-     * BaseGameEntity, BufferedReader, PrintWriter)} with {@link this}. Depending on needs, the base
+     * BaseGameEntity, BufferedReader, PrintWriter)} with this object. Depending on needs, the base
      * list should be fetched by subclasses of {@link Interactive}, which should then add to that
      * list.
      *
