@@ -2,15 +2,16 @@ package bobbin.unit.items;
 
 import bobbin.items.Key;
 import bobbin.unit.BaseUnitTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class InventoryTest extends BaseUnitTest {
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class InventoryTest extends BaseUnitTest {
 
     @Test
-    public void testHasKeyThatMatches() throws Exception {
+    void testHasKeyThatMatches() {
         playerCharacter.getInventory().add(keyToDoor2);
-        Assert.assertTrue(playerCharacter.getInventory().hasKeyThatMatches(
+        assertTrue(playerCharacter.getInventory().hasKeyThatMatches(
                 key -> !door2Room2Room3Locked.unlock((Key) key)));
     }
 }

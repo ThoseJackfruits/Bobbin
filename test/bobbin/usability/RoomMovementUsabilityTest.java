@@ -2,15 +2,18 @@ package bobbin.usability;
 
 import bobbin.usability.util.BaseUsabilityTest;
 import bobbin.usability.util.BufferedUserInput;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
+import java.time.Duration;
 
-public class RoomMovementUsabilityTest extends BaseUsabilityTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 
-    @Test(timeout = 1000)
-    public void moveToAnotherRoomAndLookAround() throws Exception {
+class RoomMovementUsabilityTest extends BaseUsabilityTest {
+
+    @Test
+    void moveToAnotherRoomAndLookAround() {
         final BufferedReader reader = new BufferedUserInput()
                 .appendLine("new")
                 .appendLine("look")
@@ -18,7 +21,9 @@ public class RoomMovementUsabilityTest extends BaseUsabilityTest {
                 .appendLine("back")
                 .appendLine("main menu")
                 .build(baos, writer);
-        run(reader);
-        Assert.assertEquals(room2, gameCharacter.getLocation());
+        assertTimeout(Duration.ofSeconds(1), () -> {
+            run(reader);
+            assertEquals(room2, gameCharacter.getLocation());
+        });
     }
 }

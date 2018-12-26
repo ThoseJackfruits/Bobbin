@@ -4,7 +4,14 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -122,7 +129,6 @@ public class BufferedUserInput {
      *
      * @param baos output stream to write to
      * @param writer to pass into the test run
-     *
      * @return {@link BufferedReader} whose contents include what has been added to {@code this}
      */
     public BufferedReader build(ByteArrayOutputStream baos, PrintWriter writer) {

@@ -3,18 +3,21 @@ package bobbin.unit.constants;
 import bobbin.constants.Items;
 import bobbin.items.Item;
 import bobbin.unit.BaseUnitTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ItemsTest extends BaseUnitTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class ItemsTest extends BaseUnitTest {
     @SuppressWarnings("ConstantConditions")
     private final Item blueberryCopy = Items.getCopyOf(Items.BLUEBERRY).get();
 
     @Test
-    public void getCopyOf() {
-        Assert.assertNotNull(blueberryCopy);
-        Assert.assertTrue(
+    void getCopyOf() {
+        assertNotNull(blueberryCopy);
+        assertTrue(
                 blueberryCopy != Items.BLUEBERRY);  // Memory addresses should be different,
-        Assert.assertEquals(blueberryCopy, Items.BLUEBERRY);  // but properties should be the same.
+        assertEquals(blueberryCopy, Items.BLUEBERRY);  // but properties should be the same.
     }
 }

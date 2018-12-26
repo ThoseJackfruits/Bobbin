@@ -5,37 +5,40 @@ import bobbin.io.settings.Settings;
 import bobbin.items.Inventory;
 import bobbin.items.Item;
 import bobbin.unit.BaseUnitTest;
-import org.junit.Assert;
-import org.junit.Test;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 
-public class PrintersTest extends BaseUnitTest {
+class PrintersTest extends BaseUnitTest {
 
     private final ByteArrayOutputStream stream = new ByteArrayOutputStream();
     private final PrintWriter writer = new PrintWriter(stream);
 
     private void commonListAssertions(List list, String response, boolean ordered) {
-        Assert.assertTrue("should have first item", response.contains(list.get(0).toString()));
-        Assert.assertTrue(
-                "should have last item",
-                response.contains(list.get(list.size() - 1).toString()));
+        assertTrue(response.contains(list.get(0).toString()), "should have first item");
+        assertTrue(
+                response.contains(list.get(list.size() - 1).toString()),
+                "should have last item");
 
         if (ordered) {
-            Assert.assertTrue("should not have number prefixes", response.contains("1. "));
-            Assert.assertFalse("should have dash prefixes", response.startsWith("- "));
+            assertTrue(response.contains("1. "), "should not have number prefixes");
+            assertFalse(response.startsWith("- "), "should have dash prefixes");
         }
         else {
-            Assert.assertFalse("should not have number prefixes", response.contains("1. "));
-            Assert.assertTrue("should have dash prefixes", response.startsWith("- "));
+            assertFalse(response.contains("1. "), "should not have number prefixes");
+            assertTrue(response.startsWith("- "), "should have dash prefixes");
         }
     }
 
     @Test
-    public void testPrintUnordered_list() {
+    void testPrintUnordered_list() {
         List inventory = playerCharacter.getInventory();
         //noinspection unchecked
         Printers.printUnordered(writer, inventory);
@@ -45,7 +48,7 @@ public class PrintersTest extends BaseUnitTest {
     }
 
     @Test
-    public void testPrintOrdered_list() {
+    void testPrintOrdered_list() {
         Inventory list = playerCharacter.getInventory();
         Printers.printOrdered(writer, list);
         final String response = new String(stream.toByteArray());
@@ -54,7 +57,7 @@ public class PrintersTest extends BaseUnitTest {
     }
 
     @Test
-    public void testPrintOrdered_array() {
+    void testPrintOrdered_array() {
         Item[] array = playerCharacter.getInventory().toArray();
         Printers.printOrdered(writer, array);
         final String response = new String(stream.toByteArray());
@@ -63,18 +66,18 @@ public class PrintersTest extends BaseUnitTest {
     }
 
     @Test
-    public void testPrint() {
+    void testPrint() {
         Item item = playerCharacter.getInventory().get(0);
         Printers.print(writer, item);
 
         final String response = new String(stream.toByteArray());
-        Assert.assertEquals(
+        assertEquals(
                 Settings.MESSAGES_BUNDLE.getString("Messages.prefix.primary") + item.toString()
                         + System.lineSeparator(), response);
     }
 
     @Test
-    public void testPrintBooleanPrompt() {
+    void testPrintBooleanPrompt() {
         Boolean[] defaultResponses = new Boolean[] { null, false, true };
         String[] expectedOptions = new String[] {
                 Settings.MESSAGES_BUNDLE.getString("Prompts.booleanOptions"),
@@ -85,8 +88,8 @@ public class PrintersTest extends BaseUnitTest {
         for (int i = 0; i < defaultResponses.length; i++) {
             Printers.printBooleanPrompt(writer, prompt, defaultResponses[ i ]);
             final String response = new String(stream.toByteArray());
-            Assert.assertTrue(response.contains(prompt));
-            Assert.assertTrue(response.contains(expectedOptions[ i ]));
+            assertTrue(response.contains(prompt));
+            assertTrue(response.contains(expectedOptions[ i ]));
         }
     }
 }

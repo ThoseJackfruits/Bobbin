@@ -3,23 +3,24 @@ package bobbin.unit.io.savegames;
 import bobbin.characters.PlayerCharacter;
 import bobbin.io.gamedata.SaveGameSerial;
 import bobbin.unit.BaseUnitTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class SaveGameTest extends BaseUnitTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class SaveGameTest extends BaseUnitTest {
 
     @Test
-    public void testSaveGameSerial() throws Exception {
+    void testSaveGameSerial() throws Exception {
         SaveGameSerial saveGame = new SaveGameSerial("TestSaveSerial");
         saveGame.saveData(playerCharacter);
 
         PlayerCharacter loadedCharacter = saveGame.loadData();
-        Assert.assertEquals(
+        assertEquals(
                 playerCharacter.getLocation().getName(),
                 loadedCharacter.getLocation().getName());
 
         // Try some door/room traversal
-        Assert.assertEquals(
+        assertEquals(
                 playerCharacter.getLocation().getDoors()[ 0 ]
                         .getOtherRoom(playerCharacter.getLocation())
                         .getName(),

@@ -7,7 +7,6 @@ import bobbin.interaction.ExitToException;
 import bobbin.interaction.actions.Action;
 
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
 /**
  * The root of a Situation tree, which can include things like dialogue or action sequences.
@@ -18,7 +17,7 @@ public class SituationRoot extends SituationNode {
     }
 
     public SituationRoot(BaseEffect<GameCharacter> effect, Action action) {
-        super("", "", Objects.requireNonNull(effect), action);
+        super("", "", effect, action);
     }
 
     public SituationRoot() {
