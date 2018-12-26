@@ -3,10 +3,14 @@ package bobbin.unit.items;
 import bobbin.effects.GameCharacterEffect;
 import bobbin.items.Item;
 import bobbin.unit.BaseUnitTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ItemTest extends BaseUnitTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class ItemTest extends BaseUnitTest {
 
     private final Item combinationResult = new Item("combinationResult", "Result Item");
     private final Item item1 = new Item("item1", "Item 1");
@@ -17,18 +21,18 @@ public class ItemTest extends BaseUnitTest {
 
     private static void assertAreCombinable(boolean expect, Item... items) {
         for (Item item : items) {
-            Assert.assertEquals(expect, item.isCombinable());
+            assertEquals(expect, item.isCombinable());
         }
     }
 
     private static void assertAreCompatible(boolean expect, Item... items) {
         for (Item item : items) {
-            Assert.assertEquals(expect, item.isCompatible(items)); // Filters out duplicate of item
+            assertEquals(expect, item.isCompatible(items)); // Filters out duplicate of item
         }
     }
 
     @Test
-    public void addCombination() {
+    void addCombination() {
         assertAreCombinable(false, item1, item2, item3, item4);
         assertAreCompatible(false, item1, item2, item3);
 
@@ -36,7 +40,7 @@ public class ItemTest extends BaseUnitTest {
 
         assertAreCompatible(true, item1, item2, item3);
         assertAreCombinable(true, item1, item2, item3);
-        Assert.assertFalse(item4.isCombinable());
+        assertFalse(item4.isCombinable());
     }
 
     private void setupForCombine() {
@@ -49,39 +53,45 @@ public class ItemTest extends BaseUnitTest {
     }
 
     @Test
-    public void combine() {
+    void combine() {
         setupForCombine();
-        Assert.assertEquals(combinationResult, item3.combine(gameCharacter, item1, item2));
+        assertEquals(combinationResult, item3.combine(gameCharacter, item1, item2));
     }
 
     @Test
-    public void combine_includeSelf() {
+    void combine_includeSelf() {
         // Including the base object (item3) in the arguments (same behaviour as above).
         setupForCombine();
-        Assert.assertEquals(combinationResult, item3.combine(gameCharacter, item1, item2, item3));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void combine_noArgs() {
-        setupForCombine();
-        Assert.assertEquals(combinationResult, item3.combine(gameCharacter));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void combine_missingItemsInInventory() {
-        setupForCombine();
-        Assert.assertEquals(combinationResult, item3.combine(playerCharacter, item1, item2));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void combine_missingItemsInCall() {
-        setupForCombine();
-        Assert.assertEquals(combinationResult, item3.combine(gameCharacter, item1));
+        assertEquals(combinationResult, item3.combine(gameCharacter, item1, item2, item3));
     }
 
     @Test
-    public void consumable() {
-        Assert.assertFalse(item3.isConsumable());
-        Assert.assertTrue(item4.isConsumable());
+    void combine_noArgs() {
+        setupForCombine();
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> item3.combine(gameCharacter));
+    }
+
+    @Test
+    void combine_missingItemsInInventory() {
+        setupForCombine();
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> item3.combine(playerCharacter, item1, item2));
+    }
+
+    @Test
+    void combine_missingItemsInCall() {
+        setupForCombine();
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> item3.combine(gameCharacter, item1));
+    }
+
+    @Test
+    void consumable() {
+        assertFalse(item3.isConsumable());
+        assertTrue(item4.isConsumable());
     }
 }

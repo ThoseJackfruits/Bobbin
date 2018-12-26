@@ -31,7 +31,6 @@ public class BaseUnitTest {
             Items.getCopiesOf(Items.BLUEBERRY, Items.FLOUR,
                               Items.WATER, Items.BED));
 
-    @SuppressWarnings("ConstantConditions")
     protected final GameCharacter gameCharacter
             = new GameCharacter(
             "Generic Game Character",

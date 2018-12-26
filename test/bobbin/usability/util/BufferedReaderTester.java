@@ -1,10 +1,12 @@
 package bobbin.usability.util;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
+import java.io.StringReader;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 public class BufferedReaderTester extends BufferedReader {
@@ -14,7 +16,7 @@ public class BufferedReaderTester extends BufferedReader {
     private final String[] testInputs;
     private int lineNumber = 0;
 
-    public BufferedReaderTester(
+    BufferedReaderTester(
             BufferedUserInput in, ByteArrayOutputStream baos,
             PrintWriter writer, StringReader stringReader) {
         super(stringReader);

@@ -14,6 +14,10 @@ import java.io.PrintWriter;
  */
 public class NonPlayerCharacter extends GameCharacter {
 
+    public SituationRoot getConversation() {
+        return conversation;
+    }
+
     private final SituationRoot conversation;
 
     /**

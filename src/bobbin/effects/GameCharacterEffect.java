@@ -22,8 +22,7 @@ public class GameCharacterEffect extends BaseEffect<GameCharacter> {
             "No effect.",
             "",
             "",
-            (gameCharacter) -> {
-            });
+            (gameCharacter) -> {});
 
     public static final GameCharacterEffect CLEAR_INVENTORY =
             new GameCharacterEffect(

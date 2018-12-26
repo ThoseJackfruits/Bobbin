@@ -2,23 +2,26 @@ package bobbin.usability;
 
 import bobbin.usability.util.BaseUsabilityTest;
 import bobbin.usability.util.BufferedUserInput;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
+import java.time.Duration;
 
-public class InventoryUsabilityTest extends BaseUsabilityTest {
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 
-    @Test(timeout = 1000)
-    public void openInventoryAndInteractWithItem() {
+class InventoryUsabilityTest extends BaseUsabilityTest {
+
+    @Test
+    void openInventoryAndInteractWithItem() {
         final BufferedReader reader = new BufferedUserInput()
                 .appendLine("new")
                 .appendLine("inventory")
-                .addTestAction(System.out::println)
                 .appendLine("2")
                 .appendLine("back")
                 .appendLine("back")
                 .appendLine("main menu")
                 .build(baos, writer);
-        run(reader);
+
+        assertTimeout(Duration.ofSeconds(1), () -> run(reader));
     }
 }

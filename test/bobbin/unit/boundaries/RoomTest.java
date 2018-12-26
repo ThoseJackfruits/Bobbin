@@ -4,12 +4,16 @@ import bobbin.boundaries.Door;
 import bobbin.boundaries.Room;
 import bobbin.constants.Items;
 import bobbin.items.Item;
+
 import bobbin.unit.BaseUnitTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class RoomTest extends BaseUnitTest {
+class RoomTest extends BaseUnitTest {
 
     private void fillRoomToLimit(Room room) {
         for (int i = 0; i < Room.CONTENT_LIMIT; i++) {
@@ -18,7 +22,7 @@ public class RoomTest extends BaseUnitTest {
     }
 
     @Test
-    public void testAddDuplicateDoor() {
+    void testAddDuplicateDoor() {
         final Door door4 = new Door(false, room1, room2);
         assertEquals(1, room1.getDoors().length);
         assertEquals(2, room2.getDoors().length);
@@ -29,7 +33,7 @@ public class RoomTest extends BaseUnitTest {
     }
 
     @Test
-    public void testCanMoveTo() {
+    void testCanMoveTo() {
         // Unlocked door
         assertTrue(room1.canMoveTo(room2));
         assertTrue(room2.canMoveTo(room1));
@@ -44,33 +48,37 @@ public class RoomTest extends BaseUnitTest {
     }
 
     @Test
-    public void testGetRoomThroughDoor() {
+    void testGetRoomThroughDoor() {
         assertEquals(room2, room1.getRoomThroughDoor(door1Room1Room2Unlocked));
         assertEquals(room1, room2.getRoomThroughDoor(door1Room1Room2Unlocked));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testGetRoomThroughDoor_notInRoom() {
-        room1.getRoomThroughDoor(door2Room2Room3Locked);
+    @Test
+    void testGetRoomThroughDoor_notInRoom() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> room1.getRoomThroughDoor(door2Room2Room3Locked));
     }
 
     @Test
-    public void testAddItem_duplicate() {
+    void testAddItem_duplicate() {
         assertFalse(room1.addItem(Items.BLUEBERRY));
     }
 
     @Test
-    public void testAddItem_underItemLimit() {
+    void testAddItem_underItemLimit() {
         final Room room = new Room("room", "A room full of items");
         fillRoomToLimit(room); // Should not throw an exception
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testAddItem_overItemLimit() {
+    @Test
+    void testAddItem_overItemLimit() {
         final Room room = new Room("room", "A room full of items");
         fillRoomToLimit(room);
 
         final Item straw = new Item("straw", "The straw that broke the camel's back.");
-        room.addItem(straw);
+        assertThrows(
+                IllegalStateException.class,
+                () -> room.addItem(straw));
     }
 }
