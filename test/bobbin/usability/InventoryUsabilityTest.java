@@ -22,6 +22,8 @@ class InventoryUsabilityTest extends BaseUsabilityTest {
                 .appendLine("main menu")
                 .build(baos, writer);
 
-        assertTimeout(Duration.ofSeconds(1), () -> run(reader));
+        assertTimeout(
+                Duration.ofSeconds(1),
+                () -> run(reader, playerCharacter));
     }
 }

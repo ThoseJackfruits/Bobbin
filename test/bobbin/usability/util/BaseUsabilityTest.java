@@ -1,6 +1,7 @@
 package bobbin.usability.util;
 
 import bobbin.characters.GameCharacter;
+import bobbin.characters.PlayerCharacter;
 import bobbin.constants.Actions;
 import bobbin.interaction.ExitToException;
 import bobbin.interaction.Interactive;
@@ -29,7 +30,7 @@ public class BaseUsabilityTest extends BaseConsoleTest {
         }
     }
 
-    protected void run(BufferedReader reader) {
+    protected void run(BufferedReader reader, PlayerCharacter playerCharacter) {
         Interactive next = new TestMainMenu();
 
         while (true) {
