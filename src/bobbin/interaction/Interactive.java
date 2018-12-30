@@ -191,17 +191,17 @@ public abstract class Interactive {
 
         markVisited();
 
-        int height;
+        int desiredHeight;
         do {
-            height = respondToInteraction(actor, from, reader, writer);
+            desiredHeight = respondToInteraction(actor, from, reader, writer);
         }
-        while (height == GoTo.THIS);
+        while (desiredHeight == GoTo.THIS);
 
-        if (height < 0) {
-            throw new IllegalStateException(String.format("negative height (%d) found", height));
+        if (desiredHeight < 0) {
+            throw new IllegalStateException(String.format("negative height (%d) found", desiredHeight));
         }
 
-        return height - 1;
+        return desiredHeight - 1;
     }
 
     public void resetStackAndInteract(PlayerCharacter actor) throws ResetStackException {

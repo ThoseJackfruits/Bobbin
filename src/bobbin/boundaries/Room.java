@@ -20,7 +20,7 @@ import java.util.*;
  */
 public class Room extends BaseGameEntity implements Serializable {
 
-    public class ExitToRoomException extends ExitToException {
+    public static class ExitToRoomException extends ExitToException {
 
     }
 
@@ -214,6 +214,10 @@ public class Room extends BaseGameEntity implements Serializable {
     respondToInteraction(
             PlayerCharacter actor, BaseGameEntity from,
             BufferedReader reader, PrintWriter writer) throws ExitToException {
-        return super.respondToInteraction(actor, from, reader, writer);
+        try {
+            return super.respondToInteraction(actor, from, reader, writer);
+        } catch (ExitToRoomException e) {
+            return GoTo.THIS;
+        }
     }
 }

@@ -31,8 +31,8 @@ public class Confirmation extends Interactive {
 
     @Override
     public int respondToInteraction(
-            PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
-            PrintWriter writer) throws ExitToException {
+            PlayerCharacter actor, BaseGameEntity from,
+            BufferedReader reader, PrintWriter writer) {
         if (ConsolePrompt.getChoiceBoolean(reader, writer, prompt, defaultChoice)) {
             action.apply(actor);
         }
