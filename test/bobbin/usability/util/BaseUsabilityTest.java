@@ -34,7 +34,7 @@ public class BaseUsabilityTest extends BaseConsoleTest {
 
         while (true) {
             try {
-                next.interact(playerCharacter, null, console);
+                next.interact(playerCharacter, playerCharacter, console);
             }
             catch (Interactive.ResetStackException e) {
                 next = e.then;
