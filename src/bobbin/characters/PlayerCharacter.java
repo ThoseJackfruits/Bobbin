@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 
 public class PlayerCharacter extends GameCharacter {
 
-    public class ExitToPlayerCharacterException extends ExitToException {
+    public static class ExitToPlayerCharacterException extends ExitToException {
 
     }
 

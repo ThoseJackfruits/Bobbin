@@ -15,11 +15,11 @@ import java.util.Random;
  */
 public class Door extends BaseGameEntity {
 
-    public class ExitToDoorException extends ExitToException {
+    public static class ExitToDoorException extends ExitToException {
 
     }
 
-    public class DoorLockedException extends IllegalStateException {
+    public static class DoorLockedException extends IllegalStateException {
         private DoorLockedException(String s) {
             super(s);
         }

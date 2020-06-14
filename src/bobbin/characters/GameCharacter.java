@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class GameCharacter extends BaseGameEntity implements Cloneable {
 
-    public class ExitToGameCharacterException extends ExitToException {
+    public static class ExitToGameCharacterException extends ExitToException {
 
     }
 
