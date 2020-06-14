@@ -12,7 +12,6 @@ import bobbin.io.gamedata.SaveGameSerial;
 import bobbin.io.settings.Settings;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.Item;
-import bobbin.main.Main;
 import bobbin.menus.ExitMenu;
 import bobbin.menus.MainMenu;
 
@@ -135,7 +134,15 @@ public class Actions {
             new BaseAction(
                     Settings.MESSAGES_BUNDLE.getString("Actions.NEW_GAME.name"),
                     "",
-                    gameCharacter -> Main.buildStockGame());
+                    gameCharacter -> new BaseGameEntity() {
+                        @Override
+                        public int respondToInteraction(
+                                PlayerCharacter actor,
+                                BaseGameEntity from,
+                                Console console) throws ExitToException {
+                            return MainMenu.buildNewGame(console).respondToInteraction(actor, from, console);
+                        }
+                    });
 
     public static BaseAction OPEN_DOOR(Door door) {
         return new BaseAction(
