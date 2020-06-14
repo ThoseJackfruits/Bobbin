@@ -4,11 +4,9 @@ import bobbin.boundaries.Room;
 import bobbin.constants.Actions;
 import bobbin.interaction.ExitToException;
 import bobbin.interaction.actions.ActionList;
+import bobbin.interaction.console.Console;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.Item;
-
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 
 public class PlayerCharacter extends GameCharacter {
 
@@ -50,7 +48,7 @@ public class PlayerCharacter extends GameCharacter {
     public int
     respondToInteraction(
             PlayerCharacter actor, BaseGameEntity from,
-            BufferedReader reader, PrintWriter writer) throws ExitToException {
-        return super.respondToInteraction(actor, from, reader, writer);
+            Console console) throws ExitToException {
+        return super.respondToInteraction(actor, from, console);
     }
 }

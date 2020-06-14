@@ -6,10 +6,9 @@ import bobbin.interaction.ConsolePrompt;
 import bobbin.interaction.ExitToException;
 import bobbin.interaction.Interactive;
 import bobbin.interaction.Printers;
+import bobbin.interaction.console.Console;
 
 import javax.validation.constraints.NotNull;
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -110,15 +109,15 @@ public class BaseGameEntity extends Interactive implements GameEntity {
     @Override
     public int respondToInteraction(
             PlayerCharacter actor, BaseGameEntity from,
-            BufferedReader reader, PrintWriter writer)
+            Console console)
             throws ExitToException {
-        Printers.println(writer);
-        Printers.print(writer, this);
-        Printers.println(writer);
+        Printers.println(console);
+        Printers.print(console, this);
+        Printers.println(console);
 
         return ConsolePrompt
-                .getChoice(reader, writer, actions(actor, from), null)
+                .getChoice(console, actions(actor, from), null)
                 .apply(actor)
-                .interact(actor, this, reader, writer);
+                .interact(actor, this, console);
     }
 }

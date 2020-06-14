@@ -3,12 +3,11 @@ package bobbin.effects;
 import bobbin.characters.GameCharacter;
 import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.ExitToException;
+import bobbin.interaction.console.Console;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.GameEntity;
 
 import javax.validation.constraints.NotNull;
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -72,9 +71,7 @@ public class BaseEffector extends BaseGameEntity implements Effector {
 
     @Override
     public int respondToInteraction(
-            PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
-            PrintWriter writer) throws ExitToException {
-
+            PlayerCharacter actor, BaseGameEntity from, Console console) {
         return GoTo.GRANDPARENT;
     }
 }

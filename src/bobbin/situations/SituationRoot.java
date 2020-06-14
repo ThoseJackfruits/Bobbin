@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  */
 public class SituationRoot extends SituationNode {
 
-    class ExitToSituationRootException extends ExitToException {
+    static class ExitToSituationRootException extends ExitToException {
     }
 
     public SituationRoot(BaseEffect<GameCharacter> effect, Action action) {

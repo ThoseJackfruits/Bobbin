@@ -1,5 +1,6 @@
 package bobbin.interaction;
 
+import bobbin.interaction.console.Console;
 import bobbin.io.settings.Settings;
 
 import javax.validation.constraints.NotNull;
@@ -28,7 +29,8 @@ public class Printers {
         return formatter.format(arguments);
     }
 
-    public static void printMessage(PrintWriter writer, String messageKey, Object... arguments) {
+    public static void printMessage(Console console, String messageKey, Object... arguments) {
+        final PrintWriter writer = console.getWriter();
         writer.print(Settings.MESSAGES_BUNDLE.getString("Messages.prefix.secondary"));
         String message = (arguments != null && arguments.length > 0)
                 ? format(messageKey, arguments)
@@ -41,12 +43,13 @@ public class Printers {
      * Standard method of printing multiple items where order is not important.
      * <p>
      * Should <i>not</i> be used when the player needs to make a selection from the list. Use {@link
-     * #printOrdered(PrintWriter, List)} instead.
+     * #printOrdered(Console, List)} instead.
      *
-     * @param writer     to print prompt to
+     * @param console    to print prompt to
      * @param collection for the player to choose from
      */
-    public static void printUnordered(PrintWriter writer, Collection<Interactive> collection) {
+    public static <T extends Interactive> void printUnordered(Console console, Collection<T> collection) {
+        final PrintWriter writer = console.getWriter();
         for (Interactive gameEntity : collection) {
             writer.println(format("Prompts.unorderedList", gameEntity));
 
@@ -58,10 +61,11 @@ public class Printers {
     /**
      * Standard method of printing a list with numbered (1-indexed) prefixes.
      *
-     * @param writer to print prompt to
-     * @param list   for the player to choose from
+     * @param console to print prompt to
+     * @param list    for the player to choose from
      */
-    public static <T extends Interactive> void printOrdered(PrintWriter writer, List<T> list) {
+    public static <T extends Interactive> void printOrdered(Console console, List<T> list) {
+        final PrintWriter writer = console.getWriter();
         int i = 1;
         for (Interactive gameEntity : list) {
             writer.println(format("Prompts.orderedList", i, gameEntity));
@@ -75,21 +79,23 @@ public class Printers {
     /**
      * Standard method of printing an array with numbered (1-indexed) prefixes.
      *
-     * @param writer to print prompt to
-     * @param array  for the player to choose from
+     * @param console to print prompt to
+     * @param array   for the player to choose from
      */
-    public static void printOrdered(PrintWriter writer, Interactive[] array) {
-        printOrdered(writer, Arrays.asList(array));
+    public static void printOrdered(Console console, Interactive[] array) {
+        printOrdered(console, Arrays.asList(array));
     }
 
-    public static void print(PrintWriter writer, Interactive gameEntity) {
+    public static void print(Console console, Interactive gameEntity) {
+        final PrintWriter writer = console.getWriter();
         writer.print(Settings.MESSAGES_BUNDLE.getString("Messages.prefix.primary"));
         writer.println(gameEntity.toString());
         writer.flush();
         gameEntity.markSeen();
     }
 
-    public static void println(PrintWriter writer) {
+    public static void println(Console console) {
+        final PrintWriter writer = console.getWriter();
         writer.println();
         writer.flush();
     }
@@ -97,15 +103,16 @@ public class Printers {
     /**
      * Prints out a boolean prompt to the user, hinting at the {@code defaultChoice}.
      *
-     * @param writer        to print prompt to
+     * @param console       to print prompt to
      * @param prompt        to display to the user
      * @param defaultChoice the default response of the player, if the player submits empty input. If
      *                      {@code null}, there is no default hinted.
      */
     public static void printBooleanPrompt(
-            PrintWriter writer,
+            Console console,
             String prompt,
             Boolean defaultChoice) {
+        final PrintWriter writer = console.getWriter();
         String options;
 
         if (defaultChoice == null) {
@@ -122,12 +129,14 @@ public class Printers {
         writer.flush();
     }
 
-    public static void printGenericPrompt(PrintWriter writer) {
+    public static void printGenericPrompt(Console console) {
+        final PrintWriter writer = console.getWriter();
         writer.print(Settings.MESSAGES_BUNDLE.getString("Prompts.genericPrompt"));
         writer.flush();
     }
 
-    public static void printNamedPrompt(PrintWriter writer, @NotNull String prompt) {
+    public static void printNamedPrompt(Console console, @NotNull String prompt) {
+        final PrintWriter writer = console.getWriter();
         writer.print(format("Prompts.namedPrompt", Objects.requireNonNull(prompt)));
         writer.flush();
     }

@@ -4,13 +4,13 @@ import bobbin.boundaries.Door;
 import bobbin.boundaries.Room;
 import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.ExitToException;
+import bobbin.interaction.console.Console;
 import bobbin.items.BaseGameEntity;
 import bobbin.usability.util.BaseUsabilityTest;
 import bobbin.usability.util.BufferedUserInput;
+import bobbin.usability.util.TestConsole;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,15 +20,14 @@ class RoomMovementUsabilityTest extends BaseUsabilityTest {
 
     @Test
     void moveToAnotherRoomAndLookAround() {
-        final BufferedReader reader = new BufferedUserInput()
+        final TestConsole console = new TestConsole(new BufferedUserInput()
                 .appendLine("new")
                 .appendLine("look")
                 .appendLine("open")
                 .appendLine("back")
-                .appendLine("main menu")
-                .build(baos, writer);
+                .appendLine("main menu"));
         assertTimeout(Duration.ofSeconds(1), () -> {
-            run(reader, playerCharacter);
+            run(console, playerCharacter);
             assertEquals(room2, gameCharacter.getLocation());
         });
     }
@@ -44,8 +43,7 @@ class RoomMovementUsabilityTest extends BaseUsabilityTest {
             @Override public int respondToInteraction(
                     PlayerCharacter actor,
                     BaseGameEntity from,
-                    BufferedReader reader,
-                    PrintWriter writer) throws ExitToException {
+                    Console console) throws ExitToException {
                 throw new Room.ExitToRoomException();
             }
         }
@@ -59,15 +57,15 @@ class RoomMovementUsabilityTest extends BaseUsabilityTest {
 
         new SpecialDoor(room1, room4);
 
-        final BufferedReader reader = new BufferedUserInput()
+        final TestConsole console = new TestConsole(new BufferedUserInput()
                 .appendLine("new")
                 .appendLine("look")
                 .appendLine("open")
                 .appendLine("back")
-                .appendLine("main menu")
-                .build(baos, writer);
+                .appendLine("main menu"));
+
         assertTimeout(Duration.ofSeconds(1), () -> {
-            run(reader, customPlayerCharacter);
+            run(console, customPlayerCharacter);
             assertEquals(room4, customPlayerCharacter.getLocation());
         });
     }

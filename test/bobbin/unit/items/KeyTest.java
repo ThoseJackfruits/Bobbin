@@ -4,9 +4,7 @@ import bobbin.items.Key;
 import bobbin.unit.BaseUnitTest;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for {@link Key}s.
@@ -19,9 +17,9 @@ class KeyTest extends BaseUnitTest {
 
     @Test
     void equals() {
-        assertFalse(randomKey.equals(door2Key));
-        assertFalse(door1Key1.equals(door2Key));
-        assertTrue(door1Key1.equals(door1Key2));
+        assertNotEquals(randomKey, door2Key);
+        assertNotEquals(door1Key1, door2Key);
+        assertEquals(door1Key1, door1Key2);
     }
 
     @Test

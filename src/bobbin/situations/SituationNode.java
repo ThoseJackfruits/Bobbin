@@ -6,11 +6,10 @@ import bobbin.effects.BaseEffect;
 import bobbin.interaction.ExitToException;
 import bobbin.interaction.actions.Action;
 import bobbin.interaction.actions.ActionList;
+import bobbin.interaction.console.Console;
 import bobbin.items.BaseGameEntity;
 
 import javax.validation.constraints.NotNull;
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -67,24 +66,23 @@ public class SituationNode extends BaseGameEntity {
     @Override
     protected ActionList actions(GameCharacter actor, BaseGameEntity from) {
         ActionList actions = super.actions(actor, from);
-        actions.addAll(childNodes);
+        assert actions.addAll(childNodes);
         return actions;
     }
 
     @Override
     public int respondToInteraction(
-            PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
-            PrintWriter writer) throws ExitToException {
+            PlayerCharacter actor, BaseGameEntity from, Console console) throws ExitToException {
         getEffect().accept(actor);
 
         if (getNext() != Action.NULL) {
-            return getNext().apply(actor).interact(actor, this, reader, writer);
+            return getNext().apply(actor).interact(actor, this, console);
         }
 
         if (childNodes.size() == 0) {
             return GoTo.PARENT;
         }
 
-        return super.respondToInteraction(actor, from, reader, writer);
+        return super.respondToInteraction(actor, from, console);
     }
 }

@@ -1,14 +1,27 @@
 package bobbin.items;
 
+import bobbin.boundaries.Room;
 import bobbin.characters.GameCharacter;
+import bobbin.characters.PlayerCharacter;
 import bobbin.constants.Actions;
+import bobbin.interaction.ExitToException;
 import bobbin.interaction.Printers;
 import bobbin.interaction.actions.ActionList;
+import bobbin.interaction.console.Console;
 
 import java.util.*;
 import java.util.function.Predicate;
 
 public class Inventory extends BaseGameEntity implements List<Item> {
+
+    public static class ConsumeException extends ExitToException {
+        public final Item item;
+
+        public ConsumeException(boolean consumed, Item item) {
+            this.item = item;
+        }
+    }
+
     private final List<Item> items;
 
     public Inventory(List<Item> items) {
@@ -34,6 +47,18 @@ public class Inventory extends BaseGameEntity implements List<Item> {
         }
 
         return actions;
+    }
+
+    @Override
+    public int respondToInteraction(
+            PlayerCharacter actor, BaseGameEntity from, Console console
+    ) throws ExitToException {
+        try {
+            return super.respondToInteraction(actor, from, console);
+        } catch (ConsumeException e) {
+            this.remove(e.item);
+            return GoTo.THIS;
+        }
     }
 
     // List Methods

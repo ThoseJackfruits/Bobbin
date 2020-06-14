@@ -10,18 +10,17 @@ import bobbin.interaction.ExitToException;
 import bobbin.interaction.Printers;
 import bobbin.interaction.actions.ActionList;
 import bobbin.interaction.actions.BaseAction;
+import bobbin.interaction.console.Console;
 import bobbin.io.gamedata.SaveGameSerial;
 import bobbin.io.settings.Settings;
 import bobbin.items.BaseGameEntity;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class MainMenu extends Menu {
 
-    class DummyPlayerCharacter extends PlayerCharacter {
+    static class DummyPlayerCharacter extends PlayerCharacter {
         public DummyPlayerCharacter(String name, String description, Room location) {
             super(name, description, location);
         }
@@ -33,13 +32,13 @@ public class MainMenu extends Menu {
                                    Items.getCopiesOf(Items.BLUEBERRY, Items.FLOUR));
     }
 
-    public void saveGame(PrintWriter writer, PlayerCharacter playerCharacter) {
+    public void saveGame(Console console, PlayerCharacter playerCharacter) {
         try {
             new SaveGameSerial(playerCharacter.getName()
                                               .replace(' ', '_')
                                               .replace(File.separatorChar, '.'))
                     .saveData(playerCharacter);
-            Printers.printMessage(writer, "MainMenu.gameSaved");
+            Printers.printMessage(console, "MainMenu.gameSaved");
         }
         catch (IOException | InterruptedException e1) {
             e1.printStackTrace();
@@ -51,12 +50,6 @@ public class MainMenu extends Menu {
     }
 
     public static class ExitToMainMenuException extends ExitToException {
-
-        private final PlayerCharacter playerCharacter;
-
-        public ExitToMainMenuException(PlayerCharacter playerCharacter) {
-            this.playerCharacter = playerCharacter;
-        }
     }
 
     @Override
@@ -72,20 +65,19 @@ public class MainMenu extends Menu {
         }
 
         actions.add(Actions.NEW_GAME);
-        actions.add(Actions.EXIT_GAME);
+        actions.add(Actions.EXIT_MENU);
 
         return actions;
     }
 
     @Override
     public int respondToInteraction(
-            PlayerCharacter actor, BaseGameEntity from, BufferedReader reader,
-            PrintWriter writer) throws ExitToException {
-        Printers.println(writer);
-        Printers.print(writer, this);
-        Printers.println(writer);
+            PlayerCharacter actor, BaseGameEntity from, Console console) throws ExitToException {
+        Printers.println(console);
+        Printers.print(console, this);
+        Printers.println(console);
 
-        BaseAction next = ConsolePrompt.getChoice(reader, writer, actions(actor, from), null);
+        BaseAction next = ConsolePrompt.getChoice(console, actions(actor, from), null);
 
         if (next.equals(Actions.CONTINUE)) {
             SaveGameSerial saveGame = SaveGameSerial.loadActiveSave();
@@ -94,9 +86,9 @@ public class MainMenu extends Menu {
             }
             PlayerCharacter playerCharacter;
             playerCharacter = saveGame.loadData();
-            return playerCharacter.interact(playerCharacter, this, reader, writer);
+            return playerCharacter.interact(playerCharacter, this, console);
         }
 
-        return next.apply(actor).interact(actor, this, reader, writer);
+        return next.apply(actor).interact(actor, this, console);
     }
 }

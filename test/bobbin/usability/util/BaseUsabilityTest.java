@@ -7,11 +7,10 @@ import bobbin.interaction.ExitToException;
 import bobbin.interaction.Interactive;
 import bobbin.interaction.actions.ActionList;
 import bobbin.interaction.actions.BaseAction;
+import bobbin.interaction.console.Console;
 import bobbin.items.BaseGameEntity;
 import bobbin.menus.MainMenu;
 import bobbin.unit.interaction.BaseConsoleTest;
-
-import java.io.BufferedReader;
 
 public class BaseUsabilityTest extends BaseConsoleTest {
 
@@ -30,12 +29,12 @@ public class BaseUsabilityTest extends BaseConsoleTest {
         }
     }
 
-    protected void run(BufferedReader reader, PlayerCharacter playerCharacter) {
+    protected void run(Console console, PlayerCharacter playerCharacter) {
         Interactive next = new TestMainMenu();
 
         while (true) {
             try {
-                next.interact(playerCharacter, null, reader, writer);
+                next.interact(playerCharacter, null, console);
             }
             catch (Interactive.ResetStackException e) {
                 next = e.then;

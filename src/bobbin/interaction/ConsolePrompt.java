@@ -1,11 +1,11 @@
 package bobbin.interaction;
 
+import bobbin.interaction.console.Console;
 import bobbin.io.settings.Settings;
 
 import javax.naming.directory.InvalidSearchFilterException;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
@@ -26,21 +26,20 @@ public class ConsolePrompt {
      * Get an integer response for a given prompt. The prompt will be shown repeatedly until valid
      * input is given from the player.
      *
-     * @param reader to read response from
-     * @param writer to print prompt to
-     * @param prompt to present to the user when asking for input
+     * @param console to print prompt and to read response from
+     * @param prompt  to present to the user when asking for input
      * @return number given by the player
      */
-    public static int getResponseInt(BufferedReader reader, PrintWriter writer, String prompt)
+    public static int getResponseInt(Console console, String prompt)
             throws NumberFormatException {
         Integer selection = null;
 
         while (selection == null) {
             try {
-                selection = Integer.parseInt(getResponseString(reader, writer, prompt));
+                selection = Integer.parseInt(getResponseString(console, prompt));
             }
             catch (NumberFormatException e) {
-                Printers.printMessage(writer, "Error.invalidInput.generic");
+                Printers.printMessage(console, "Error.invalidInput.generic");
             }
         }
 
@@ -50,19 +49,19 @@ public class ConsolePrompt {
     /**
      * Ask a boolean (yes/no) question to the player, optionally providing a default response.
      *
-     * @param reader        to read response from
-     * @param writer        to print prompt to
+     * @param console       to print prompt and to read response from
      * @param prompt        to present to the player when asking for input
      * @param defaultChoice the default response of the player, if the player submits empty input. If
      *                      {@code null}, an explicit response is required.
      * @return the player's response
      */
     public static boolean getChoiceBoolean(
-            BufferedReader reader, PrintWriter writer,
+            Console console,
             String prompt, Boolean defaultChoice) {
+        final BufferedReader reader = console.getReader();
         boolean choice;
-        while (true) {
-            Printers.printBooleanPrompt(writer, prompt, defaultChoice);
+        for (;;) {
+            Printers.printBooleanPrompt(console, prompt, defaultChoice);
             try {
                 choice = getChoice(defaultChoice, reader.readLine());
                 break;
@@ -103,39 +102,36 @@ public class ConsolePrompt {
     /**
      * Prompt the player for input with a generic prompt and get back the raw string that they input.
      *
-     * @param reader to read response from
-     * @param writer to print prompt to
+     * @param console to print prompt and to read response from
      * @return player input
      */
-    public static String getResponseString(BufferedReader reader, PrintWriter writer) {
-        return getResponseString(reader, writer, null);
+    public static String getResponseString(Console console) {
+        return getResponseString(console, null);
     }
 
     /**
      * Prompt the player for input and get back the raw string that they input.
      *
-     * @param reader to read response from
-     * @param writer to print prompt to
+     * @param console to print prompt and to read response from
      * @param prompt to present to the user when asking for input. If {@code null} or {@link
      *               String#isEmpty()}, will print generic prompt.
      * @return player input
      */
     public static String getResponseString(
-            BufferedReader reader,
-            PrintWriter writer,
+            Console console,
             String prompt) {
         String response = null;
 
         while (response == null) {
             if (prompt == null || prompt.isEmpty()) {
-                Printers.printGenericPrompt(writer);
+                Printers.printGenericPrompt(console);
             }
             else {
-                Printers.printNamedPrompt(writer, prompt);
+                Printers.printNamedPrompt(console, prompt);
             }
 
             try {
-                response = reader.readLine();
+                response = console.getReader().readLine();
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -196,18 +192,17 @@ public class ConsolePrompt {
      * Given a list, ask the player to make a selection from that list and return the index of their
      * selection in that list.
      *
-     * @param reader to read response from
-     * @param writer to print prompt to
+     * @param console to print prompt to and read response from
      * @param list   for the player to choose from
      * @param prompt to display to the user
      */
     public static <T extends Interactive> int
-    getChoiceIndex(BufferedReader reader, PrintWriter writer, List<T> list, String prompt) {
-        Printers.printOrdered(writer, list);
+    getChoiceIndex(Console console, List<T> list, String prompt) {
+        Printers.printOrdered(console, list);
 
         Integer choice = null;
         while (choice == null || choice < 0 || choice >= list.size()) {
-            String response = getResponseString(reader, writer, prompt);
+            String response = getResponseString(console, prompt);
 
             try {
                 choice = Integer.parseInt(response) - 1;  // Visual list is 1-indexed
@@ -217,7 +212,7 @@ public class ConsolePrompt {
                     choice = findChoiceIndexByName(list, response);
                 }
                 catch (InvalidSearchFilterException e) {
-                    Printers.printMessage(writer, e.getMessage());
+                    Printers.printMessage(console, e.getMessage());
                 }
             }
         }
@@ -228,39 +223,36 @@ public class ConsolePrompt {
      * Given a list, ask the player to make a selection from that list and return the index of their
      * selection in that list.
      *
-     * @param reader to read response from
-     * @param writer to print prompt to
+     * @param console to print prompt to and read response from
      * @param array  for the player to choose from
      */
     public static <T extends Interactive> int
-    getChoiceIndex(BufferedReader reader, PrintWriter writer, T[] array, String prompt) {
-        return getChoiceIndex(reader, writer, Arrays.asList(array), prompt);
+    getChoiceIndex(Console console, T[] array, String prompt) {
+        return getChoiceIndex(console, Arrays.asList(array), prompt);
     }
 
     /**
      * Given a list, ask the player to make a selection from that list and return the selected object.
      *
-     * @param reader to read response from
-     * @param writer to print prompt to
+     * @param console to print prompt to and read response from
      * @param list   for the player to choose from
      */
     public static <T extends Interactive> T getChoice(
-            BufferedReader reader, PrintWriter writer,
+            Console console,
             List<T> list, String prompt) {
-        return list.get(getChoiceIndex(reader, writer, list, prompt));
+        return list.get(getChoiceIndex(console, list, prompt));
     }
 
     /**
      * Given an array, ask the player to make a selection from that array and return the selected
      * object.
      *
-     * @param reader to read response from
-     * @param writer to print prompt to
+     * @param console to print prompt to and read response from
      * @param array  for the player to choose from
      */
     public static <T extends Interactive> T getChoice(
-            BufferedReader reader, PrintWriter writer,
+            Console console,
             T[] array, String prompt) {
-        return getChoice(reader, writer, Arrays.asList(array), prompt);
+        return getChoice(console, Arrays.asList(array), prompt);
     }
 }
