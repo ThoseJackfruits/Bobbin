@@ -102,8 +102,15 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
 
             InputStream in = p.getInputStream();
             byte[] b = new byte[ in.available() ];
-            in.read(b);
+            final int readBytes = in.read(b);
             in.close();
+
+            if (readBytes != b.length) {
+                // Not sure if this would actually happen, but it seems like a good safety check to have.
+                throw new IOException(String.format(
+                        "Could not create directory. Expected %d bytes but only read %d.\n",
+                        b.length, readBytes));
+            }
 
             String myDocuments = new String(b).split("\\s\\s+")[ 4 ];
             return new File(myDocuments);
@@ -128,7 +135,7 @@ public class PersistedGameDataSerial<T> extends PersistedGameData<T> {
             checkDirectory(directory);
             ObjectInputStream in = new ObjectInputStream(getInputStream());
 
-            T object = null;
+            T object;
             try {
                 //noinspection unchecked
                 object = (T) in.readObject();
