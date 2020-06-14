@@ -5,18 +5,18 @@ import bobbin.characters.GameCharacter;
 import bobbin.characters.PlayerCharacter;
 import bobbin.constants.Actions;
 import bobbin.interaction.actions.ActionList;
+import bobbin.interaction.console.Console;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.GameEntity;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.util.Objects;
 
 public abstract class Interactive {
 
+    public static class ExitToSystemException extends ExitToException {}
+
     /**
-     * Get the set of actions to present to the player when they {@link #interact(PlayerCharacter,
-     * BaseGameEntity, BufferedReader, PrintWriter)} with this object. Depending on needs, the base
+     * Get the set of actions to present to the player when they {@link #interact(PlayerCharacter, BaseGameEntity, Console)} with this object. Depending on needs, the base
      * list should be fetched by subclasses of {@link Interactive}, which should then add to that
      * list.
      *
@@ -34,13 +34,12 @@ public abstract class Interactive {
      * Respond to interaction from another {@link GameEntity}.
      *
      * @param from   source of the interaction.
-     * @param reader to read response from
-     * @param writer to print prompt to
+     * @param console to output text and read response from
      * @return the number of levels to go up from the current stage.
      */
     public abstract int respondToInteraction(
             PlayerCharacter actor, BaseGameEntity from,
-            BufferedReader reader, PrintWriter writer) throws ExitToException;
+            Console console) throws ExitToException;
 
     /**
      * The visibility of an {@link Interactive} item to the player.
@@ -96,8 +95,7 @@ public abstract class Interactive {
 
     /**
      * Should be caught at the highest level possible (e.g. the main game loop) which should, after
-     * catching it, call {@link #then#interact(PlayerCharacter, BaseGameEntity,
-     * BufferedReader, PrintWriter)}.
+     * catching it, call {@link #then#interact(PlayerCharacter, BaseGameEntity, Console)}.
      * <p>
      * This will allow for the stack to be reset whenever moving from one {@link Interactive} to
      * another is not necessarily a parent-child jump. For example, when moving between {@link Room}s,
@@ -106,7 +104,7 @@ public abstract class Interactive {
      * This is to allow for continuous use of Java's stack as a method of "tree" traversal and state
      * management without the risk of exceeding the recursion limit.
      */
-    public class ResetStackException extends ExitToException {
+    public static class ResetStackException extends ExitToException {
 
         public final PlayerCharacter actor;
         public final Interactive then;
@@ -118,13 +116,11 @@ public abstract class Interactive {
     }
 
     /**
-     * Class of shortcuts for return statements in {@link #interact(PlayerCharacter,
-     * BaseGameEntity, BufferedReader, PrintWriter)}, {@link
-     * #respondToInteraction(PlayerCharacter, BaseGameEntity, BufferedReader,
-     * PrintWriter)}, and the like. Makes the semantics of the return statements in these methods more
-     * reader-friendly.
+     * Class of shortcuts for return statements in {@link #interact(PlayerCharacter, BaseGameEntity, Console)}, {@link
+     * #respondToInteraction(PlayerCharacter, BaseGameEntity, Console)}, and the like. Makes the semantics of the return
+     * statements in these methods more reader-friendly.
      */
-    protected class GoTo {
+    protected static class GoTo {
 
         /**
          * When execution ends, return to the current {@link Interactive} (looping interaction).
@@ -183,17 +179,15 @@ public abstract class Interactive {
 
     public int interact(
             PlayerCharacter actor, BaseGameEntity from,
-            BufferedReader reader,
-            PrintWriter writer) throws ExitToException {
+            Console console) throws ExitToException {
         Objects.requireNonNull(actor);
-        Objects.requireNonNull(reader);
-        Objects.requireNonNull(writer);
+        Objects.requireNonNull(console);
 
         markVisited();
 
         int desiredHeight;
         do {
-            desiredHeight = respondToInteraction(actor, from, reader, writer);
+            desiredHeight = respondToInteraction(actor, from, console);
         }
         while (desiredHeight == GoTo.THIS);
 
@@ -206,12 +200,5 @@ public abstract class Interactive {
 
     public void resetStackAndInteract(PlayerCharacter actor) throws ResetStackException {
         throw new ResetStackException(actor, this);
-    }
-
-    // This is a holdover until we have a proper exit game confirmation dialogue.
-    @Deprecated
-    public static BaseGameEntity exitGame(GameCharacter gc) {
-        System.exit(0);
-        return null;  // Solely to allow exitGame() to fit in cleanly with other action lambdas.
     }
 }

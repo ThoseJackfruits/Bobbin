@@ -10,11 +10,10 @@ import bobbin.interaction.ExitToException;
 import bobbin.interaction.Printers;
 import bobbin.interaction.actions.Action;
 import bobbin.interaction.actions.ActionList;
+import bobbin.interaction.console.Console;
 import bobbin.items.combinations.Combination;
 import bobbin.items.combinations.Combinations;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.util.*;
 
 /**
@@ -172,13 +171,13 @@ public class Item extends BaseGameEntity {
     @Override
     public int respondToInteraction(
             PlayerCharacter actor, BaseGameEntity from,
-            BufferedReader reader, PrintWriter writer)
+            Console console)
             throws ExitToException {
-        Printers.println(writer);
-        Printers.print(writer, this);
-        Printers.println(writer);
+        Printers.println(console);
+        Printers.print(console, this);
+        Printers.println(console);
 
-        Action action = ConsolePrompt.getChoice(reader, writer, actions(actor, from), null);
+        Action action = ConsolePrompt.getChoice(console, actions(actor, from), null);
 
         if (action.equals(Actions.PICK_UP)) {
             actor.getInventory().add(this);
@@ -186,11 +185,11 @@ public class Item extends BaseGameEntity {
                 actor.getLocation().takeItem(this);
             }
             catch (IllegalArgumentException e) {
-                Printers.printMessage(writer, "Error.gameplay.item.alreadyInInventory",
+                Printers.printMessage(console, "Error.gameplay.item.alreadyInInventory",
                                       this.getName());
             }
         }
 
-        return action.apply(actor).interact(actor, this, reader, writer);
+        return action.apply(actor).interact(actor, this, console);
     }
 }

@@ -5,23 +5,19 @@ import bobbin.io.settings.Settings;
 import bobbin.items.Inventory;
 import bobbin.items.Item;
 import bobbin.unit.BaseUnitTest;
-
+import bobbin.usability.util.TestConsole;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class PrintersTest extends BaseUnitTest {
 
-    private final ByteArrayOutputStream stream = new ByteArrayOutputStream();
-    private final PrintWriter writer = new PrintWriter(stream);
+    private final TestConsole console = new TestConsole();
 
-    private void commonListAssertions(List list, String response, boolean ordered) {
+    private <T> void commonListAssertions(List<T> list, String response, boolean ordered) {
         assertTrue(response.contains(list.get(0).toString()), "should have first item");
         assertTrue(
                 response.contains(list.get(list.size() - 1).toString()),
@@ -39,10 +35,9 @@ class PrintersTest extends BaseUnitTest {
 
     @Test
     void testPrintUnordered_list() {
-        List inventory = playerCharacter.getInventory();
-        //noinspection unchecked
-        Printers.printUnordered(writer, inventory);
-        final String response = new String(stream.toByteArray());
+        Inventory inventory = playerCharacter.getInventory();
+        Printers.printUnordered(console, inventory);
+        final String response = new String(console.getStream().toByteArray());
 
         commonListAssertions(inventory, response, false);
     }
@@ -50,8 +45,8 @@ class PrintersTest extends BaseUnitTest {
     @Test
     void testPrintOrdered_list() {
         Inventory list = playerCharacter.getInventory();
-        Printers.printOrdered(writer, list);
-        final String response = new String(stream.toByteArray());
+        Printers.printOrdered(console, list);
+        final String response = new String(console.getStream().toByteArray());
 
         commonListAssertions(list, response, true);
     }
@@ -59,8 +54,8 @@ class PrintersTest extends BaseUnitTest {
     @Test
     void testPrintOrdered_array() {
         Item[] array = playerCharacter.getInventory().toArray();
-        Printers.printOrdered(writer, array);
-        final String response = new String(stream.toByteArray());
+        Printers.printOrdered(console, array);
+        final String response = new String(console.getStream().toByteArray());
 
         commonListAssertions(Arrays.asList(array), response, true);
     }
@@ -68,9 +63,9 @@ class PrintersTest extends BaseUnitTest {
     @Test
     void testPrint() {
         Item item = playerCharacter.getInventory().get(0);
-        Printers.print(writer, item);
+        Printers.print(console, item);
 
-        final String response = new String(stream.toByteArray());
+        final String response = new String(console.getStream().toByteArray());
         assertEquals(
                 Settings.MESSAGES_BUNDLE.getString("Messages.prefix.primary") + item.toString()
                         + System.lineSeparator(), response);
@@ -86,8 +81,8 @@ class PrintersTest extends BaseUnitTest {
         String prompt = "yes or no?";
 
         for (int i = 0; i < defaultResponses.length; i++) {
-            Printers.printBooleanPrompt(writer, prompt, defaultResponses[ i ]);
-            final String response = new String(stream.toByteArray());
+            Printers.printBooleanPrompt(console, prompt, defaultResponses[ i ]);
+            final String response = new String(console.getStream().toByteArray());
             assertTrue(response.contains(prompt));
             assertTrue(response.contains(expectedOptions[ i ]));
         }

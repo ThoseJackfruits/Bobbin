@@ -11,45 +11,43 @@ import bobbin.interaction.ExitToException;
 import bobbin.interaction.Interactive;
 import bobbin.interaction.actions.Action;
 import bobbin.interaction.actions.BaseAction;
+import bobbin.interaction.console.Console;
+import bobbin.interaction.console.SystemConsole;
 import bobbin.items.BaseGameEntity;
 import bobbin.menus.MainMenu;
 import bobbin.situations.SituationNode;
 import bobbin.situations.SituationRoot;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-
 public class Main {
 
     public static void main(String[] args) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        PrintWriter writer = new PrintWriter(System.out);
-
-        start(reader, writer, MainMenu.dummyPlayerCharacter());
+        start(MainMenu.dummyPlayerCharacter(), new SystemConsole());
     }
 
     private static void start(
-            BufferedReader reader, PrintWriter writer,
-            PlayerCharacter playerCharacter) {
+            PlayerCharacter playerCharacter, Console console) {
         PlayerCharacter actor = playerCharacter;
         MainMenu mainMenu = new MainMenu();
         Interactive next = mainMenu;
 
-        while (true) {
+        for (;;) {
             try {
-                next.interact(actor, null, reader, writer);
+                next.interact(actor, null, console);
             }
             catch (Interactive.ResetStackException e) {
                 next = e.then;
                 actor = e.actor;
             }
             catch (MainMenu.ExitToMainMenuException e) {
-                mainMenu.saveGame(writer, playerCharacter);
+                mainMenu.saveGame(console, playerCharacter);
                 next = mainMenu;
             }
+            catch (Interactive.ExitToSystemException e) {
+                System.out.println("Goodbye!");
+                break;
+            }
             catch (ExitToException e) {
-                System.out.print("Exiting.");
+                System.err.println("Unhandled ExitToException: " + e.getClass().getName());
                 break;
             }
         }
@@ -58,20 +56,19 @@ public class Main {
     /**
      * Build a room, allowing the player to configure their character.
      *
-     * @param reader player input
-     * @param writer player output
+     * @param console player input/output
      *
      * @return {@link PlayerCharacter} in the new game.
      */
-    public static PlayerCharacter buildNewGame(BufferedReader reader, PrintWriter writer) {
+    public static PlayerCharacter buildNewGame(Console console) {
         Room startingRoom = new Room("Starting Room", "A Whole New Room");
         return new PlayerCharacter(
-                ConsolePrompt.getResponseString(reader, writer, "Character Name"),
-                ConsolePrompt.getResponseString(reader, writer, "Character Tagline"),
+                ConsolePrompt.getResponseString(console, "Character Name"),
+                ConsolePrompt.getResponseString(console, "Character Tagline"),
                 startingRoom);
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public static BaseGameEntity buildStockGame() {
         Room startingRoom = new Room("Starting Room", "The room you start in",
                                      Items.getCopiesOf(Items.BLUEBERRY, Items.BED));
@@ -81,7 +78,7 @@ public class Main {
         Door door = new Door("A door", "Door between starting room and other room", true,
                              startingRoom, otherRoom);
 
-        NonPlayerCharacter nonPlayerCharacter = new NonPlayerCharacter(
+        new NonPlayerCharacter(
                 "Non Player Character",
                 "An NPC, initially in Room 2.",
                 otherRoom,
@@ -104,7 +101,7 @@ public class Main {
             @Override
             public int respondToInteraction(
                     PlayerCharacter actor, BaseGameEntity from,
-                    BufferedReader reader, PrintWriter writer)
+                    Console console)
                     throws ExitToException {
                 throw new ResetStackException(pc, pc);
             }

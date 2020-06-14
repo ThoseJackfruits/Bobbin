@@ -3,11 +3,10 @@ package bobbin.interaction.actions;
 import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.ExitToException;
 import bobbin.interaction.Interactive;
+import bobbin.interaction.console.Console;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.GameEntity;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.util.function.Function;
 
 /**
@@ -33,8 +32,7 @@ public interface Action extends Function<PlayerCharacter, BaseGameEntity> {
         @Override
         public int respondToInteraction(
                 PlayerCharacter actor, BaseGameEntity from,
-                BufferedReader reader,
-                PrintWriter writer) throws ExitToException {
+                Console console) {
             return 1;
         }
     };

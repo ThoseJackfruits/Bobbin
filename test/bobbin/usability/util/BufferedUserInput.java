@@ -4,14 +4,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -19,7 +12,7 @@ public class BufferedUserInput {
 
     final Deque<String> inputs = new ArrayDeque<>();
 
-    Map<Integer, List<Consumer<String>>> testActions = new HashMap<>();
+    final Map<Integer, List<Consumer<String>>> testActions = new HashMap<>();
 
     /**
      * Initialise a new {@link BufferedUserInput}
@@ -127,13 +120,11 @@ public class BufferedUserInput {
     /**
      * Build a {@link BufferedReader} from {@code this}.
      *
-     * @param baos output stream to write to
-     * @param writer to pass into the test run
      * @return {@link BufferedReader} whose contents include what has been added to {@code this}
      */
-    public BufferedReader build(ByteArrayOutputStream baos, PrintWriter writer) {
+    public BufferedReaderTester build(ByteArrayOutputStream stream, PrintWriter writer) {
         final String newLine = System.lineSeparator();
-        return new BufferedReaderTester(this, baos, writer, new StringReader(
+        return new BufferedReaderTester(this, stream, writer, new StringReader(
                 inputs.stream().collect(Collectors.joining(newLine, "", newLine))));
     }
 }

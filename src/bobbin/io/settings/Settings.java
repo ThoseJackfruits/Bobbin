@@ -28,8 +28,8 @@ public class Settings extends Properties {
     public static final String PERSISTED_GAME_DATA_BASE_FOLDER = "BobbinSaves";
     private static final String SETTINGS_FILE_NAME = "settings.bbn";
 
-    private final PersistedGameDataSerial gameData =
-            new PersistedGameDataSerial(SETTINGS_FILE_NAME);
+    private final PersistedGameDataSerial<Settings> gameData =
+            new PersistedGameDataSerial<>(SETTINGS_FILE_NAME);
 
     public static class Keys {
         public static final String CURRENT_SAVE = "currentSave";

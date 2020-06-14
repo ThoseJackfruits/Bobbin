@@ -1,20 +1,19 @@
 package bobbin.unit.interaction;
 
 import bobbin.unit.BaseUnitTest;
-import org.junit.jupiter.api.Test;
+import bobbin.usability.util.TestConsole;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BaseConsoleTest extends BaseUnitTest {
 
-    protected final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    protected final PrintWriter writer = new PrintWriter(baos);
+    protected final TestConsole console = new TestConsole();
 
-    void assertPromptOutput(String prompt) {
-        final String consoleOutput = new String(baos.toByteArray());
+    void assertPromptOutput(TestConsole console, String prompt) {
+        final String consoleOutput = new String(
+                Optional.of(console).orElse(this.console).getStream().toByteArray());
         assertTrue(consoleOutput.contains(prompt));
     }
 }

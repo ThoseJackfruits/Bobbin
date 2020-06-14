@@ -4,44 +4,40 @@ import bobbin.interaction.ConsolePrompt;
 import bobbin.io.settings.Settings;
 import bobbin.items.Item;
 import bobbin.usability.util.BufferedUserInput;
+import bobbin.usability.util.TestConsole;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.io.BufferedReader;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ConsolePromptTest extends BaseConsoleTest {
 
     @Test
     void testGetResponseInt() {
         final String prompt = "Enter a Number: ";
-        final BufferedReader reader = new BufferedUserInput()
+        final TestConsole console = new TestConsole(new BufferedUserInput()
                 .appendLine(1)
-                .appendLine(10)
-                .build(baos, writer);
+                .appendLine(10));
 
-        assertEquals(1, ConsolePrompt.getResponseInt(reader, writer, prompt));
-        assertEquals(10, ConsolePrompt.getResponseInt(reader, writer, prompt));
+        assertEquals(1, ConsolePrompt.getResponseInt(console, prompt));
+        assertEquals(10, ConsolePrompt.getResponseInt(console, prompt));
 
-        assertPromptOutput(prompt);
+        assertPromptOutput(console, prompt);
     }
 
     @Test
     void testGetResponseString() {
         final String prompt = "Say a thing: ";
         final String[] responses = { "flabbergasted", "darn-tootin'" };
-        final BufferedReader reader = new BufferedUserInput()
-                .appendAllOnNewLines(responses)
-                .build(baos, writer);
+        final TestConsole console = new TestConsole(new BufferedUserInput()
+                .appendAllOnNewLines(responses));
 
         for (String response : responses) {
-            assertEquals(response, ConsolePrompt.getResponseString(reader, writer, prompt));
+            assertEquals(response, ConsolePrompt.getResponseString(console, prompt));
         }
 
-        assertPromptOutput(prompt);
+        assertPromptOutput(console, prompt);
     }
 
     @Test
@@ -50,17 +46,16 @@ class ConsolePromptTest extends BaseConsoleTest {
         final List<Item> list = playerCharacter.getInventory();
 
         final String[] responses = { "1", "2" };
-        final BufferedReader reader = new BufferedUserInput()
-                .appendAllOnNewLines(responses)
-                .build(baos, writer);
+        final TestConsole console = new TestConsole(new BufferedUserInput()
+                .appendAllOnNewLines(responses));
 
         for (String response : responses) {
             assertEquals(
                     Integer.parseInt(response) - 1,
-                    ConsolePrompt.getChoiceIndex(reader, writer, list, prompt));
+                    ConsolePrompt.getChoiceIndex(console, list, prompt));
         }
 
-        assertPromptOutput(prompt);
+        assertPromptOutput(console, prompt);
     }
 
     @Test
@@ -69,17 +64,16 @@ class ConsolePromptTest extends BaseConsoleTest {
         final List<Item> list = playerCharacter.getInventory();
 
         final String[] responses = { "1", "2" };
-        final BufferedReader reader = new BufferedUserInput()
-                .appendAllOnNewLines(responses)
-                .build(baos, writer);
+        final TestConsole console = new TestConsole(new BufferedUserInput()
+                .appendAllOnNewLines(responses));
 
         for (String response : responses) {
             assertEquals(
                     list.get(Integer.parseInt(response) - 1),
-                    ConsolePrompt.getChoice(reader, writer, list, prompt));
+                    ConsolePrompt.getChoice(console, list, prompt));
         }
 
-        assertPromptOutput(prompt);
+        assertPromptOutput(console, prompt);
     }
 
     @Test
@@ -90,14 +84,13 @@ class ConsolePromptTest extends BaseConsoleTest {
         final String[] responses = { Settings.MESSAGES_BUNDLE.getString("Items.BLUEBERRY.name"),
                 Settings.MESSAGES_BUNDLE.getString("Items.FLOUR.name") };
         final int[] expected = new int[] { 0, 1 };
-        final BufferedReader reader = new BufferedUserInput()
-                .appendAllOnNewLines(responses)
-                .build(baos, writer);
+        final TestConsole console = new TestConsole(new BufferedUserInput()
+                .appendAllOnNewLines(responses));
 
         for (int index : expected) {
-            assertEquals(index, ConsolePrompt.getChoiceIndex(reader, writer, list, prompt));
+            assertEquals(index, ConsolePrompt.getChoiceIndex(console, list, prompt));
         }
 
-        assertPromptOutput(prompt);
+        assertPromptOutput(console, prompt);
     }
 }

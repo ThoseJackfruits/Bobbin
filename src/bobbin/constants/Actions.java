@@ -5,18 +5,16 @@ import bobbin.characters.GameCharacter;
 import bobbin.characters.NonPlayerCharacter;
 import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.ExitToException;
-import bobbin.interaction.Interactive;
 import bobbin.interaction.Printers;
 import bobbin.interaction.actions.BaseAction;
+import bobbin.interaction.console.Console;
 import bobbin.io.gamedata.SaveGameSerial;
 import bobbin.io.settings.Settings;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.Item;
 import bobbin.main.Main;
+import bobbin.menus.ExitMenu;
 import bobbin.menus.MainMenu;
-
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 
 // I think these will need to be refactored soon. It's fine
 // to have them in one big file right now, but I think that
@@ -41,9 +39,7 @@ public class Actions {
                         public int respondToInteraction(
                                 PlayerCharacter actor,
                                 BaseGameEntity from,
-                                BufferedReader reader,
-                                PrintWriter writer)
-                                throws ExitToException {
+                                Console console) {
                             return GoTo.GRANDPARENT;
                         }
                     });
@@ -83,7 +79,16 @@ public class Actions {
             new BaseAction(
                     Settings.MESSAGES_BUNDLE.getString("Actions.EXIT_GAME.name"),
                     "",
-                    Interactive::exitGame);
+                    playerCharacter -> new BaseGameEntity() {
+                        @Override
+                        public int respondToInteraction(
+                                PlayerCharacter actor,
+                                BaseGameEntity from,
+                                Console console) {
+                            System.exit(0);
+                            return 0;
+                        }
+                    });
 
     public static BaseAction ITEM(Item item) {
         return new BaseAction(
@@ -114,12 +119,17 @@ public class Actions {
                         public int respondToInteraction(
                                 PlayerCharacter actor,
                                 BaseGameEntity from,
-                                BufferedReader reader,
-                                PrintWriter writer)
+                                Console console)
                                 throws ExitToException {
-                            throw new MainMenu.ExitToMainMenuException(playerCharacter);
+                            throw new MainMenu.ExitToMainMenuException();
                         }
                     });
+
+    public static final BaseAction EXIT_MENU =
+            new BaseAction(
+                    Settings.MESSAGES_BUNDLE.getString("Actions.EXIT_GAME.name"),
+                    "",
+                    playerCharacter -> new ExitMenu());
 
     public static final BaseAction NEW_GAME =
             new BaseAction(
@@ -149,9 +159,7 @@ public class Actions {
                         public int respondToInteraction(
                                 PlayerCharacter actor,
                                 BaseGameEntity from,
-                                BufferedReader reader,
-                                PrintWriter writer)
-                                throws ExitToException {
+                                Console console) {
                             return GoTo.GRANDPARENT;
                         }
                     });

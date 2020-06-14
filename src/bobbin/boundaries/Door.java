@@ -2,11 +2,10 @@ package bobbin.boundaries;
 
 import bobbin.characters.PlayerCharacter;
 import bobbin.interaction.ExitToException;
+import bobbin.interaction.console.Console;
 import bobbin.items.BaseGameEntity;
 import bobbin.items.Key;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.util.Objects;
 import java.util.Random;
 
@@ -184,7 +183,7 @@ public class Door extends BaseGameEntity {
     @Override
     public int respondToInteraction(
             PlayerCharacter actor, BaseGameEntity from,
-            BufferedReader reader, PrintWriter writer)
+            Console console)
             throws ExitToException {
         try {
             getOtherRoom((Room) from).resetStackAndInteract(actor);
